@@ -6,6 +6,10 @@
 
 **v0.3 개발 버전**입니다. ACT I 25장, ACT II 30장과 자유 운영을 포함한 카드 159개를 제공합니다. ACT III는 아직 구현하지 않았습니다.
 
+[공개 플레이 테스트 열기](https://minho-nim.github.io/MinLab/apps/crossroads/)
+
+공개 게임은 MinLab의 GitHub Pages 아래에서 실행됩니다. 원본 코드 저장소와 별도로 빌드한 게임 파일만 게시합니다. 로컬 미리보기와 공개 주소의 진행 저장은 각각의 브라우저 주소에 보관됩니다.
+
 ## 실행
 
 Node.js 22.12 이상 또는 Node.js 24에서 실행합니다.
