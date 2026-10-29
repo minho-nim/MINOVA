@@ -53,7 +53,7 @@ export function getCardSpeaker(card:Pick<GameCard,'id'|'characterId'>):CardSpeak
   if(card.characterId!=='citizen') return undefined;
   const [index,role]=CITIZEN_VOICES[card.id] ?? [2,'시민 의견 전달자'];
   return {
-    name:role==='이민우 · 취업 지원자'?'NOVA 시민 · 이민우':`NOVA 시민 · ${role}`,
+    name:role==='이민우 · 취업 지원자'?'이민우':'NOVA 시민',
     role, portrait:{src:`${APPROVED_ART_ROOT}citizen-speaker-${index}.png`,label:role,width:index===0?211:index===1?209:210,height:182},
   };
 }

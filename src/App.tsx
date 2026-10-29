@@ -40,6 +40,11 @@ export default function App() {
 
   // Modals & Panels
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isChoiceDetailsOpen,setIsChoiceDetailsOpen]=useState(false);
+  useEffect(()=>{
+    document.body.classList.toggle('game-active',!inTitleScreen);
+    return()=>document.body.classList.remove('game-active');
+  },[inTitleScreen]);
   const [dossierTab, setDossierTab] = useState<
     'objectives' | 'history' | 'investigations' | 'secrets'
   >('history');
@@ -48,7 +53,7 @@ export default function App() {
   const [lastSupervisorRecord, setLastSupervisorRecord] = useState<SupervisorRecord | null>(null);
   const decisionLock = useRef(false);
   const inputLocked =
-    isHistoryOpen || isSettingsOpen || isReplacementModalOpen || gameState?.flowPhase !== 'playing';
+    isHistoryOpen || isSettingsOpen || isReplacementModalOpen || isChoiceDetailsOpen || gameState?.flowPhase !== 'playing';
   const applySessionAction = (action: SessionAction) => {
     if (!gameState) return;
     const result = transitionSession(gameState, action);
@@ -284,7 +289,7 @@ export default function App() {
         />
 
         {/* 3. Main Center Area: Swipeable Card */}
-        <main className="flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
+        <main className="game-main flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
           {gameState.flowPhase === 'playing' && !gameState.waitingUntilDay ? (
             <GameCard
               key={currentCard.id}
@@ -321,6 +326,7 @@ export default function App() {
             onOpenSettings={() => setIsSettingsOpen(true)}
             onHoverDirectionChange={handleHoverDirectionChange}
             isProcessing={isProcessing || inputLocked || Boolean(gameState.waitingUntilDay)}
+            onDetailsOpenChange={setIsChoiceDetailsOpen}
           />
         )}
       </div>

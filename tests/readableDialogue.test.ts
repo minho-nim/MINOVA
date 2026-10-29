@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {ALL_CARDS, CARD_MAP} from '../src/data/cards';
 import {resolveCardDialogue} from '../src/engine/gameEngine';
 import {readableDialogue} from '../src/data/readableDialogue';
+import {dialoguePages} from '../src/utils/dialoguePages';
 import {GameCard} from '../src/components/GameCard';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
@@ -45,6 +46,7 @@ test('all actual cards use a uniform dialogue frame and a fully readable scroll 
     assert.match(html,/dialogue-portrait/,card.id);
     assert.doesNotMatch(html,/natural-portrait/);
     assert.match(html,/aria-label="사건 설명과 대화" tabindex="0"/);
-    assert.ok(html.includes(readableDialogue(card.id,resolveCardDialogue(card,{},resources)).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;')),card.id);
+    const text=readableDialogue(card.id,resolveCardDialogue(card,{},resources));
+    for(const page of dialoguePages(text))assert.ok(html.includes(page.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;')),card.id);
   }
 });

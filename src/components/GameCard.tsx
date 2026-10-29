@@ -5,12 +5,13 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { CardDialogueContext, GameCard as GameCardType, StoryFlags, Resources } from '../types/game';
-import { choicePresentation } from '../data/cardPresentation';
+import { choicePresentation, choiceActionLabel } from '../data/cardPresentation';
 import { CHARACTERS } from '../data/characters';
 import { CharacterPortrait } from './CharacterPortrait';
 import { DISPLAY_ROLES } from '../data/characterArt';
 import { getCardSpeaker } from '../data/cardSpeakers';
 import { readableDialogue } from '../data/readableDialogue';
+import { dialoguePages } from '../utils/dialoguePages';
 import { resolveCardDialogue } from '../engine/gameEngine';
 import { Check, X, ShieldAlert } from 'lucide-react';
 
@@ -44,6 +45,10 @@ export const GameCard: React.FC<GameCardProps> = ({
   const character = CHARACTERS[card.characterId];
   const speaker = getCardSpeaker(card);
   const dialogueText = readableDialogue(card.id, resolveCardDialogue(card, storyFlags, resources, dialogueContext));
+  const pages=dialoguePages(dialogueText);
+  const [readingPage,setReadingPage]=useState(0);
+  const pageIndex=Math.min(readingPage,pages.length-1);
+  useEffect(()=>setReadingPage(0),[card.id,dialogueText]);
 
   // Compute swipe progress (-1 to 1)
   const swipeProgress = Math.max(-1, Math.min(1, dragOffset.x / SWIPE_THRESHOLD));
@@ -81,7 +86,8 @@ export const GameCard: React.FC<GameCardProps> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
         document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA'
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.closest('[data-reading-area]')
       ) {
         return;
       }
@@ -101,7 +107,7 @@ export const GameCard: React.FC<GameCardProps> = ({
   // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     if (isProcessing || exitDirection) return;
-    if ((e.target as Element).closest('[data-reading-area]')) return;
+    if ((e.target as Element).closest('[data-reading-area],button,a')) return;
     setIsDragging(true);
     startPosRef.current = { x: e.clientX, y: e.clientY };
   };
@@ -194,17 +200,13 @@ export const GameCard: React.FC<GameCardProps> = ({
         })
     : [];
 
-  const leftActionLabel =
-    choicePresentation(card, 'left', storyFlags).actionLabel ||
-    (card.leftChoice.text.length > 8 ? '거부 · 대안' : card.leftChoice.text);
-  const rightActionLabel =
-    choicePresentation(card, 'right', storyFlags).actionLabel ||
-    (card.rightChoice.text.length > 8 ? '승인 · 실행' : card.rightChoice.text);
+  const leftActionLabel=choiceActionLabel(card,'left',storyFlags);
+  const rightActionLabel=choiceActionLabel(card,'right',storyFlags);
 
   return (
-    <div className="relative w-full max-w-[440px] sm:max-w-[460px] mx-auto flex flex-col items-center">
+    <div className="verdict-stage relative w-full max-w-[440px] sm:max-w-[460px] mx-auto flex flex-col items-center">
       {/* Dynamic Choice Preview Banner */}
-      <div className="h-8 mb-1 flex items-center justify-center text-center px-2 w-full">
+      <div className="verdict-preview h-8 mb-1 flex items-center justify-center text-center px-2 w-full">
         {activeChoice ? (
           <div className="flex items-center gap-2 animate-in fade-in zoom-in-95">
             <span
@@ -242,7 +244,7 @@ export const GameCard: React.FC<GameCardProps> = ({
       </div>
 
       {/* Main Interactive Card Stack */}
-      <div className="relative w-full">
+      <div className="verdict-stack relative w-full">
         {/* Deep Ghost Card Layer */}
         <div className="absolute inset-0 bg-[#0A0E17] rounded-2xl border border-slate-800/50 transform scale-[0.94] translate-y-2 pointer-events-none opacity-50 shadow-sm" />
 
@@ -345,22 +347,17 @@ export const GameCard: React.FC<GameCardProps> = ({
           </h4>
 
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
-          <div className="py-1">
-            <p className="verdict-dialogue text-[#F1F5F9] font-normal break-keep select-text">
-              "{dialogueText}"
-            </p>
+          <div className="verdict-copy py-1" aria-live="polite" aria-atomic="true">
+            {pages.map((page,index)=><p key={index} hidden={index!==pageIndex} className="verdict-dialogue text-[#F1F5F9] font-normal select-text">{page}</p>)}
           </div>
+          {pages.length>1&&<nav className="dialogue-pager" aria-label="대화 나누어 읽기">
+            <button type="button" disabled={pageIndex===0} onClick={()=>setReadingPage(index=>Math.max(0,index-1))}>이전</button>
+            <span>{pageIndex+1} / {pages.length}</span>
+            <button type="button" disabled={pageIndex===pages.length-1} onClick={()=>setReadingPage(index=>Math.min(pages.length-1,index+1))}>다음</button>
+          </nav>}
           </section>
 
           {/* Card Bottom Meta Footer */}
-          <div className="verdict-footer pt-2 mt-auto flex items-center justify-between text-[11px] text-slate-400 font-mono border-t border-slate-800/80">
-            <span className="truncate max-w-[48%] text-left text-rose-300/80">
-              ← {leftActionLabel}
-            </span>
-            <span className="truncate max-w-[48%] text-right text-cyan-300/80">
-              {rightActionLabel} →
-            </span>
-          </div>
         </div>
       </div>
     </div>

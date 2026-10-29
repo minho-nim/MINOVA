@@ -55,7 +55,7 @@ export const ResourceBar: React.FC<ResourceBarProps> = ({
   }, [resources]);
 
   return (
-    <div className="w-full bg-[#080D17]/95 backdrop-blur-md border-b border-slate-800/80 px-2 py-2 select-none shadow-md shrink-0">
+    <div className="resources-bar w-full bg-[#080D17]/95 backdrop-blur-md border-b border-slate-800/80 px-2 py-2 select-none shadow-md shrink-0">
       <div className="grid grid-cols-4 gap-1.5 max-w-[480px] mx-auto">
         {RESOURCE_ORDER.map((key) => {
           const meta = RESOURCE_META[key];
@@ -81,7 +81,7 @@ export const ResourceBar: React.FC<ResourceBarProps> = ({
           return (
             <div
               key={key}
-              className={`relative flex flex-col items-center justify-center p-1.5 rounded-lg border transition-all ${
+              className={`resource-cell relative flex flex-col items-center justify-center p-1.5 rounded-lg border transition-all ${
                 isCrisisActive
                   ? 'border-rose-500/80 bg-rose-950/40 shadow-[0_0_12px_rgba(244,63,94,0.3)] animate-pulse'
                   : isCritical
@@ -122,7 +122,7 @@ export const ResourceBar: React.FC<ResourceBarProps> = ({
               )}
 
               {/* Gauge & Icon Container */}
-              <div className="relative w-9 h-9 flex items-center justify-center my-0.5">
+              <div className="resource-gauge relative w-9 h-9 flex items-center justify-center my-0.5">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
                   {/* Background Track */}
                   <circle

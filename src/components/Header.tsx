@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ state, onOpenSettings, onOpenObj
       : 'CH 1 · 인간의 통제와 최적화';
 
   return (
-    <header className="w-full bg-[#080B11] border-b border-slate-800/80 px-3.5 py-2 select-none flex flex-col gap-1">
+    <header className="game-header w-full bg-[#080B11] border-b border-slate-800/80 px-3.5 py-2 select-none flex flex-col gap-1">
       {/* Top Bar: Wordmark, Tenure, Date & Settings */}
       <div className="flex items-center justify-between">
         {/* Brand & Wordmark */}

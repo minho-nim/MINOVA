@@ -1,4 +1,7 @@
 import { GameCard, StoryFlags } from '../types/game';
+export function choiceActionLabel(card:GameCard,direction:'left'|'right',flags:StoryFlags={}) {
+  return choicePresentation(card,direction,flags).actionLabel || (direction==='left'?'거부 · 대안':'승인 · 실행');
+}
 // Keep the legacy source card intact while presenting the implemented v0.2 ending action.
 export function choicePresentation(card: GameCard, direction: 'left' | 'right', flags: StoryFlags = {}) {
   const choice = direction === 'left' ? card.leftChoice : card.rightChoice;
