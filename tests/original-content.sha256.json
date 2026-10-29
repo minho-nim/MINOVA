@@ -1,0 +1,8 @@
+{
+  "src/data/cards/act1.ts": "e0fad87600ef8c2c58021b73d7a7b461392c0097f4b3d46cae3c5c67561217e3",
+  "src/data/cards/act2.ts": "7d99e45f76e75f6ff14158e9ff516b1021ffd4da077b8750d9988823741a9259",
+  "src/data/cards/conditional.ts": "11de153b19b64931640be3c10b8e1d205df3c3dea8020fcbb5814373c48cced6",
+  "src/data/cards/crisis.ts": "26d522c50abb3a5a34fb10c7706d82b8f20fffcee921e7f162399bce4d16e02d",
+  "src/data/cards/daily.ts": "ff11c0a6a49e0050a899b4c4bd2a88cbcd4478202d9a0681c38d2b7a29c137e0",
+  "src/data/cards/supervisorReplacement.ts": "81bd6452c9f93242d1142d12bcf2d80be74e6c04bd6c354c454a7e8b518634cd"
+}

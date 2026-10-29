@@ -4,6 +4,8 @@
  */
 
 import { ALL_CARDS, CARD_MAP } from '../data/cards';
+import { ACT1_ORDER, ACT2_ORDER, ACT1_END, ACT2_END } from './storyFlow';
+import { ACT1_CARDS, ACT2_CARDS } from '../data/cards';
 import { CHARACTERS } from '../data/characters';
 import { GameCard } from '../types/game';
 
@@ -18,6 +20,7 @@ export interface ValidationReport {
     dailyCards: number;
     transitionCards: number;
     totalCharacters: number;
+    conditionalCards: number;
   };
 }
 
@@ -57,12 +60,12 @@ export function validateStoryContent(): ValidationReport {
     // 5. Check nextCardId targets
     if (card.leftChoice?.nextCardId && !CARD_MAP.has(card.leftChoice.nextCardId)) {
       errors.push(
-        `Card "${card.id}" leftChoice references nonexistent card: "${card.leftChoice.nextCardId}"`
+        `Card "${card.id}" leftChoice references nonexistent card: "${card.leftChoice.nextCardId}"`,
       );
     }
     if (card.rightChoice?.nextCardId && !CARD_MAP.has(card.rightChoice.nextCardId)) {
       errors.push(
-        `Card "${card.id}" rightChoice references nonexistent card: "${card.rightChoice.nextCardId}"`
+        `Card "${card.id}" rightChoice references nonexistent card: "${card.rightChoice.nextCardId}"`,
       );
     }
 
@@ -74,6 +77,30 @@ export function validateStoryContent(): ValidationReport {
       warnings.push(`Card "${card.id}" rightChoice lacks consequence explanation text.`);
     }
   }
+
+  const producerFlags = new Set(
+    ALL_CARDS.flatMap((card) => [card.leftChoice, card.rightChoice]).flatMap((choice) =>
+      Object.keys(choice.flags || {}),
+    ),
+  );
+  for (const card of ALL_CARDS) {
+    for (const flag of Object.keys(card.requiredFlags || {})) {
+      if (!producerFlags.has(flag))
+        errors.push('No choice produces required flag: ' + card.id + ':' + flag);
+    }
+    for (const choice of [card.leftChoice, card.rightChoice]) {
+      for (const id of [choice.scheduleCardId, choice.delayedEffect?.triggerCardId].filter(Boolean))
+        if (!CARD_MAP.has(id!)) errors.push('Missing follow-up: ' + card.id + ':' + id);
+    }
+  }
+  const configured = [...ACT1_ORDER, ...ACT2_ORDER];
+  if (new Set(configured).size !== configured.length) errors.push('Duplicate story ordering entry');
+  for (const id of configured)
+    if (!CARD_MAP.has(id)) errors.push('Missing ordered story card: ' + id);
+  for (const card of [...ACT1_CARDS, ...ACT2_CARDS])
+    if (!configured.includes(card.id)) errors.push('Unordered story card: ' + card.id);
+  if (ACT1_ORDER.at(-1) !== ACT1_END || ACT2_ORDER.at(-1) !== ACT2_END)
+    errors.push('Invalid authored epilogue boundary');
 
   // Verify ACT I start card exists
   if (!CARD_MAP.has('act1_01_inauguration')) {
@@ -91,6 +118,7 @@ export function validateStoryContent(): ValidationReport {
       dailyCards,
       transitionCards,
       totalCharacters: Object.keys(CHARACTERS).length,
+      conditionalCards: ALL_CARDS.filter((c) => c.type === 'conditional').length,
     },
   };
 }

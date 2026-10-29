@@ -4,6 +4,7 @@
  */
 
 import { ChapterObjective, GameState, StoryFlags } from '../types/game';
+import { hiringReformImplemented } from '../data/decisionConsistency';
 
 export interface ChapterMeta {
   act: 'ACT_I' | 'ACT_II' | 'ACT_III_PREVIEW';
@@ -91,7 +92,7 @@ export const ALL_OBJECTIVES: ChapterObjective[] = [
     chapter: 1,
     title: '피해 시민과 응급 의료진의 증언 확보',
     category: 'medical',
-    description: '오혜진 원장과 배제된 환자 가족들의 긴급 청원을 직접 청취하고 데이터 누락 실태를 조사합니다.',
+    description: '공공의료 AI 운영 책임자이자 의사인 오혜진과 배제된 환자 가족들의 긴급 청원을 직접 청취하고 데이터 누락 실태를 조사합니다.',
   },
   {
     id: 'act2_obj_medical_appeal',
@@ -141,7 +142,7 @@ export const ALL_OBJECTIVES: ChapterObjective[] = [
     chapter: 2,
     title: '채용 알고리즘 공정성 보정 및 가드레일 수립',
     category: 'hiring',
-    description: '대리변수 사용을 전면 금지할지, 조직 운영 효율성을 위해 보정 계수만 추가할지 의결합니다.',
+    description: '채용 차별 대리변수 제거 등 공정성 시정 조치를 의결한 경우 완료합니다. 조사나 장 종결만으로 개혁 완료로 표시하지 않습니다.',
   },
 
   // --- ACT II Chapter 3: 하나의 숫자 ---
@@ -198,8 +199,8 @@ export function checkObjectiveCompleted(
     case 'act1_obj_charter':
       return Boolean(
         flags.act1_completed ||
-          completedCardIds.includes('act1_19_final_verdict') ||
-          completedCardIds.includes('act1_20_act1_epilogue')
+          completedCardIds.includes('act1_24_final_verdict') ||
+          completedCardIds.includes('act1_25_act1_epilogue')
       );
 
     // ACT II CH 1
@@ -219,7 +220,7 @@ export function checkObjectiveCompleted(
       return Boolean(
         flags.medical_appeal_decided ||
           flags.medical_appeal_approved !== undefined ||
-          completedCardIds.includes('act2_ch1_06_human_doctor_revolt')
+          completedCardIds.includes('act2_ch1_04_ai_override_request')
       );
     case 'act2_obj_medical_bias':
       return Boolean(
@@ -239,7 +240,7 @@ export function checkObjectiveCompleted(
       return Boolean(
         flags.hiring_bias_detected ||
           completedCardIds.includes('act2_ch2_04_applicant_protest') ||
-          completedCardIds.includes('act2_ch2_05_kang_efficiency_plea')
+          completedCardIds.includes('act2_ch2_04_applicant_protest')
       );
     case 'act2_obj_audit_decision':
       return Boolean(
@@ -247,23 +248,20 @@ export function checkObjectiveCompleted(
           completedCardIds.includes('act2_ch2_06_independent_audit_warrant')
       );
     case 'act2_obj_hiring_reform':
-      return Boolean(
-        flags.hiring_fairness_reformed ||
-          completedCardIds.includes('act2_ch2_08_chapter2_resolution')
-      );
+      return hiringReformImplemented(flags);
 
     // ACT II CH 3
     case 'act2_obj_shared_score':
       return Boolean(
         flags.shared_score_suspected ||
           completedCardIds.includes('act2_ch3_01_cross_system_anomaly') ||
-          completedCardIds.includes('act2_ch3_02_latent_vector_leak')
+          completedCardIds.includes('act2_ch3_01_cross_system_anomaly')
       );
     case 'act2_obj_civitas_revealed':
       return Boolean(
         flags.civitas_score_discovered ||
           completedCardIds.includes('act2_ch3_03_civitas_exposure') ||
-          completedCardIds.includes('act2_ch3_04_secret_architecture')
+          completedCardIds.includes('act2_ch3_03_civitas_exposure')
       );
     case 'act2_obj_oracle_confrontation':
       return Boolean(
@@ -298,6 +296,16 @@ export function evaluateCompletedObjectives(
   return ALL_OBJECTIVES.filter((obj) =>
     checkObjectiveCompleted(obj.id, flags, completedCardIds)
   ).map((obj) => obj.id);
+}
+
+// Correct only the old derived hiring-reform cache, never rewrite player history.
+export function reconcileCompletedObjectives(
+  existing: string[], flags: StoryFlags, completedCardIds: string[],
+): string[] {
+  return [...new Set([
+    ...existing.filter(id => id !== 'act2_obj_hiring_reform' || hiringReformImplemented(flags)),
+    ...evaluateCompletedObjectives(flags, completedCardIds),
+  ])];
 }
 
 export function getNewlyCompletedObjective(

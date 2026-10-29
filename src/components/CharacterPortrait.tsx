@@ -1,8 +1,9 @@
 import React from 'react';
 import { CharacterEmotion, CharacterId, OracleVisualState } from '../types/game';
 import { CHARACTERS } from '../data/characters';
-import { CHARACTER_SHEET, MAIN_CAST } from '../data/characterArt';
+import { CHARACTER_ART } from '../data/characterArt';
 import { SystemPortrait } from './SystemPortrait';
+import type { SpeakerPortrait } from '../data/cardSpeakers';
 
 interface Props {
   characterId: CharacterId;
@@ -11,23 +12,35 @@ interface Props {
   className?: string;
   size?: number;
   variant?: 'portrait' | 'expression';
+  expressionIndex?: 0 | 1 | 2;
+  frame?: 'tile' | 'natural' | 'dialogue';
+  speakerPortrait?: SpeakerPortrait;
 }
 
-/** Use viewports of the supplied character sheet without resampling the source art. */
-export const CharacterPortrait: React.FC<Props> = ({ characterId, emotion = 'neutral', oracleState = 'normal', className = '', size = 110, variant = 'portrait' }) => {
-  const index = MAIN_CAST.indexOf(characterId);
-  if (index < 0) return <SystemPortrait characterId={characterId} emotion={emotion} oracleState={oracleState} className={className} size={size} />;
-  const alert = emotion === 'angry' || oracleState === 'conflict' || oracleState === 'error';
-  const analyzing = emotion === 'worried' || emotion === 'uncertain' || emotion === 'glitch' || oracleState === 'uncertain' || oracleState === 'glitch';
-  const expression = alert ? 2 : analyzing ? 1 : 0;
-  const useExpression = variant === 'expression' || alert || analyzing;
-  const x = 16 + index * 254;
-  const viewBox = useExpression ? `${x + expression * 79} 781 76 89` : `${x} 134 238 278`;
+/** Select native-resolution atlas regions without flattening text into portraits. */
+export const CharacterPortrait: React.FC<Props> = ({
+  characterId, emotion = 'neutral', oracleState = 'normal', className = '', size = 110,
+  variant = 'portrait', expressionIndex, frame = 'tile', speakerPortrait,
+}) => {
+  const art = CHARACTER_ART[characterId];
+  if (!art) return <SystemPortrait characterId={characterId} emotion={emotion} oracleState={oracleState} className={className} size={size} />;
+  let index = expressionIndex ?? art.emotions[emotion];
+  // Oracle states belong to ORACLE; a person's stated emotion remains authoritative.
+  if (characterId === 'oracle' && expressionIndex === undefined && oracleState !== 'normal') {
+    index = oracleState === 'uncertain' ? 1 : oracleState === 'confident' ? 0 : 2;
+  }
+  // A state mapped to the base face can use the much larger original portrait.
+  // Only distinct expressions need the small expression cells; the gallery stays explicit.
+  const useExpression = variant === 'expression' || expressionIndex !== undefined || index !== 0;
+  const region = useExpression ? art.expressions[index] : art.portrait;
+  const label = useExpression ? art.labels[index] : '기본';
+  const raster = speakerPortrait?.src ?? (useExpression ? art.rasterExpressions?.[index] : art.rasterPortrait);
+  const alt = speakerPortrait?.label ?? `${CHARACTERS[characterId].name} · ${label} 표정`;
   return (
-    <div className={`character-portrait ${className}`} data-emotion={alert ? 'alert' : analyzing ? 'analyzing' : 'neutral'} style={{ width: size, height: size, '--character-color': CHARACTERS[characterId].themeColor } as React.CSSProperties}>
-      <svg viewBox={viewBox} preserveAspectRatio="xMidYMid slice" role="img" aria-label={`${CHARACTERS[characterId].name} · ${alert ? '단호' : analyzing ? '고민' : '기본'} 표정`}>
-        <image href={CHARACTER_SHEET} width="1536" height="1024" />
-      </svg>
+    <div className={`character-portrait ${frame === 'natural' ? 'natural-portrait' : frame === 'dialogue' ? 'dialogue-portrait' : ''} ${art.collective && !speakerPortrait ? 'collective-portrait' : ''} ${characterId === 'oracle' ? 'oracle-portrait' : ''} ${className}`} data-emotion={index === 2 ? 'alert' : index === 1 ? 'analyzing' : 'neutral'} style={{ width: size, height: frame === 'natural' ? 'auto' : size, '--character-color': CHARACTERS[characterId].themeColor } as React.CSSProperties}>
+      {raster ? <img src={raster} alt={alt} width={speakerPortrait?.width} height={speakerPortrait?.height} draggable={false} /> : <svg viewBox={region.join(' ')} preserveAspectRatio="xMidYMid meet" role="img" aria-label={alt}>
+        <image href={art.source} width={art.sourceWidth??1536} height={art.sourceHeight??1024} />
+      </svg>}
     </div>
   );
 };

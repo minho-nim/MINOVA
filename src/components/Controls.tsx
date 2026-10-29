@@ -4,11 +4,13 @@
  */
 
 import React from 'react';
-import { GameCard as GameCardType } from '../types/game';
+import { choicePresentation } from '../data/cardPresentation';
+import { GameCard as GameCardType, StoryFlags } from '../types/game';
 import { ArrowLeft, ArrowRight, History, Settings } from 'lucide-react';
 
 interface ControlsProps {
   card: GameCardType;
+  storyFlags?: StoryFlags;
   onDecision: (direction: 'left' | 'right') => void;
   onOpenHistory: () => void;
   onOpenSettings: () => void;
@@ -18,14 +20,15 @@ interface ControlsProps {
 
 export const Controls: React.FC<ControlsProps> = ({
   card,
+  storyFlags = {},
   onDecision,
   onOpenHistory,
   onOpenSettings,
   onHoverDirectionChange,
   isProcessing,
 }) => {
-  const leftAction = card.leftChoice.actionLabel || '거부 · 반려';
-  const rightAction = card.rightChoice.actionLabel || '승인 · 실행';
+  const leftAction = choicePresentation(card, 'left', storyFlags).actionLabel || '거부 · 반려';
+  const rightAction = choicePresentation(card, 'right', storyFlags).actionLabel || '승인 · 실행';
 
   return (
     <div className="w-full max-w-[480px] sm:max-w-[500px] mx-auto px-3 py-2 flex flex-col gap-2 shrink-0">
@@ -43,7 +46,10 @@ export const Controls: React.FC<ControlsProps> = ({
           {/* Header Action Name with directional cue */}
           <div className="flex items-center justify-between w-full mb-1">
             <span className="text-xs font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
-              <ArrowLeft size={13} className="transition-transform group-hover:-translate-x-0.5 text-rose-400" />
+              <ArrowLeft
+                size={13}
+                className="transition-transform group-hover:-translate-x-0.5 text-rose-400"
+              />
               <span>{leftAction}</span>
             </span>
             <kbd className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.2 bg-rose-950/80 rounded border border-rose-800/60 text-rose-300">
@@ -53,7 +59,7 @@ export const Controls: React.FC<ControlsProps> = ({
 
           {/* Secondary Full Choice Explanation */}
           <span className="text-[12px] sm:text-[13px] font-normal text-slate-200 leading-[1.4] break-keep">
-            {card.leftChoice.text}
+            {choicePresentation(card, 'left', storyFlags).text}
           </span>
         </button>
 
@@ -70,7 +76,10 @@ export const Controls: React.FC<ControlsProps> = ({
           <div className="flex items-center justify-between w-full mb-1 flex-row-reverse">
             <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
               <span>{rightAction}</span>
-              <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5 text-cyan-400" />
+              <ArrowRight
+                size={13}
+                className="transition-transform group-hover:translate-x-0.5 text-cyan-400"
+              />
             </span>
             <kbd className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.2 bg-cyan-950/80 rounded border border-cyan-800/60 text-cyan-300">
               →
@@ -79,7 +88,7 @@ export const Controls: React.FC<ControlsProps> = ({
 
           {/* Secondary Full Choice Explanation */}
           <span className="text-[12px] sm:text-[13px] font-normal text-slate-200 leading-[1.4] break-keep">
-            {card.rightChoice.text}
+            {choicePresentation(card, 'right', storyFlags).text}
           </span>
         </button>
       </div>

@@ -101,7 +101,8 @@ export const ActCompleteModal: React.FC<ActCompleteModalProps> = ({
             <span>ACT II 정식 개막 : 통계에 없는 사람들 (The Uncounted)</span>
           </div>
           <p className="text-[11px] text-cyan-100/90 leading-relaxed">
-            의료 AI의 트리아지와 채용 알고리즘의 보이지 않는 장벽을 둘러싼 제2막이 준비되었습니다. 귀하의 ACT I 결정이 그대로 후속 사건으로 이어집니다.
+            의료 AI의 트리아지와 채용 알고리즘의 보이지 않는 장벽을 둘러싼 제2막이 준비되었습니다.
+            귀하의 ACT I 결정이 그대로 후속 사건으로 이어집니다.
           </p>
         </div>
 
@@ -132,7 +133,7 @@ export const ActCompleteModal: React.FC<ActCompleteModalProps> = ({
             onClick={onClose}
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-semibold text-slate-400 hover:text-slate-200 bg-transparent hover:bg-slate-800/40 rounded-xl transition-colors cursor-pointer"
           >
-            <span>닫기 (현재 일상 유지)</span>
+            <span>메인 메뉴로 돌아가기</span>
           </button>
         </div>
       </div>

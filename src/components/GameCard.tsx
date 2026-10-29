@@ -4,9 +4,13 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { GameCard as GameCardType, StoryFlags, Resources } from '../types/game';
+import { CardDialogueContext, GameCard as GameCardType, StoryFlags, Resources } from '../types/game';
+import { choicePresentation } from '../data/cardPresentation';
 import { CHARACTERS } from '../data/characters';
 import { CharacterPortrait } from './CharacterPortrait';
+import { DISPLAY_ROLES } from '../data/characterArt';
+import { getCardSpeaker } from '../data/cardSpeakers';
+import { readableDialogue } from '../data/readableDialogue';
 import { resolveCardDialogue } from '../engine/gameEngine';
 import { Check, X, ShieldAlert } from 'lucide-react';
 
@@ -14,6 +18,7 @@ interface GameCardProps {
   card: GameCardType;
   storyFlags: StoryFlags;
   resources: Resources;
+  dialogueContext?: CardDialogueContext;
   onDecision: (direction: 'left' | 'right') => void;
   onHoverDirectionChange: (direction: 'left' | 'right' | null) => void;
   isProcessing: boolean;
@@ -25,6 +30,7 @@ export const GameCard: React.FC<GameCardProps> = ({
   card,
   storyFlags,
   resources,
+  dialogueContext,
   onDecision,
   onHoverDirectionChange,
   isProcessing,
@@ -36,7 +42,8 @@ export const GameCard: React.FC<GameCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
 
   const character = CHARACTERS[card.characterId];
-  const dialogueText = resolveCardDialogue(card, storyFlags, resources);
+  const speaker = getCardSpeaker(card);
+  const dialogueText = readableDialogue(card.id, resolveCardDialogue(card, storyFlags, resources, dialogueContext));
 
   // Compute swipe progress (-1 to 1)
   const swipeProgress = Math.max(-1, Math.min(1, dragOffset.x / SWIPE_THRESHOLD));
@@ -66,7 +73,7 @@ export const GameCard: React.FC<GameCardProps> = ({
         setDragOffset({ x: 0, y: 0 });
       }, 220);
     },
-    [isProcessing, exitDirection, onDecision, onHoverDirectionChange]
+    [isProcessing, exitDirection, onDecision, onHoverDirectionChange],
   );
 
   // Keyboard navigation (ArrowLeft / ArrowRight)
@@ -94,6 +101,7 @@ export const GameCard: React.FC<GameCardProps> = ({
   // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     if (isProcessing || exitDirection) return;
+    if ((e.target as Element).closest('[data-reading-area]')) return;
     setIsDragging(true);
     startPosRef.current = { x: e.clientX, y: e.clientY };
   };
@@ -129,7 +137,12 @@ export const GameCard: React.FC<GameCardProps> = ({
     if (!isDragging || isProcessing || exitDirection || e.touches.length === 0) return;
     const touch = e.touches[0];
     const dx = touch.clientX - startPosRef.current.x;
-    const dy = (touch.clientY - startPosRef.current.y) * 0.25;
+    const rawDy = touch.clientY - startPosRef.current.y;
+    // Let the reading pane scroll vertically; only a horizontal gesture swipes.
+    if (Math.abs(rawDy)>Math.abs(dx) && Math.abs(rawDy)>10) {
+      setIsDragging(false); setDragOffset({x:0,y:0}); return;
+    }
+    const dy = rawDy * 0.25;
     setDragOffset({ x: dx, y: dy });
   };
 
@@ -146,20 +159,20 @@ export const GameCard: React.FC<GameCardProps> = ({
   };
 
   // Compute card transform
-  const rotationDeg = exitDirection === 'left' ? -18 : exitDirection === 'right' ? 18 : (dragOffset.x / 14);
-  const translateX = exitDirection === 'left' ? -420 : exitDirection === 'right' ? 420 : dragOffset.x;
+  const rotationDeg =
+    exitDirection === 'left' ? -18 : exitDirection === 'right' ? 18 : dragOffset.x / 14;
+  const translateX =
+    exitDirection === 'left' ? -420 : exitDirection === 'right' ? 420 : dragOffset.x;
   const translateY = exitDirection ? -30 : dragOffset.y;
 
   const transformStyle = `translate3d(${translateX}px, ${translateY}px, 0px) rotate(${rotationDeg}deg)`;
-  const transitionStyle = isDragging ? 'none' : 'transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease-out';
+  const transitionStyle = isDragging
+    ? 'none'
+    : 'transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease-out';
 
   // Active choice being previewed
   const activeChoice =
-    dragOffset.x < -16
-      ? card.leftChoice
-      : dragOffset.x > 16
-      ? card.rightChoice
-      : null;
+    dragOffset.x < -16 ? card.leftChoice : dragOffset.x > 16 ? card.rightChoice : null;
 
   const qualitativeImpacts = activeChoice
     ? (['citizenTrust', 'fairness', 'personalFreedom', 'publicSafety'] as const)
@@ -172,17 +185,21 @@ export const GameCard: React.FC<GameCardProps> = ({
               key === 'citizenTrust'
                 ? '신뢰'
                 : key === 'fairness'
-                ? '공정'
-                : key === 'personalFreedom'
-                ? '자유'
-                : '안전',
+                  ? '공정'
+                  : key === 'personalFreedom'
+                    ? '자유'
+                    : '안전',
             direction: delta > 0 ? 'up' : 'down',
           };
         })
     : [];
 
-  const leftActionLabel = card.leftChoice.actionLabel || (card.leftChoice.text.length > 8 ? '거부 · 대안' : card.leftChoice.text);
-  const rightActionLabel = card.rightChoice.actionLabel || (card.rightChoice.text.length > 8 ? '승인 · 실행' : card.rightChoice.text);
+  const leftActionLabel =
+    choicePresentation(card, 'left', storyFlags).actionLabel ||
+    (card.leftChoice.text.length > 8 ? '거부 · 대안' : card.leftChoice.text);
+  const rightActionLabel =
+    choicePresentation(card, 'right', storyFlags).actionLabel ||
+    (card.rightChoice.text.length > 8 ? '승인 · 실행' : card.rightChoice.text);
 
   return (
     <div className="relative w-full max-w-[440px] sm:max-w-[460px] mx-auto flex flex-col items-center">
@@ -243,7 +260,7 @@ export const GameCard: React.FC<GameCardProps> = ({
             transform: transformStyle,
             transition: transitionStyle,
             opacity: exitDirection ? 0 : 1,
-            touchAction: 'none',
+            touchAction: 'pan-y',
           }}
           className={`verdict-card relative w-full bg-[#111827] rounded-2xl border border-slate-700/80 shadow-[0_16px_40px_rgba(0,0,0,0.7)] p-4 sm:p-5 flex flex-col justify-between cursor-grab active:cursor-grabbing select-none overflow-hidden min-h-[360px] sm:min-h-[380px] ${
             card.type === 'crisis' ? 'ring-2 ring-rose-500/90' : ''
@@ -272,7 +289,7 @@ export const GameCard: React.FC<GameCardProps> = ({
           </div>
 
           {/* Card Header: Topic Badge & Incident Title */}
-          <div className="w-full flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
+          <div className="verdict-topic w-full flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
             <span className="text-cyan-400 font-semibold uppercase tracking-wider">
               {card.topicBadge}
             </span>
@@ -280,15 +297,18 @@ export const GameCard: React.FC<GameCardProps> = ({
               {card.type === 'crisis'
                 ? '긴급 위기'
                 : card.type === 'story'
-                ? '핵심 의제'
-                : card.type === 'transition'
-                ? '체제 전환'
-                : '일상 정책'}
+                  ? '핵심 의제'
+                  : card.type === 'transition'
+                    ? '체제 전환'
+                    : '일상 정책'}
             </span>
           </div>
 
           {/* Character Info & Stylized Sci-Fi Portrait Area */}
-          <div className="verdict-character flex items-center gap-3.5 my-3 py-1" style={{ '--character-color': character.themeColor } as React.CSSProperties}>
+          <div
+            className="verdict-character flex items-center gap-3.5 my-3 py-1"
+            style={{ '--character-color': character.themeColor } as React.CSSProperties}
+          >
             {/* Portrait with specific character styling and reactive emotion */}
             <div className="relative shrink-0">
               <CharacterPortrait
@@ -296,6 +316,8 @@ export const GameCard: React.FC<GameCardProps> = ({
                 emotion={card.emotion || 'neutral'}
                 oracleState={card.oracleState || 'normal'}
                 size={96}
+                frame="dialogue"
+                speakerPortrait={speaker?.portrait}
               />
               {card.type === 'crisis' && (
                 <div className="absolute -top-1 -right-1 bg-rose-600 text-white rounded-full p-1 shadow-md">
@@ -307,28 +329,31 @@ export const GameCard: React.FC<GameCardProps> = ({
             {/* Character Name, Role & Case Headline */}
             <div className="flex-1 min-w-0 pr-1">
               <div className="flex items-center gap-1.5">
-                <h3 className="text-base sm:text-lg font-bold text-slate-100 tracking-tight leading-snug truncate">
-                  {character?.name || '시스템'}
+                <h3 className="font-bold text-slate-100 tracking-tight leading-snug">
+                  {speaker?.name ?? character?.name ?? '시스템'}
                 </h3>
               </div>
-              <p className="text-[11px] text-slate-400 leading-tight mt-0.5 font-medium truncate">
-                {character?.role}
+              <p className="verdict-role mt-1 font-medium">
+                {speaker?.role ?? DISPLAY_ROLES[card.characterId] ?? character?.role}
               </p>
-              <h4 className="text-xs font-semibold text-slate-300 tracking-tight mt-2 line-clamp-1 border-l-2 border-cyan-500 pl-2">
-                {card.title}
-              </h4>
             </div>
           </div>
 
+          <section className="verdict-reading" data-reading-area role="region" aria-label="사건 설명과 대화" tabIndex={0}>
+          <h4 className="verdict-headline font-semibold text-slate-200 tracking-tight mb-2 border-l-2 border-cyan-500 pl-2">
+            {card.title}
+          </h4>
+
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
-          <div className="flex-1 flex flex-col justify-center py-1">
-            <p className="text-[15px] sm:text-[16px] text-[#F1F5F9] leading-[1.62] font-normal break-keep select-text">
+          <div className="py-1">
+            <p className="verdict-dialogue text-[#F1F5F9] font-normal break-keep select-text">
               "{dialogueText}"
             </p>
           </div>
+          </section>
 
           {/* Card Bottom Meta Footer */}
-          <div className="pt-2 mt-auto flex items-center justify-between text-[11px] text-slate-400 font-mono border-t border-slate-800/80">
+          <div className="verdict-footer pt-2 mt-auto flex items-center justify-between text-[11px] text-slate-400 font-mono border-t border-slate-800/80">
             <span className="truncate max-w-[48%] text-left text-rose-300/80">
               ← {leftActionLabel}
             </span>

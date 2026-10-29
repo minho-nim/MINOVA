@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameState, ResourceDelta, ResourceId } from '../types/game';
 import { RESOURCE_META } from '../engine/resourceEngine';
 import { ALL_OBJECTIVES, CHAPTER_METAS, getCurrentChapterKey } from '../engine/storyEngine';
@@ -35,11 +35,15 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
   state,
   initialTab = 'history',
 }) => {
-  const [activeTab, setActiveTab] = useState<'objectives' | 'history' | 'investigations' | 'secrets'>(
-    initialTab
-  );
+  const [activeTab, setActiveTab] = useState<
+    'objectives' | 'history' | 'investigations' | 'secrets'
+  >(initialTab);
   const [filterTopic, setFilterTopic] = useState<string>('all');
 
+  const [filterMode, setFilterMode] = useState('all');
+  useEffect(() => {
+    if (isOpen) setActiveTab(initialTab);
+  }, [isOpen, initialTab]);
   if (!isOpen) return null;
 
   const currentChKey = getCurrentChapterKey(state);
@@ -50,10 +54,11 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
 
   const topics = Array.from(new Set(state.decisionHistory.map((h) => h.topic).filter(Boolean)));
 
+  const modeHistory = state.decisionHistory.filter(
+    (h) => filterMode === 'all' || (h.gameMode || 'story') === filterMode,
+  );
   const filteredHistory =
-    filterTopic === 'all'
-      ? state.decisionHistory
-      : state.decisionHistory.filter((h) => h.topic === filterTopic);
+    filterTopic === 'all' ? modeHistory : modeHistory.filter((h) => h.topic === filterTopic);
 
   const formatDelta = (delta: ResourceDelta) => {
     const items: Array<{ key: ResourceId; val: number; label: string }> = [];
@@ -253,8 +258,8 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                       isCompleted
                         ? 'bg-emerald-950/30 border-emerald-900/60 text-slate-200'
                         : isCurrentOrPastChapter
-                        ? 'bg-[#121824] border-slate-800 text-slate-300'
-                        : 'bg-[#0B0E16]/80 border-slate-900 text-slate-500'
+                          ? 'bg-[#121824] border-slate-800 text-slate-300'
+                          : 'bg-[#0B0E16]/80 border-slate-900 text-slate-500'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -272,8 +277,8 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                               isCompleted
                                 ? 'text-emerald-300'
                                 : isCurrentOrPastChapter
-                                ? 'text-slate-100'
-                                : 'text-slate-500'
+                                  ? 'text-slate-100'
+                                  : 'text-slate-500'
                             }`}
                           >
                             {isCompleted || isCurrentOrPastChapter
@@ -290,8 +295,8 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                           isCompleted
                             ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-700/60'
                             : isCurrentOrPastChapter
-                            ? 'bg-amber-950/60 text-amber-300 border border-amber-800/60'
-                            : 'bg-slate-900 text-slate-600 border border-slate-800'
+                              ? 'bg-amber-950/60 text-amber-300 border border-amber-800/60'
+                              : 'bg-slate-900 text-slate-600 border border-slate-800'
                         }`}
                       >
                         {isCompleted ? '달성 완료' : isCurrentOrPastChapter ? '조사 진행' : '잠금'}
@@ -313,6 +318,19 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
         {/* Tab 2: History View */}
         {activeTab === 'history' && (
           <div className="flex-1 flex flex-col overflow-hidden">
+            <label className="px-5 py-2 text-xs text-slate-400 flex gap-3 items-center">
+              기록 모드
+              <select
+                aria-label="기록 모드"
+                value={filterMode}
+                onChange={(e) => setFilterMode(e.target.value)}
+                className="bg-slate-900 border border-slate-700 rounded p-1"
+              >
+                <option value="all">전체</option>
+                <option value="story">메인 스토리</option>
+                <option value="freePlay">자유 운영</option>
+              </select>
+            </label>
             {/* Filter Bar */}
             {topics.length > 0 && (
               <div className="px-5 py-2.5 bg-[#0B0E17] border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
@@ -378,6 +396,9 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
 
                     {/* Case Title */}
                     <h4 className="text-xs sm:text-sm font-bold text-slate-100">
+                      <span className="text-[10px] text-cyan-400 mr-2">
+                        {item.gameMode === 'freePlay' ? '자유 운영' : '스토리'}
+                      </span>
                       {item.cardTitle}
                     </h4>
 
@@ -410,9 +431,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                         <p className="text-[11px] text-amber-100/90 leading-tight">
                           {item.delayedEffectApplied.description}
                         </p>
-                        <div className="mt-1">
-                          {formatDelta(item.delayedEffectApplied.delta)}
-                        </div>
+                        <div className="mt-1">{formatDelta(item.delayedEffectApplied.delta)}</div>
                       </div>
                     )}
 
@@ -467,8 +486,9 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
             <div className="p-3 rounded-xl bg-[#0B0E16] border border-slate-800 text-[11px] text-slate-400 space-y-1">
               <span className="font-bold text-slate-300">인과관계 시스템 정보:</span>
               <p>
-                플레이어가 ACT I 및 ACT II에서 내린 결정들은 고유 스토리 플래그와 지연 효과로 보존되며,
-                감독관이 파면·교체되어도 도시의 거버넌스 역사와 조사 기록은 영구 승계됩니다.
+                플레이어가 ACT I 및 ACT II에서 내린 결정들은 고유 스토리 플래그와 지연 효과로
+                보존되며, 감독관이 파면·교체되어도 도시의 거버넌스 역사와 조사 기록은 영구
+                승계됩니다.
               </p>
             </div>
           </div>

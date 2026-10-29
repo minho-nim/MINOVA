@@ -6,10 +6,10 @@
 export type ResourceId = 'citizenTrust' | 'fairness' | 'personalFreedom' | 'publicSafety';
 
 export interface Resources {
-  citizenTrust: number;     // 1. 시민 신뢰 (0-100)
-  fairness: number;         // 2. 공정성 (0-100)
-  personalFreedom: number;  // 3. 개인 자유 (0-100)
-  publicSafety: number;     // 4. 사회 안전 (0-100)
+  citizenTrust: number; // 1. 시민 신뢰 (0-100)
+  fairness: number; // 2. 공정성 (0-100)
+  personalFreedom: number; // 3. 개인 자유 (0-100)
+  publicSafety: number; // 4. 사회 안전 (0-100)
 }
 
 export type ResourceDelta = Partial<Record<ResourceId, number>>;
@@ -33,12 +33,12 @@ export type CharacterEmotion =
   | 'glitch';
 
 export type OracleVisualState =
-  | 'normal'     // 차분한 청록색
-  | 'confident'  // 선명한 발광
-  | 'uncertain'  // 미세한 흔들림
-  | 'error'      // 짧은 글리치
-  | 'conflict'   // 경고 색상
-  | 'glitch';    // 고강도 시스템 글리치
+  | 'normal' // 차분한 청록색
+  | 'confident' // 선명한 발광
+  | 'uncertain' // 미세한 흔들림
+  | 'error' // 짧은 글리치
+  | 'conflict' // 경고 색상
+  | 'glitch'; // 고강도 시스템 글리치
 
 export interface Character {
   id: CharacterId;
@@ -50,30 +50,35 @@ export interface Character {
   voiceStyle: string;
 }
 
-export type CardCategory = 'mainStory' | 'conditional' | 'daily' | 'crisis' | 'supervisorReplacement';
+export type CardCategory =
+  | 'mainStory'
+  | 'conditional'
+  | 'daily'
+  | 'crisis'
+  | 'supervisorReplacement';
 export type CardType = 'story' | 'conditional' | 'crisis' | 'daily' | 'transition';
 
 export type StoryFlagValue = boolean | number | string;
 export type StoryFlags = Record<string, StoryFlagValue>;
 
 export interface DelayedEffect {
-  id: string;                // 고유 식별자 (중복 적용 방지)
-  triggerCardId: string;     // 해당 후속 사건의 카드 ID와 연결
-  effects: ResourceDelta;    // 지연 발동될 자원 변화량
-  description: string;       // 지연 발동 사유 설명
+  id: string; // 고유 식별자 (중복 적용 방지)
+  triggerCardId: string; // 해당 후속 사건의 카드 ID와 연결
+  effects: ResourceDelta; // 지연 발동될 자원 변화량
+  description: string; // 지연 발동 사유 설명
 }
 
 export interface CardChoice {
   text: string;
   label?: string;
-  actionLabel?: string;      // 짧고 명확한 행동명 (예: '즉시 중단', '조건부 승인')
-  effects: ResourceDelta;    // 즉시 적용 효과
+  actionLabel?: string; // 짧고 명확한 행동명 (예: '즉시 중단', '조건부 승인')
+  effects: ResourceDelta; // 즉시 적용 효과
   delayedEffect?: DelayedEffect; // 특정 후속 사건 조건에서 발동하는 지연 효과
   flags?: Partial<StoryFlags>;
   relationshipDeltas?: Partial<Record<CharacterId, number>>;
   nextCardId?: string;
-  scheduleCardId?: string;   // 후속으로 예약 큐에 등록할 카드 ID
-  consequence: string;       // 판단 기록부에 저장될 결과 요약
+  scheduleCardId?: string; // 후속으로 예약 큐에 등록할 카드 ID
+  consequence: string; // 판단 기록부에 저장될 결과 요약
   operationalDelta?: number; // 내부 운영 능력 지표
 }
 
@@ -83,11 +88,11 @@ export interface GameCard {
   category?: CardCategory;
   act: 'ACT_I' | 'ACT_II';
   characterId: CharacterId;
-  emotion?: CharacterEmotion;       // 캐릭터 감정 상태 (neutral, worried, angry, confident, uncertain)
-  oracleState?: OracleVisualState;  // ORACLE 전용 비주얼 상태
+  emotion?: CharacterEmotion; // 캐릭터 감정 상태 (neutral, worried, angry, confident, uncertain)
+  oracleState?: OracleVisualState; // ORACLE 전용 비주얼 상태
   title: string;
-  topicBadge: string;        // '공정성과 차별', '개인정보와 감시' 등
-  dialogue: string | ((flags: StoryFlags, resources: Resources) => string);
+  topicBadge: string; // '공정성과 차별', '개인정보와 감시' 등
+  dialogue: string | ((flags: StoryFlags, resources: Resources, context?: CardDialogueContext) => string);
   leftChoice: CardChoice;
   rightChoice: CardChoice;
   requiredFlags?: Record<string, StoryFlagValue>;
@@ -96,11 +101,14 @@ export interface GameCard {
   priority: number;
   weight: number;
   repeatable?: boolean;
-  cooldown?: number;         // 최소 쿨다운 (기본 20)
+  cooldown?: number; // 최소 쿨다운 (기본 20)
   isMainStory?: boolean;
 }
 
 export interface DecisionRecord {
+  gameMode?: 'story' | 'freePlay';
+  act?: ActId;
+  supervisorRecoveryDelta?: ResourceDelta;
   id: string;
   day: number;
   cardId: string;
@@ -120,9 +128,18 @@ export interface DecisionRecord {
     description: string;
     delta: ResourceDelta;
   };
+  delayedEffectsApplied?: DelayedEffect[];
+}
+
+// Optional read-only context; old saves need no new field or schema migration.
+export interface CardDialogueContext {
+  decisionHistory: readonly DecisionRecord[];
+  completedCardIds: readonly string[];
+  skippedStoryCardIds?: readonly string[];
 }
 
 export interface CrisisState {
+  instanceId?: string;
   resourceId: ResourceId | 'compound' | 'high_trust' | 'high_safety';
   crisisType: 'low' | 'high' | 'compound';
   crisisCardId: string;
@@ -158,6 +175,14 @@ export interface GameNotification {
 }
 
 export interface GameState {
+  waitingUntilDay?: number;
+  gameMode: 'story' | 'freePlay';
+  flowPhase: 'playing' | 'act1Complete' | 'act2Intro' | 'act2Complete';
+  skippedStoryCardIds: string[];
+  selectionDiagnostics: string[];
+  resolvedCrisisInstances: string[];
+  consecutiveSideEvents: number;
+  lastCardDays: Record<string, number>;
   gameId: string;
   schemaVersion: number;
   currentDay: number;
@@ -169,11 +194,11 @@ export interface GameState {
   resources: Resources;
   operationalCapacity: number; // 내부 도시 운영 능력 (기본 50, UI 비표시)
   pendingDelayedEffects: DelayedEffect[]; // 아직 트리거되지 않은 지연 효과 목록
-  appliedDelayedEffectIds: string[];    // 이미 적용된 지연 효과 ID (중복 적용 방지)
-  completedObjectiveIds: string[];      // 달성한 챕터 목표 ID 목록
-  recentCardIds: string[];              // 최근 등장 카드 큐 (최소 20회 쿨다운 검사용)
-  scheduledCardQueue: string[];         // 조건부로 예약된 후속 사건 큐
-  crisisResolvedIds: string[];          // 해결된 위기 카드 ID 목록
+  appliedDelayedEffectIds: string[]; // 이미 적용된 지연 효과 ID (중복 적용 방지)
+  completedObjectiveIds: string[]; // 달성한 챕터 목표 ID 목록
+  recentCardIds: string[]; // 최근 등장 카드 큐 (최소 20회 쿨다운 검사용)
+  scheduledCardQueue: string[]; // 조건부로 예약된 후속 사건 큐
+  crisisResolvedIds: string[]; // 해결된 위기 카드 ID 목록
   storyFlags: StoryFlags;
   relationshipValues: Record<CharacterId, number>;
   discoveredSecrets: string[];

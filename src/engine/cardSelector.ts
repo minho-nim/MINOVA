@@ -1,207 +1,125 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import {
-  ACT1_CARDS,
-  ACT2_CARDS,
-  ALL_CARDS,
-  CARD_MAP,
-  CONDITIONAL_CARDS,
-  DAILY_CARDS,
-} from '../data/cards';
+import { CARD_MAP, CONDITIONAL_CARDS, DAILY_CARDS } from '../data/cards';
+import { FREE_PLAY_PROPOSALS } from '../data/cards/freePlay';
 import { GameCard, GameState } from '../types/game';
 import { checkCardCondition } from './conditionEvaluator';
+import { MAIN_IDS, nextStoryId, scopeFailure } from './storyFlow';
+import { RESOURCE_ORDER } from './resourceEngine';
 
-export function seededRandom(seed: number): { nextVal: number; nextSeed: number } {
-  const newSeed = (seed * 9301 + 49297) % 233280;
-  return {
-    nextVal: newSeed / 233280,
-    nextSeed: newSeed,
-  };
+export function municipalWeight(card: GameCard, state: GameState): number {
+  // Prefer an agenda with a useful option for an endangered value, without choosing for the player.
+  const relevance = Math.max(...[card.leftChoice, card.rightChoice].map(choice =>
+    RESOURCE_ORDER.reduce((sum, key) => sum + Math.max(0, 40-state.resources[key])/40 * (choice.effects[key] || 0), 0)));
+  const previousSpeaker = CARD_MAP.get(state.recentCardIds[1])?.characterId;
+  const diversity = card.characterId === previousSpeaker ? .55 : 1;
+  return Math.max(1, card.weight) * (1 + Math.min(2, Math.max(0,relevance)/5)) * diversity;
 }
 
-export function selectNextCard(
-  state: GameState,
-  explicitNextCardId?: string
-): { card: GameCard; nextSeed: number; remainingScheduledQueue?: string[] } {
-  let seed = state.rngSeed;
-  const recentIds = state.recentCardIds || [];
-  const completedIds = state.completedCardIds || [];
-  const resolvedCrisisIds = state.crisisResolvedIds || [];
-  const scheduledQueue = [...(state.scheduledCardQueue || [])];
-
-  // 1. Explicit next card (from player choice nextCardId)
-  if (explicitNextCardId && CARD_MAP.has(explicitNextCardId)) {
-    const explicitCard = CARD_MAP.get(explicitNextCardId)!;
-    return { card: explicitCard, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
-  }
-
-  // 2. Scheduled Follow-up Queue (e.g., events scheduled by earlier choices)
-  while (scheduledQueue.length > 0) {
-    const scheduledId = scheduledQueue.shift()!;
-    if (CARD_MAP.has(scheduledId)) {
-      const scheduledCard = CARD_MAP.get(scheduledId)!;
-      if (
-        (scheduledCard.repeatable || !completedIds.includes(scheduledCard.id)) &&
-        checkCardCondition(scheduledCard, state.storyFlags, state.currentDay, completedIds)
-      ) {
-        return {
-          card: scheduledCard,
-          nextSeed: seed,
-          remainingScheduledQueue: scheduledQueue,
-        };
-      }
-    }
-  }
-
-  // 3. Active Crisis Card
+export function seededRandom(seed: number) {
+  const nextSeed = (seed * 9301 + 49297) % 233280;
+  return { nextVal: nextSeed / 233280, nextSeed };
+}
+export interface SelectionResult {
+  card: GameCard | null;
+  nextSeed: number;
+  remainingScheduledQueue: string[];
+  diagnostics: string[];
+  waitUntilDay?: number;
+}
+export function entryFailure(id: string, state: GameState): string | null {
+  const card = CARD_MAP.get(id);
+  if (!card) return 'missing-card';
+  if (!card.repeatable && state.completedCardIds.includes(id)) return 'one-time-already-completed';
+  const scope = scopeFailure(card, state);
+  if (scope) return scope;
+  if (!checkCardCondition(card, state.storyFlags, state.currentDay, state.completedCardIds))
+    return 'flags-or-min-day';
+  const last = state.lastCardDays?.[id];
   if (
-    state.crisisState &&
-    CARD_MAP.has(state.crisisState.crisisCardId) &&
-    !resolvedCrisisIds.includes(state.crisisState.crisisCardId)
-  ) {
-    const crisisCard = CARD_MAP.get(state.crisisState.crisisCardId)!;
-    // Don't repeat the exact same crisis card twice in a row
-    if (state.currentCardId !== crisisCard.id) {
-      return { card: crisisCard, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
-    }
-  }
-
-  // 4. Check for Eligible Conditional Cards (High priority reactive events from past choices)
-  const eligibleConditionals = CONDITIONAL_CARDS.filter(
-    (c) =>
-      !completedIds.includes(c.id) &&
-      checkCardCondition(c, state.storyFlags, state.currentDay, completedIds)
-  );
-
-  // If high-priority conditional events are triggered (priority >= 125), surface them
-  const urgentConditionals = eligibleConditionals.filter((c) => c.priority >= 125);
-  if (urgentConditionals.length > 0) {
-    urgentConditionals.sort((a, b) => b.priority - a.priority);
-    return {
-      card: urgentConditionals[0],
-      nextSeed: seed,
-      remainingScheduledQueue: scheduledQueue,
-    };
-  }
-
-  // 5. Main Story Progression based on active Act
-  const activeMainPool = state.currentAct === 'ACT_II' ? ACT2_CARDS : ACT1_CARDS;
-  const remainingMainCards = activeMainPool.filter(
-    (c) =>
-      !completedIds.includes(c.id) &&
-      checkCardCondition(c, state.storyFlags, state.currentDay, completedIds)
-  );
-
-  // Interleave conditional cards and main story: If main story cards are available,
-  // we present main story cards, occasionally surfacing general conditional cards
-  if (remainingMainCards.length > 0) {
-    remainingMainCards.sort((a, b) => b.priority - a.priority);
-
-    // If there is an eligible conditional card, 35% chance to interleave it before next main card
-    if (eligibleConditionals.length > 0) {
-      const { nextVal, nextSeed } = seededRandom(seed);
-      seed = nextSeed;
-      if (nextVal < 0.35) {
-        eligibleConditionals.sort((a, b) => b.priority - a.priority);
-        return {
-          card: eligibleConditionals[0],
-          nextSeed: seed,
-          remainingScheduledQueue: scheduledQueue,
-        };
-      }
-    }
-
-    return {
-      card: remainingMainCards[0],
-      nextSeed: seed,
-      remainingScheduledQueue: scheduledQueue,
-    };
-  }
-
-  // 6. Remaining Conditional Cards if main story is temporarily caught up
-  if (eligibleConditionals.length > 0) {
-    eligibleConditionals.sort((a, b) => b.priority - a.priority);
-    return {
-      card: eligibleConditionals[0],
-      nextSeed: seed,
-      remainingScheduledQueue: scheduledQueue,
-    };
-  }
-
-  // 7. Daily / Municipal Policy Cards (Repeatable pool with 20-card Cooldown)
-  // Rule: Must not have appeared within the last 20 cards
-  const cooldownWindow = recentIds.slice(0, 20);
-
-  const eligibleDailyCards = DAILY_CARDS.filter((c) => {
-    // Cooldown check: cannot be in the last 20 cards
-    if (cooldownWindow.includes(c.id)) return false;
-    // Cannot be current card
-    if (c.id === state.currentCardId) return false;
-    return checkCardCondition(c, state.storyFlags, state.currentDay, completedIds);
+    card.type === 'daily' &&
+    last !== undefined &&
+    state.currentDay - last <= (card.cooldown ?? 20)
+  )
+    return 'cooldown';
+  return null;
+}
+export function selectNextCard(state: GameState, explicitNextCardId?: string): SelectionResult {
+  const diagnostics: string[] = [];
+  const queue = [...(state.scheduledCardQueue || [])];
+  const result = (card: GameCard | null, nextSeed = state.rngSeed): SelectionResult => ({
+    card,
+    nextSeed,
+    remainingScheduledQueue: queue,
+    diagnostics,
   });
-
-  if (eligibleDailyCards.length > 0) {
-    // Avoid consecutive character dialogue if possible
-    const currentCard = CARD_MAP.get(state.currentCardId);
-    const nonConsecutiveDaily = eligibleDailyCards.filter(
-      (c) => !currentCard || c.characterId !== currentCard.characterId
-    );
-
-    const candidates = nonConsecutiveDaily.length > 0 ? nonConsecutiveDaily : eligibleDailyCards;
-
-    const { nextVal, nextSeed } = seededRandom(seed);
-    const chosenIndex = Math.floor(nextVal * candidates.length);
-    return {
-      card: candidates[chosenIndex],
-      nextSeed,
-      remainingScheduledQueue: scheduledQueue,
-    };
+  // An active occurrence always gets a response before story links. Lifetime resolution history is not a gate.
+  if (state.crisisState) {
+    const crisis = CARD_MAP.get(state.crisisState.crisisCardId);
+    if (crisis) return result(crisis);
+    diagnostics.push(`crisis:${state.crisisState.crisisCardId}:missing-card`);
   }
-
-  // 8. Card Pool Exhaustion Protocol
-  // If all main story and conditionals are exhausted, check for Act Epilogue/Climax:
-  if (state.currentAct === 'ACT_I' && !completedIds.includes('act1_20_act1_epilogue')) {
-    const epilogue = CARD_MAP.get('act1_20_act1_epilogue');
-    if (epilogue) return { card: epilogue, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
+  // Explicit links are validated even when a bounded reactive event will be interleaved.
+  let explicit: GameCard | undefined;
+  if (explicitNextCardId) {
+    const failure = entryFailure(explicitNextCardId, state);
+    if (failure) diagnostics.push(`next:${explicitNextCardId}:${failure}`);
+    else explicit = CARD_MAP.get(explicitNextCardId);
   }
-
-  if (state.currentAct === 'ACT_II' && !completedIds.includes('act2_ch3_10_act2_climax')) {
-    const climax = CARD_MAP.get('act2_ch3_10_act2_climax');
-    if (climax) return { card: climax, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
+  // Never discard a valid but not-yet-eligible event. Invalid/completed references are diagnosed and removed.
+  let queued: GameCard | undefined;
+  for (let i = 0; i < queue.length; i++) {
+    const id = queue[i],
+      failure = entryFailure(id, state);
+    if (!failure) {
+      queued = CARD_MAP.get(id);
+      queue.splice(i, 1);
+      break;
+    }
+    if (
+      ['missing-card', 'one-time-already-completed', 'main-story-in-free-play'].includes(failure)
+    ) {
+      diagnostics.push(`queue:${id}:${failure}`);
+      queue.splice(i--, 1);
+    }
   }
-
-  // If daily cooldown exhausts available candidates, use LRU (Least Recently Used) Daily Card
-  const allValidDaily = DAILY_CARDS.filter(
-    (c) =>
-      c.id !== state.currentCardId &&
-      checkCardCondition(c, state.storyFlags, state.currentDay, completedIds)
+  const conditionals = CONDITIONAL_CARDS.filter((c) => !entryFailure(c.id, state)).sort(
+    (a, b) => b.priority - a.priority,
   );
-
-  if (allValidDaily.length > 0) {
-    // Sort by how far back they appeared in recentIds (the larger the index, the older it was played)
-    allValidDaily.sort((a, b) => {
-      const indexA = recentIds.indexOf(a.id);
-      const indexB = recentIds.indexOf(b.id);
-      const scoreA = indexA === -1 ? 9999 : indexA;
-      const scoreB = indexB === -1 ? 9999 : indexB;
-      return scoreB - scoreA; // descending: largest index (oldest/never) first
-    });
-
-    return {
-      card: allValidDaily[0],
-      nextSeed: seed,
-      remainingScheduledQueue: scheduledQueue,
-    };
+  const storyId = nextStoryId(state);
+  const main = storyId && !entryFailure(storyId, state) ? CARD_MAP.get(storyId) : undefined;
+  // At most two reactive events between story cards; dailies never displace an available story card.
+  if (state.gameMode === 'freePlay' || !main || state.consecutiveSideEvents < 2) {
+    if (queued) return result(queued);
+    if (conditionals.length) return result(conditionals[0]);
+  } else if (queued) {
+    queue.unshift(queued.id);
   }
-
-  // Safe fallback to first card of act
-  const fallback =
-    state.currentAct === 'ACT_II'
-      ? CARD_MAP.get('act2_ch1_01_triage_alert') || ALL_CARDS[0]
-      : CARD_MAP.get('act1_01_inauguration') || ALL_CARDS[0];
-
-  return { card: fallback, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
+  if (explicit) return result(explicit);
+  if (main) return result(main);
+  if (state.gameMode === 'story' && storyId) {
+    diagnostics.push(`story:${storyId}:${entryFailure(storyId, state)}`);
+    return result(null);
+  }
+  const pool =
+    state.gameMode === 'freePlay' ? [...DAILY_CARDS, ...FREE_PLAY_PROPOSALS] : DAILY_CARDS;
+  const eligible = pool.filter((c) => !entryFailure(c.id, state));
+  const current = CARD_MAP.get(state.currentCardId);
+  let candidates = eligible.filter((c) => c.characterId !== current?.characterId);
+  if (!candidates.length) candidates = eligible;
+  if (candidates.length) {
+    const random = seededRandom(state.rngSeed);
+    // Actual weighted draw, rather than ignoring the declared weights.
+    let ticket = random.nextVal * candidates.reduce((sum, c) => sum + municipalWeight(c,state), 0);
+    const chosen =
+      candidates.find((c) => (ticket -= municipalWeight(c,state)) < 0) || candidates[candidates.length - 1];
+    return result(chosen, random.nextSeed);
+  }
+  // Preserve cooldown. The UI can advance to the next municipal review day instead of replaying a card.
+  const deadlines = pool
+    .filter(
+      (c) =>
+        scopeFailure(c, state) === null &&
+        checkCardCondition(c, state.storyFlags, Math.max(state.currentDay,c.minDay??0), state.completedCardIds),
+    )
+    .map((c) => Math.max(state.currentDay+1,c.minDay??0,(state.lastCardDays[c.id] ?? state.currentDay) + (c.cooldown ?? 20) + 1));
+  return { ...result(null), waitUntilDay: deadlines.length ? Math.min(...deadlines) : undefined };
 }

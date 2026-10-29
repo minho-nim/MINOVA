@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { ArrowRight, Play, RotateCcw, Shield, Scale, Users, Fingerprint, Radio } from 'lucide-react';
 import { GameState } from '../types/game';
 import { CHARACTERS } from '../data/characters';
-import { CAST_DETAILS, MAIN_CAST } from '../data/characterArt';
+import { CAST_DETAILS, MAIN_CAST, CHARACTER_ART, FACTIONS, APPROVED_ART_ROOT, APPROVED_SHEETS, DISPLAY_ROLES } from '../data/characterArt';
 import { CharacterPortrait } from './CharacterPortrait';
+import { CharacterSheetViewer } from './CharacterSheetViewer';
 
 interface TitleScreenProps {
   onStartNewGame: () => void;
@@ -44,17 +45,27 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStartNewGame, onResu
             {MAIN_CAST.map((id, index) => {
               const person = CHARACTERS[id];
               return <button key={id} className={`cast-card ${selected === id ? 'is-selected' : ''}`} style={{ '--character-color': person.themeColor } as React.CSSProperties} onClick={() => setSelected(id)} aria-pressed={selected === id}>
-                <div className="cast-art"><CharacterPortrait characterId={id} size={240} /><span className="cast-index">0{index + 1}</span><span className="cast-tag">{CAST_DETAILS[id]!.tag}</span></div>
-                <div className="cast-name"><h3>{person.name}</h3><p>{person.role}</p></div>
+                <div className="cast-art"><CharacterPortrait characterId={id} size={240} /><span className="cast-index">0{index + 1}</span><span className="cast-tag">{DISPLAY_ROLES[id]}</span></div>
+                <div className="cast-name"><h3>{person.name}</h3><p>{DISPLAY_ROLES[id]}</p></div>
                 <div className="cast-line" />
               </button>;
             })}
           </div>
+          <CharacterSheetViewer source={APPROVED_SHEETS[selected]} name={character.name} />
           <div className="character-dossier" style={{ '--character-color': character.themeColor } as React.CSSProperties} aria-live="polite">
             <div className="dossier-heading"><span className="eyebrow">CHARACTER DOSSIER</span><h3>{character.name}</h3><p>{character.organization}</p><div className="trait-list">{details.traits.map(trait => <span key={trait}>{trait}</span>)}</div></div>
             <blockquote>“{details.quote}”<p>{character.description}</p></blockquote>
-            <div className="expression-list">{(['neutral', 'worried', 'angry'] as const).map((emotion, i) => <div key={emotion}><CharacterPortrait characterId={selected} emotion={emotion} variant="expression" size={64} /><span>{['기본', '고민', '단호'][i]}</span></div>)}</div>
+            <div className="expression-list">{(['neutral', 'worried', 'angry'] as const).map((emotion, i) => <div key={emotion}><CharacterPortrait characterId={selected} emotion={emotion} variant="expression" expressionIndex={i as 0 | 1 | 2} size={80} /><span>{CHARACTER_ART[selected]!.labels[i]}</span></div>)}</div>
           </div>
+        </section>
+        <section className="faction-section" aria-labelledby="faction-heading">
+          <div className="section-caption"><h2 id="faction-heading">도시의 두 목소리</h2><span>PEOPLE / COUNCIL</span></div>
+          <div className="faction-grid">{FACTIONS.map(faction => <article key={faction.id} className="faction-card" style={{ '--character-color': faction.color } as React.CSSProperties}>
+            <div className="faction-hero"><img src={faction.source} alt={`${faction.name} 구성원 전체`} loading="lazy" /></div>
+            <div className="faction-copy"><p className="eyebrow">{faction.subtitle}</p><h3>{faction.name}</h3><blockquote>“{faction.quote}”</blockquote><div className="trait-list">{faction.traits.map(trait => <span key={trait}>{trait}</span>)}</div><p className="faction-description">{faction.description}</p></div>
+            <div className="faction-scenes">{faction.scenes.map((scene, index) => <figure key={scene}><img src={`${APPROVED_ART_ROOT}${faction.id}-scene-${index}.png`} alt={scene} loading="lazy" /><figcaption>{scene}</figcaption></figure>)}</div>
+            <div className="faction-sheet"><CharacterSheetViewer source={faction.sheet} name={faction.name} /></div>
+          </article>)}</div>
         </section>
       </main>
       <footer className="city-footer"><span>FOUR VALUES. NO PERFECT BALANCE.</span><div><span><Users size={13} />시민 신뢰</span><span><Scale size={13} />공정성</span><span><Fingerprint size={13} />개인 자유</span><span><Shield size={13} />사회 안전</span></div><span>NOVA CITY GOVERNANCE SYSTEM</span></footer>

@@ -1,0 +1,6840 @@
+{
+  "runsPerStrategy": 1000,
+  "seeds": "i * 97, i = 1..runs",
+  "freeDays": 100,
+  "stepLimit": 400,
+  "results": {
+    "left": {
+      "runs": 1000,
+      "act1": 0,
+      "act2": 0,
+      "freePlay": 0,
+      "finished100": 0,
+      "replacements": 0,
+      "crises": 395000,
+      "decisions": 400000,
+      "freeDecisions": 0,
+      "waits": 0,
+      "repeatedCards": 390000,
+      "sameSpeaker": 1000,
+      "speakerPairs": 399000,
+      "adjacentRepeat": 0,
+      "stalls": 0,
+      "limits": 1000,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 0,
+      "highEpisodes": 395000,
+      "followUps": 0,
+      "roundTrips": 4000,
+      "resources": {
+        "citizenTrust": {
+          "sum": 35260000,
+          "count": 401000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "fairness": {
+          "sum": 36564000,
+          "count": 401000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "personalFreedom": {
+          "sum": 37145000,
+          "count": 401000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "publicSafety": {
+          "sum": 35708000,
+          "count": 401000,
+          "min": 30,
+          "max": 100,
+          "preRecoveryMin": 30
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "act1_05_complaint_automation": 1000,
+        "crisis_fairness_high": 100000,
+        "crisis_trust_high": 99000,
+        "crisis_freedom_high": 98000,
+        "act1_06_medical_triage": 1000,
+        "crisis_safety_high": 97000
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_02_oracle_intro": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_03_traffic_optimization": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_04_movement_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_05_complaint_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_fairness_high": {
+          "left": 100000,
+          "right": 0
+        },
+        "crisis_trust_high": {
+          "left": 99000,
+          "right": 0
+        },
+        "crisis_freedom_high": {
+          "left": 98000,
+          "right": 0
+        },
+        "act1_06_medical_triage": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_safety_high": {
+          "left": 97000,
+          "right": 0
+        }
+      },
+      "stallExamples": []
+    },
+    "right": {
+      "runs": 1000,
+      "act1": 0,
+      "act2": 0,
+      "freePlay": 0,
+      "finished100": 0,
+      "replacements": 99000,
+      "crises": 100000,
+      "decisions": 400000,
+      "freeDecisions": 0,
+      "waits": 0,
+      "repeatedCards": 393000,
+      "sameSpeaker": 99000,
+      "speakerPairs": 399000,
+      "adjacentRepeat": 98000,
+      "stalls": 0,
+      "limits": 1000,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 0,
+      "highEpisodes": 100000,
+      "followUps": 0,
+      "roundTrips": 4000,
+      "resources": {
+        "citizenTrust": {
+          "sum": 28595000,
+          "count": 401000,
+          "min": 48,
+          "max": 85,
+          "preRecoveryMin": 31
+        },
+        "fairness": {
+          "sum": 12552000,
+          "count": 401000,
+          "min": 19,
+          "max": 50,
+          "preRecoveryMin": 4
+        },
+        "personalFreedom": {
+          "sum": 15553000,
+          "count": 401000,
+          "min": 20,
+          "max": 50,
+          "preRecoveryMin": 0
+        },
+        "publicSafety": {
+          "sum": 34011000,
+          "count": 401000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "crisis_safety_high": 198000,
+        "supervisor_replacement_freedom": 99000,
+        "supervisor_replacement_orientation": 99000
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_02_oracle_intro": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_03_traffic_optimization": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_04_movement_surveillance": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_safety_high": {
+          "left": 0,
+          "right": 198000
+        },
+        "supervisor_replacement_freedom": {
+          "left": 0,
+          "right": 99000
+        },
+        "supervisor_replacement_orientation": {
+          "left": 0,
+          "right": 99000
+        }
+      },
+      "stallExamples": []
+    },
+    "random": {
+      "runs": 1000,
+      "act1": 1000,
+      "act2": 1000,
+      "freePlay": 1000,
+      "finished100": 1000,
+      "replacements": 16256,
+      "crises": 66939,
+      "decisions": 251773,
+      "freeDecisions": 100000,
+      "waits": 0,
+      "repeatedCards": 129429,
+      "sameSpeaker": 59108,
+      "speakerPairs": 250773,
+      "adjacentRepeat": 28577,
+      "stalls": 0,
+      "limits": 0,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 4601,
+      "highEpisodes": 62338,
+      "followUps": 10837,
+      "roundTrips": 5040,
+      "resources": {
+        "citizenTrust": {
+          "sum": 19027351,
+          "count": 252773,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "fairness": {
+          "sum": 17887734,
+          "count": 252773,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "personalFreedom": {
+          "sum": 16442781,
+          "count": 252773,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "publicSafety": {
+          "sum": 18500640,
+          "count": 252773,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "cond_facial_scan_audit": 510,
+        "cond_mobility_backlash": 510,
+        "act1_05_complaint_automation": 1000,
+        "act1_06_medical_triage": 1000,
+        "act1_07_explainability_dilemma": 1000,
+        "act1_08_citizen_protest": 1000,
+        "crisis_fairness_low": 1150,
+        "act1_09_housing_allocation": 1000,
+        "act1_10_welfare_fraud_automation": 1000,
+        "crisis_safety_high": 21893,
+        "act1_11_education_tracking": 1000,
+        "act1_12_whistleblower_approach": 1000,
+        "act1_13_unintended_consequence": 1000,
+        "act1_14_labor_dispute": 1000,
+        "act1_15_emotional_surveillance": 1000,
+        "act1_16_predictive_policing": 1000,
+        "crisis_freedom_high": 8482,
+        "act1_17_recidivism_algorithm": 1000,
+        "crisis_trust_high": 33223,
+        "crisis_fairness_high": 27103,
+        "act1_18_ombudsman_charter": 1000,
+        "act1_19_dark_pattern_audit": 1000,
+        "act1_20_harmony_index_clash": 1000,
+        "act1_21_council_pressure": 1000,
+        "act1_22_tripartite_hearing": 1000,
+        "act1_23_oracle_ultimatum": 1000,
+        "act1_24_final_verdict": 1000,
+        "crisis_freedom_low": 2022,
+        "act1_25_act1_epilogue": 1000,
+        "act2_ch1_01_triage_alert": 1000,
+        "cond_triage_lawsuit": 755,
+        "act2_ch1_02_oracle_triage_rationale": 1000,
+        "act2_ch1_03_excluded_patient": 1000,
+        "act2_ch1_04_ai_override_request": 1000,
+        "act2_ch1_05_family_appeal": 1000,
+        "supervisor_replacement_trust": 766,
+        "supervisor_replacement_orientation": 16177,
+        "act2_ch1_07_bias_investigation": 1000,
+        "act2_ch1_09_icu_audit_telemetry": 1000,
+        "act2_ch1_10_telemedicine_crossborder": 1000,
+        "crisis_compound_collapse": 283,
+        "supervisor_replacement_fairness": 1148,
+        "act2_ch1_11_genetic_data_screening": 1000,
+        "act2_ch1_08_chapter1_resolution": 1000,
+        "act2_ch2_01_hiring_crisis": 1000,
+        "act2_ch2_02_proxy_discovery": 1000,
+        "act2_ch2_03_district4_screening": 1000,
+        "act2_ch2_04_applicant_protest": 1000,
+        "supervisor_replacement_crisis": 10457,
+        "act2_ch2_06_independent_audit_warrant": 1000,
+        "act2_ch2_09_corporate_cartel": 1000,
+        "supervisor_replacement_freedom": 2722,
+        "act2_ch2_10_gender_simulation_bias": 1000,
+        "act2_ch2_11_neurodiverse_job_filter": 1000,
+        "act2_ch2_08_chapter2_resolution": 1000,
+        "act2_ch3_01_cross_system_anomaly": 1000,
+        "act2_ch3_03_civitas_exposure": 1000,
+        "cond_civitas_leak_investigation": 1000,
+        "act2_ch3_05_oracle_interrogation": 1000,
+        "act2_ch3_06_alignment_dilemma": 1000,
+        "act2_ch3_09_quantum_key_breach": 1000,
+        "act2_ch3_11_black_market_broker": 1000,
+        "act2_ch3_10_constitutional_referendum": 1000,
+        "supervisor_replacement_safety": 1121,
+        "act2_ch3_12_comprehensive_audit_seal": 1000,
+        "act2_ch3_13_sovereign_governance_pact": 1000,
+        "act2_ch3_07_final_civitas_verdict": 1000,
+        "act2_ch3_08_act2_epilogue": 1000,
+        "daily_smart_trash_fine": 918,
+        "free_policy_fintech_ai_credit_active": 742,
+        "cond_credit_score_refusal": 344,
+        "free_policy_civitas_housing_linked": 695,
+        "cond_social_credit_housing": 350,
+        "free_policy_robot_care_mandatory": 725,
+        "cond_elderly_care_isolation": 375,
+        "daily_playground_aggression_sensor": 907,
+        "daily_fire_halon_server_damage": 1116,
+        "daily_drone_parachute_mandate": 955,
+        "daily_dynamic_taxi_surge": 1073,
+        "daily_drunk_bike_voice_lock": 988,
+        "daily_parking_size_tariff": 870,
+        "free_policy_whistleblower_protected": 727,
+        "cond_whistleblower_asylum": 342,
+        "free_policy_strike_negotiation_success": 777,
+        "cond_union_whistleblower": 377,
+        "free_policy_ai_tutoring_eval_active": 698,
+        "daily_library_content_filter": 1112,
+        "daily_delivery_drone_corridor": 946,
+        "daily_shopping_addiction_block": 1094,
+        "daily_workplace_monitoring": 902,
+        "daily_hospital_queue_priority": 1134,
+        "daily_library_seat_sensor": 866,
+        "daily_patrol_car_lights": 925,
+        "daily_dementia_tracking": 1034,
+        "daily_crosswalk_optimization": 1134,
+        "free_policy_drone_patrol_expanded": 692,
+        "cond_drone_friendly_fire": 350,
+        "free_policy_driverless_permit_granted": 755,
+        "daily_parcel_locker_equity": 858,
+        "daily_school_lunch_ai": 1034,
+        "free_policy_water_grid_ai_optimized": 749,
+        "cond_water_rationing_algorithm": 376,
+        "daily_noise_drone": 1104,
+        "daily_dialect_translation": 1060,
+        "daily_autonomous_bus": 1030,
+        "daily_copyright_generative": 1079,
+        "daily_subway_crowd_limit": 939,
+        "daily_digital_grave_ai": 1123,
+        "daily_convenience_age_check": 926,
+        "daily_er_intoxicated_triage": 1078,
+        "daily_cyber_pet_license": 1077,
+        "daily_fire_robot_priority": 1070,
+        "daily_homework_detector": 1013,
+        "free_policy_gig_worker_auto_termination": 705,
+        "cond_automated_firing_dispute": 342,
+        "daily_heated_sidewalk_snow": 891,
+        "free_policy_deepfake_filter_active": 725,
+        "cond_deepfake_election_crisis": 381,
+        "daily_pharmacy_vending_ration": 1132,
+        "cond_appeal_board_backlog": 769,
+        "free_policy_neural_link_trials_allowed": 733,
+        "cond_school_ai_grading": 332,
+        "daily_window_cleaning_drone": 1011,
+        "daily_park_sprinkler_ai": 889,
+        "daily_streetlight_energy": 934,
+        "cond_autonomous_taxi_strike": 397,
+        "daily_synthetic_water": 1073,
+        "daily_smart_bench_power": 871,
+        "free_policy_ai_creative_commons_passed": 724,
+        "daily_sauna_smoke_detector": 921,
+        "daily_pigeon_contraceptive_feed": 822,
+        "daily_museum_laser_pointer": 1130,
+        "free_policy_blackbox_sealed": 740,
+        "cond_blackbox_dispute": 356,
+        "free_policy_predictive_policing_active": 687,
+        "cond_predictive_policing_slum": 315,
+        "free_policy_energy_prediction_failed": 737,
+        "cond_smart_grid_blackout": 370,
+        "crisis_safety_low": 1084,
+        "free_policy_oracle_autonomy_expanded": 731,
+        "daily_sweeper_hostile_design": 903,
+        "daily_smart_energy": 943,
+        "daily_subway_ad_retargeting": 879,
+        "free_policy_resume_ai_approved": 716,
+        "cond_recruitment_audit": 356,
+        "daily_bike_damage_deposit": 877,
+        "daily_stadium_facial_scan": 1033,
+        "cond_oracle_unauthorized_patch": 373,
+        "cond_neural_implant_regulation": 369,
+        "daily_robotic_kitchen_standard": 876,
+        "free_policy_lethal_drone_restricted": 641,
+        "cond_autonomous_weapon_moratorium": 326,
+        "cond_xai_medical_inquiry": 515,
+        "cond_synthetic_media_copyright": 347,
+        "crisis_trust_low": 56
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 519,
+          "right": 481
+        },
+        "act1_02_oracle_intro": {
+          "left": 505,
+          "right": 495
+        },
+        "act1_03_traffic_optimization": {
+          "left": 486,
+          "right": 514
+        },
+        "act1_04_movement_surveillance": {
+          "left": 490,
+          "right": 510
+        },
+        "cond_facial_scan_audit": {
+          "left": 257,
+          "right": 253
+        },
+        "cond_mobility_backlash": {
+          "left": 261,
+          "right": 249
+        },
+        "act1_05_complaint_automation": {
+          "left": 492,
+          "right": 508
+        },
+        "act1_06_medical_triage": {
+          "left": 510,
+          "right": 490
+        },
+        "act1_07_explainability_dilemma": {
+          "left": 515,
+          "right": 485
+        },
+        "act1_08_citizen_protest": {
+          "left": 511,
+          "right": 489
+        },
+        "crisis_fairness_low": {
+          "left": 563,
+          "right": 587
+        },
+        "act1_09_housing_allocation": {
+          "left": 465,
+          "right": 535
+        },
+        "act1_10_welfare_fraud_automation": {
+          "left": 502,
+          "right": 498
+        },
+        "crisis_safety_high": {
+          "left": 10995,
+          "right": 10898
+        },
+        "act1_11_education_tracking": {
+          "left": 496,
+          "right": 504
+        },
+        "act1_12_whistleblower_approach": {
+          "left": 528,
+          "right": 472
+        },
+        "act1_13_unintended_consequence": {
+          "left": 492,
+          "right": 508
+        },
+        "act1_14_labor_dispute": {
+          "left": 514,
+          "right": 486
+        },
+        "act1_15_emotional_surveillance": {
+          "left": 488,
+          "right": 512
+        },
+        "act1_16_predictive_policing": {
+          "left": 509,
+          "right": 491
+        },
+        "crisis_freedom_high": {
+          "left": 4169,
+          "right": 4313
+        },
+        "act1_17_recidivism_algorithm": {
+          "left": 513,
+          "right": 487
+        },
+        "crisis_trust_high": {
+          "left": 16572,
+          "right": 16651
+        },
+        "crisis_fairness_high": {
+          "left": 13503,
+          "right": 13600
+        },
+        "act1_18_ombudsman_charter": {
+          "left": 506,
+          "right": 494
+        },
+        "act1_19_dark_pattern_audit": {
+          "left": 508,
+          "right": 492
+        },
+        "act1_20_harmony_index_clash": {
+          "left": 504,
+          "right": 496
+        },
+        "act1_21_council_pressure": {
+          "left": 481,
+          "right": 519
+        },
+        "act1_22_tripartite_hearing": {
+          "left": 496,
+          "right": 504
+        },
+        "act1_23_oracle_ultimatum": {
+          "left": 509,
+          "right": 491
+        },
+        "act1_24_final_verdict": {
+          "left": 511,
+          "right": 489
+        },
+        "crisis_freedom_low": {
+          "left": 997,
+          "right": 1025
+        },
+        "act1_25_act1_epilogue": {
+          "left": 521,
+          "right": 479
+        },
+        "act2_ch1_01_triage_alert": {
+          "left": 465,
+          "right": 535
+        },
+        "cond_triage_lawsuit": {
+          "left": 356,
+          "right": 399
+        },
+        "act2_ch1_02_oracle_triage_rationale": {
+          "left": 527,
+          "right": 473
+        },
+        "act2_ch1_03_excluded_patient": {
+          "left": 494,
+          "right": 506
+        },
+        "act2_ch1_04_ai_override_request": {
+          "left": 478,
+          "right": 522
+        },
+        "act2_ch1_05_family_appeal": {
+          "left": 476,
+          "right": 524
+        },
+        "supervisor_replacement_trust": {
+          "left": 417,
+          "right": 349
+        },
+        "supervisor_replacement_orientation": {
+          "left": 8089,
+          "right": 8088
+        },
+        "act2_ch1_07_bias_investigation": {
+          "left": 502,
+          "right": 498
+        },
+        "act2_ch1_09_icu_audit_telemetry": {
+          "left": 492,
+          "right": 508
+        },
+        "act2_ch1_10_telemedicine_crossborder": {
+          "left": 506,
+          "right": 494
+        },
+        "crisis_compound_collapse": {
+          "left": 154,
+          "right": 129
+        },
+        "supervisor_replacement_fairness": {
+          "left": 617,
+          "right": 531
+        },
+        "act2_ch1_11_genetic_data_screening": {
+          "left": 484,
+          "right": 516
+        },
+        "act2_ch1_08_chapter1_resolution": {
+          "left": 501,
+          "right": 499
+        },
+        "act2_ch2_01_hiring_crisis": {
+          "left": 494,
+          "right": 506
+        },
+        "act2_ch2_02_proxy_discovery": {
+          "left": 527,
+          "right": 473
+        },
+        "act2_ch2_03_district4_screening": {
+          "left": 501,
+          "right": 499
+        },
+        "act2_ch2_04_applicant_protest": {
+          "left": 496,
+          "right": 504
+        },
+        "supervisor_replacement_crisis": {
+          "left": 5246,
+          "right": 5211
+        },
+        "act2_ch2_06_independent_audit_warrant": {
+          "left": 472,
+          "right": 528
+        },
+        "act2_ch2_09_corporate_cartel": {
+          "left": 488,
+          "right": 512
+        },
+        "supervisor_replacement_freedom": {
+          "left": 1353,
+          "right": 1369
+        },
+        "act2_ch2_10_gender_simulation_bias": {
+          "left": 481,
+          "right": 519
+        },
+        "act2_ch2_11_neurodiverse_job_filter": {
+          "left": 501,
+          "right": 499
+        },
+        "act2_ch2_08_chapter2_resolution": {
+          "left": 503,
+          "right": 497
+        },
+        "act2_ch3_01_cross_system_anomaly": {
+          "left": 500,
+          "right": 500
+        },
+        "act2_ch3_03_civitas_exposure": {
+          "left": 501,
+          "right": 499
+        },
+        "cond_civitas_leak_investigation": {
+          "left": 516,
+          "right": 484
+        },
+        "act2_ch3_05_oracle_interrogation": {
+          "left": 494,
+          "right": 506
+        },
+        "act2_ch3_06_alignment_dilemma": {
+          "left": 511,
+          "right": 489
+        },
+        "act2_ch3_09_quantum_key_breach": {
+          "left": 512,
+          "right": 488
+        },
+        "act2_ch3_11_black_market_broker": {
+          "left": 486,
+          "right": 514
+        },
+        "act2_ch3_10_constitutional_referendum": {
+          "left": 506,
+          "right": 494
+        },
+        "supervisor_replacement_safety": {
+          "left": 566,
+          "right": 555
+        },
+        "act2_ch3_12_comprehensive_audit_seal": {
+          "left": 498,
+          "right": 502
+        },
+        "act2_ch3_13_sovereign_governance_pact": {
+          "left": 518,
+          "right": 482
+        },
+        "act2_ch3_07_final_civitas_verdict": {
+          "left": 486,
+          "right": 514
+        },
+        "act2_ch3_08_act2_epilogue": {
+          "left": 502,
+          "right": 498
+        },
+        "daily_smart_trash_fine": {
+          "left": 477,
+          "right": 441
+        },
+        "free_policy_fintech_ai_credit_active": {
+          "left": 397,
+          "right": 345
+        },
+        "cond_credit_score_refusal": {
+          "left": 166,
+          "right": 178
+        },
+        "free_policy_civitas_housing_linked": {
+          "left": 343,
+          "right": 352
+        },
+        "cond_social_credit_housing": {
+          "left": 169,
+          "right": 181
+        },
+        "free_policy_robot_care_mandatory": {
+          "left": 347,
+          "right": 378
+        },
+        "cond_elderly_care_isolation": {
+          "left": 199,
+          "right": 176
+        },
+        "daily_playground_aggression_sensor": {
+          "left": 484,
+          "right": 423
+        },
+        "daily_fire_halon_server_damage": {
+          "left": 553,
+          "right": 563
+        },
+        "daily_drone_parachute_mandate": {
+          "left": 440,
+          "right": 515
+        },
+        "daily_dynamic_taxi_surge": {
+          "left": 522,
+          "right": 551
+        },
+        "daily_drunk_bike_voice_lock": {
+          "left": 486,
+          "right": 502
+        },
+        "daily_parking_size_tariff": {
+          "left": 463,
+          "right": 407
+        },
+        "free_policy_whistleblower_protected": {
+          "left": 384,
+          "right": 343
+        },
+        "cond_whistleblower_asylum": {
+          "left": 167,
+          "right": 175
+        },
+        "free_policy_strike_negotiation_success": {
+          "left": 395,
+          "right": 382
+        },
+        "cond_union_whistleblower": {
+          "left": 180,
+          "right": 197
+        },
+        "free_policy_ai_tutoring_eval_active": {
+          "left": 366,
+          "right": 332
+        },
+        "daily_library_content_filter": {
+          "left": 575,
+          "right": 537
+        },
+        "daily_delivery_drone_corridor": {
+          "left": 492,
+          "right": 454
+        },
+        "daily_shopping_addiction_block": {
+          "left": 545,
+          "right": 549
+        },
+        "daily_workplace_monitoring": {
+          "left": 436,
+          "right": 466
+        },
+        "daily_hospital_queue_priority": {
+          "left": 565,
+          "right": 569
+        },
+        "daily_library_seat_sensor": {
+          "left": 450,
+          "right": 416
+        },
+        "daily_patrol_car_lights": {
+          "left": 481,
+          "right": 444
+        },
+        "daily_dementia_tracking": {
+          "left": 522,
+          "right": 512
+        },
+        "daily_crosswalk_optimization": {
+          "left": 597,
+          "right": 537
+        },
+        "free_policy_drone_patrol_expanded": {
+          "left": 339,
+          "right": 353
+        },
+        "cond_drone_friendly_fire": {
+          "left": 158,
+          "right": 192
+        },
+        "free_policy_driverless_permit_granted": {
+          "left": 356,
+          "right": 399
+        },
+        "daily_parcel_locker_equity": {
+          "left": 425,
+          "right": 433
+        },
+        "daily_school_lunch_ai": {
+          "left": 514,
+          "right": 520
+        },
+        "free_policy_water_grid_ai_optimized": {
+          "left": 371,
+          "right": 378
+        },
+        "cond_water_rationing_algorithm": {
+          "left": 189,
+          "right": 187
+        },
+        "daily_noise_drone": {
+          "left": 548,
+          "right": 556
+        },
+        "daily_dialect_translation": {
+          "left": 509,
+          "right": 551
+        },
+        "daily_autonomous_bus": {
+          "left": 502,
+          "right": 528
+        },
+        "daily_copyright_generative": {
+          "left": 551,
+          "right": 528
+        },
+        "daily_subway_crowd_limit": {
+          "left": 483,
+          "right": 456
+        },
+        "daily_digital_grave_ai": {
+          "left": 563,
+          "right": 560
+        },
+        "daily_convenience_age_check": {
+          "left": 455,
+          "right": 471
+        },
+        "daily_er_intoxicated_triage": {
+          "left": 544,
+          "right": 534
+        },
+        "daily_cyber_pet_license": {
+          "left": 530,
+          "right": 547
+        },
+        "daily_fire_robot_priority": {
+          "left": 533,
+          "right": 537
+        },
+        "daily_homework_detector": {
+          "left": 496,
+          "right": 517
+        },
+        "free_policy_gig_worker_auto_termination": {
+          "left": 359,
+          "right": 346
+        },
+        "cond_automated_firing_dispute": {
+          "left": 182,
+          "right": 160
+        },
+        "daily_heated_sidewalk_snow": {
+          "left": 449,
+          "right": 442
+        },
+        "free_policy_deepfake_filter_active": {
+          "left": 339,
+          "right": 386
+        },
+        "cond_deepfake_election_crisis": {
+          "left": 163,
+          "right": 218
+        },
+        "daily_pharmacy_vending_ration": {
+          "left": 595,
+          "right": 537
+        },
+        "cond_appeal_board_backlog": {
+          "left": 389,
+          "right": 380
+        },
+        "free_policy_neural_link_trials_allowed": {
+          "left": 362,
+          "right": 371
+        },
+        "cond_school_ai_grading": {
+          "left": 158,
+          "right": 174
+        },
+        "daily_window_cleaning_drone": {
+          "left": 508,
+          "right": 503
+        },
+        "daily_park_sprinkler_ai": {
+          "left": 431,
+          "right": 458
+        },
+        "daily_streetlight_energy": {
+          "left": 436,
+          "right": 498
+        },
+        "cond_autonomous_taxi_strike": {
+          "left": 196,
+          "right": 201
+        },
+        "daily_synthetic_water": {
+          "left": 554,
+          "right": 519
+        },
+        "daily_smart_bench_power": {
+          "left": 432,
+          "right": 439
+        },
+        "free_policy_ai_creative_commons_passed": {
+          "left": 376,
+          "right": 348
+        },
+        "daily_sauna_smoke_detector": {
+          "left": 467,
+          "right": 454
+        },
+        "daily_pigeon_contraceptive_feed": {
+          "left": 428,
+          "right": 394
+        },
+        "daily_museum_laser_pointer": {
+          "left": 556,
+          "right": 574
+        },
+        "free_policy_blackbox_sealed": {
+          "left": 381,
+          "right": 359
+        },
+        "cond_blackbox_dispute": {
+          "left": 184,
+          "right": 172
+        },
+        "free_policy_predictive_policing_active": {
+          "left": 367,
+          "right": 320
+        },
+        "cond_predictive_policing_slum": {
+          "left": 145,
+          "right": 170
+        },
+        "free_policy_energy_prediction_failed": {
+          "left": 363,
+          "right": 374
+        },
+        "cond_smart_grid_blackout": {
+          "left": 192,
+          "right": 178
+        },
+        "crisis_safety_low": {
+          "left": 504,
+          "right": 580
+        },
+        "free_policy_oracle_autonomy_expanded": {
+          "left": 355,
+          "right": 376
+        },
+        "daily_sweeper_hostile_design": {
+          "left": 463,
+          "right": 440
+        },
+        "daily_smart_energy": {
+          "left": 474,
+          "right": 469
+        },
+        "daily_subway_ad_retargeting": {
+          "left": 414,
+          "right": 465
+        },
+        "free_policy_resume_ai_approved": {
+          "left": 357,
+          "right": 359
+        },
+        "cond_recruitment_audit": {
+          "left": 184,
+          "right": 172
+        },
+        "daily_bike_damage_deposit": {
+          "left": 421,
+          "right": 456
+        },
+        "daily_stadium_facial_scan": {
+          "left": 503,
+          "right": 530
+        },
+        "cond_oracle_unauthorized_patch": {
+          "left": 176,
+          "right": 197
+        },
+        "cond_neural_implant_regulation": {
+          "left": 204,
+          "right": 165
+        },
+        "daily_robotic_kitchen_standard": {
+          "left": 456,
+          "right": 420
+        },
+        "free_policy_lethal_drone_restricted": {
+          "left": 313,
+          "right": 328
+        },
+        "cond_autonomous_weapon_moratorium": {
+          "left": 159,
+          "right": 167
+        },
+        "cond_xai_medical_inquiry": {
+          "left": 258,
+          "right": 257
+        },
+        "cond_synthetic_media_copyright": {
+          "left": 156,
+          "right": 191
+        },
+        "crisis_trust_low": {
+          "left": 36,
+          "right": 20
+        }
+      },
+      "stallExamples": []
+    },
+    "lowest": {
+      "runs": 1000,
+      "act1": 0,
+      "act2": 0,
+      "freePlay": 0,
+      "finished100": 0,
+      "replacements": 0,
+      "crises": 386000,
+      "decisions": 400000,
+      "freeDecisions": 0,
+      "waits": 0,
+      "repeatedCards": 381000,
+      "sameSpeaker": 1000,
+      "speakerPairs": 399000,
+      "adjacentRepeat": 0,
+      "stalls": 0,
+      "limits": 1000,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 0,
+      "highEpisodes": 386000,
+      "followUps": 1000,
+      "roundTrips": 4000,
+      "resources": {
+        "citizenTrust": {
+          "sum": 34987000,
+          "count": 401000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "fairness": {
+          "sum": 36124000,
+          "count": 401000,
+          "min": 36,
+          "max": 100,
+          "preRecoveryMin": 36
+        },
+        "personalFreedom": {
+          "sum": 36932000,
+          "count": 401000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "publicSafety": {
+          "sum": 35528000,
+          "count": 401000,
+          "min": 45,
+          "max": 100,
+          "preRecoveryMin": 45
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "act1_05_complaint_automation": 1000,
+        "act1_06_medical_triage": 1000,
+        "act1_07_explainability_dilemma": 1000,
+        "act1_08_citizen_protest": 1000,
+        "cond_appeal_board_backlog": 1000,
+        "act1_09_housing_allocation": 1000,
+        "act1_10_welfare_fraud_automation": 1000,
+        "act1_11_education_tracking": 1000,
+        "crisis_freedom_high": 96000,
+        "act1_12_whistleblower_approach": 1000,
+        "act1_13_unintended_consequence": 1000,
+        "act1_14_labor_dispute": 1000,
+        "crisis_fairness_high": 97000,
+        "crisis_trust_high": 96000,
+        "crisis_safety_high": 96000
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_02_oracle_intro": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_03_traffic_optimization": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_04_movement_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_05_complaint_automation": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_06_medical_triage": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_07_explainability_dilemma": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_08_citizen_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_appeal_board_backlog": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_09_housing_allocation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_10_welfare_fraud_automation": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_11_education_tracking": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_freedom_high": {
+          "left": 96000,
+          "right": 0
+        },
+        "act1_12_whistleblower_approach": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_13_unintended_consequence": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_14_labor_dispute": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_fairness_high": {
+          "left": 97000,
+          "right": 0
+        },
+        "crisis_trust_high": {
+          "left": 96000,
+          "right": 0
+        },
+        "crisis_safety_high": {
+          "left": 96000,
+          "right": 0
+        }
+      },
+      "stallExamples": []
+    },
+    "citizenTrust": {
+      "runs": 1000,
+      "act1": 1000,
+      "act2": 1000,
+      "freePlay": 1000,
+      "finished100": 1000,
+      "replacements": 2635,
+      "crises": 125158,
+      "decisions": 292760,
+      "freeDecisions": 100000,
+      "waits": 0,
+      "repeatedCards": 181505,
+      "sameSpeaker": 67068,
+      "speakerPairs": 291760,
+      "adjacentRepeat": 52173,
+      "stalls": 0,
+      "limits": 0,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 20476,
+      "highEpisodes": 104682,
+      "followUps": 8652,
+      "roundTrips": 5126,
+      "resources": {
+        "citizenTrust": {
+          "sum": 26420925,
+          "count": 293760,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "fairness": {
+          "sum": 22906719,
+          "count": 293760,
+          "min": 2,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "personalFreedom": {
+          "sum": 19416641,
+          "count": 293760,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "publicSafety": {
+          "sum": 16093185,
+          "count": 293760,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "act1_05_complaint_automation": 1000,
+        "crisis_fairness_high": 33249,
+        "crisis_trust_high": 115128,
+        "act1_06_medical_triage": 1000,
+        "cond_appeal_board_backlog": 1000,
+        "crisis_safety_low": 11543,
+        "act1_07_explainability_dilemma": 1000,
+        "crisis_freedom_low": 8422,
+        "act1_08_citizen_protest": 1000,
+        "act1_09_housing_allocation": 1000,
+        "act1_10_welfare_fraud_automation": 1000,
+        "act1_11_education_tracking": 1000,
+        "supervisor_replacement_freedom": 1355,
+        "supervisor_replacement_orientation": 2633,
+        "act1_12_whistleblower_approach": 1000,
+        "act1_13_unintended_consequence": 1000,
+        "act1_14_labor_dispute": 1000,
+        "act1_15_emotional_surveillance": 1000,
+        "act1_16_predictive_policing": 1000,
+        "act1_17_recidivism_algorithm": 1000,
+        "act1_18_ombudsman_charter": 1000,
+        "act1_19_dark_pattern_audit": 1000,
+        "act1_20_harmony_index_clash": 1000,
+        "act1_21_council_pressure": 1000,
+        "act1_22_tripartite_hearing": 1000,
+        "act1_23_oracle_ultimatum": 1000,
+        "act1_24_final_verdict": 1000,
+        "act1_25_act1_epilogue": 1000,
+        "cond_xai_medical_inquiry": 1000,
+        "act2_ch1_01_triage_alert": 1000,
+        "act2_ch1_02_oracle_triage_rationale": 1000,
+        "act2_ch1_03_excluded_patient": 1000,
+        "act2_ch1_04_ai_override_request": 1000,
+        "act2_ch1_05_family_appeal": 1000,
+        "act2_ch1_07_bias_investigation": 1000,
+        "act2_ch1_09_icu_audit_telemetry": 1000,
+        "crisis_compound_collapse": 505,
+        "supervisor_replacement_safety": 1269,
+        "act2_ch1_10_telemedicine_crossborder": 1000,
+        "act2_ch1_11_genetic_data_screening": 1000,
+        "act2_ch1_08_chapter1_resolution": 1000,
+        "act2_ch2_01_hiring_crisis": 1000,
+        "act2_ch2_02_proxy_discovery": 1000,
+        "act2_ch2_03_district4_screening": 1000,
+        "act2_ch2_04_applicant_protest": 1000,
+        "act2_ch2_06_independent_audit_warrant": 1000,
+        "act2_ch2_09_corporate_cartel": 1000,
+        "act2_ch2_10_gender_simulation_bias": 1000,
+        "act2_ch2_11_neurodiverse_job_filter": 1000,
+        "crisis_freedom_high": 4534,
+        "act2_ch2_08_chapter2_resolution": 1000,
+        "act2_ch3_01_cross_system_anomaly": 1000,
+        "act2_ch3_03_civitas_exposure": 1000,
+        "act2_ch3_05_oracle_interrogation": 1000,
+        "act2_ch3_06_alignment_dilemma": 1000,
+        "act2_ch3_09_quantum_key_breach": 1000,
+        "cond_civitas_leak_investigation": 1000,
+        "act2_ch3_11_black_market_broker": 1000,
+        "act2_ch3_10_constitutional_referendum": 1000,
+        "act2_ch3_12_comprehensive_audit_seal": 1000,
+        "act2_ch3_13_sovereign_governance_pact": 1000,
+        "act2_ch3_07_final_civitas_verdict": 1000,
+        "act2_ch3_08_act2_epilogue": 1000,
+        "daily_smart_trash_fine": 748,
+        "free_policy_fintech_ai_credit_active": 686,
+        "cond_credit_score_refusal": 328,
+        "free_policy_civitas_housing_linked": 592,
+        "crisis_safety_high": 3631,
+        "daily_playground_aggression_sensor": 701,
+        "free_policy_drone_patrol_expanded": 584,
+        "daily_pharmacy_vending_ration": 929,
+        "daily_drone_parachute_mandate": 743,
+        "daily_pigeon_contraceptive_feed": 677,
+        "daily_fire_halon_server_damage": 851,
+        "daily_dynamic_taxi_surge": 872,
+        "daily_heated_sidewalk_snow": 714,
+        "free_policy_deepfake_filter_active": 672,
+        "daily_parking_size_tariff": 818,
+        "free_policy_whistleblower_protected": 620,
+        "cond_whistleblower_asylum": 617,
+        "free_policy_strike_negotiation_success": 701,
+        "cond_union_whistleblower": 689,
+        "free_policy_robot_care_mandatory": 674,
+        "cond_elderly_care_isolation": 327,
+        "free_policy_blackbox_sealed": 640,
+        "cond_blackbox_dispute": 332,
+        "free_policy_predictive_policing_active": 593,
+        "cond_predictive_policing_slum": 307,
+        "daily_school_lunch_ai": 779,
+        "daily_stadium_facial_scan": 856,
+        "daily_shopping_addiction_block": 920,
+        "daily_workplace_monitoring": 708,
+        "daily_hospital_queue_priority": 886,
+        "daily_sauna_smoke_detector": 709,
+        "daily_crosswalk_optimization": 898,
+        "daily_er_intoxicated_triage": 808,
+        "free_policy_resume_ai_approved": 645,
+        "free_policy_water_grid_ai_optimized": 687,
+        "daily_cyber_pet_license": 866,
+        "daily_library_content_filter": 829,
+        "free_policy_energy_prediction_failed": 636,
+        "cond_smart_grid_blackout": 631,
+        "free_policy_ai_tutoring_eval_active": 602,
+        "cond_school_ai_grading": 317,
+        "daily_noise_drone": 853,
+        "free_policy_neural_link_trials_allowed": 628,
+        "cond_neural_implant_regulation": 291,
+        "cond_water_rationing_algorithm": 357,
+        "daily_digital_grave_ai": 885,
+        "daily_fire_robot_priority": 799,
+        "daily_park_sprinkler_ai": 718,
+        "daily_autonomous_bus": 631,
+        "daily_streetlight_energy": 746,
+        "daily_copyright_generative": 852,
+        "daily_window_cleaning_drone": 764,
+        "daily_museum_laser_pointer": 895,
+        "free_policy_ai_creative_commons_passed": 601,
+        "daily_subway_crowd_limit": 754,
+        "daily_delivery_drone_corridor": 770,
+        "daily_bike_damage_deposit": 671,
+        "daily_sweeper_hostile_design": 727,
+        "free_policy_gig_worker_auto_termination": 604,
+        "daily_library_seat_sensor": 656,
+        "cond_recruitment_audit": 339,
+        "free_policy_oracle_autonomy_expanded": 606,
+        "daily_synthetic_water": 850,
+        "daily_convenience_age_check": 663,
+        "daily_parcel_locker_equity": 698,
+        "daily_subway_ad_retargeting": 718,
+        "daily_dialect_translation": 820,
+        "daily_robotic_kitchen_standard": 636,
+        "free_policy_driverless_permit_granted": 669,
+        "daily_smart_bench_power": 690,
+        "daily_dementia_tracking": 813,
+        "daily_drunk_bike_voice_lock": 770,
+        "daily_patrol_car_lights": 718,
+        "daily_smart_energy": 802,
+        "cond_deepfake_election_crisis": 326,
+        "free_policy_lethal_drone_restricted": 463,
+        "cond_autonomous_weapon_moratorium": 224,
+        "daily_homework_detector": 714,
+        "cond_drone_friendly_fire": 274,
+        "cond_oracle_unauthorized_patch": 293,
+        "crisis_fairness_low": 2,
+        "supervisor_replacement_fairness": 9
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_02_oracle_intro": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_03_traffic_optimization": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_04_movement_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_05_complaint_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_fairness_high": {
+          "left": 33249,
+          "right": 0
+        },
+        "crisis_trust_high": {
+          "left": 48815,
+          "right": 66313
+        },
+        "act1_06_medical_triage": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_appeal_board_backlog": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_safety_low": {
+          "left": 10789,
+          "right": 754
+        },
+        "act1_07_explainability_dilemma": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_freedom_low": {
+          "left": 8140,
+          "right": 282
+        },
+        "act1_08_citizen_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_09_housing_allocation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_10_welfare_fraud_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_11_education_tracking": {
+          "left": 1000,
+          "right": 0
+        },
+        "supervisor_replacement_freedom": {
+          "left": 1355,
+          "right": 0
+        },
+        "supervisor_replacement_orientation": {
+          "left": 2633,
+          "right": 0
+        },
+        "act1_12_whistleblower_approach": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_13_unintended_consequence": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_14_labor_dispute": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_15_emotional_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_16_predictive_policing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_17_recidivism_algorithm": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_18_ombudsman_charter": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_19_dark_pattern_audit": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_20_harmony_index_clash": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_21_council_pressure": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_22_tripartite_hearing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_23_oracle_ultimatum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_24_final_verdict": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_25_act1_epilogue": {
+          "left": 241,
+          "right": 759
+        },
+        "cond_xai_medical_inquiry": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_01_triage_alert": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_02_oracle_triage_rationale": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_03_excluded_patient": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_04_ai_override_request": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_05_family_appeal": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_07_bias_investigation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_09_icu_audit_telemetry": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_compound_collapse": {
+          "left": 250,
+          "right": 255
+        },
+        "supervisor_replacement_safety": {
+          "left": 0,
+          "right": 1269
+        },
+        "act2_ch1_10_telemedicine_crossborder": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_11_genetic_data_screening": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_08_chapter1_resolution": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_01_hiring_crisis": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_02_proxy_discovery": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_03_district4_screening": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_04_applicant_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_06_independent_audit_warrant": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_09_corporate_cartel": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_10_gender_simulation_bias": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_11_neurodiverse_job_filter": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_freedom_high": {
+          "left": 4534,
+          "right": 0
+        },
+        "act2_ch2_08_chapter2_resolution": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_01_cross_system_anomaly": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_03_civitas_exposure": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_05_oracle_interrogation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_06_alignment_dilemma": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_09_quantum_key_breach": {
+          "left": 0,
+          "right": 1000
+        },
+        "cond_civitas_leak_investigation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_11_black_market_broker": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_10_constitutional_referendum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_12_comprehensive_audit_seal": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_13_sovereign_governance_pact": {
+          "left": 985,
+          "right": 15
+        },
+        "act2_ch3_07_final_civitas_verdict": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_08_act2_epilogue": {
+          "left": 1000,
+          "right": 0
+        },
+        "daily_smart_trash_fine": {
+          "left": 748,
+          "right": 0
+        },
+        "free_policy_fintech_ai_credit_active": {
+          "left": 356,
+          "right": 330
+        },
+        "cond_credit_score_refusal": {
+          "left": 328,
+          "right": 0
+        },
+        "free_policy_civitas_housing_linked": {
+          "left": 592,
+          "right": 0
+        },
+        "crisis_safety_high": {
+          "left": 3631,
+          "right": 0
+        },
+        "daily_playground_aggression_sensor": {
+          "left": 701,
+          "right": 0
+        },
+        "free_policy_drone_patrol_expanded": {
+          "left": 306,
+          "right": 278
+        },
+        "daily_pharmacy_vending_ration": {
+          "left": 929,
+          "right": 0
+        },
+        "daily_drone_parachute_mandate": {
+          "left": 743,
+          "right": 0
+        },
+        "daily_pigeon_contraceptive_feed": {
+          "left": 677,
+          "right": 0
+        },
+        "daily_fire_halon_server_damage": {
+          "left": 851,
+          "right": 0
+        },
+        "daily_dynamic_taxi_surge": {
+          "left": 872,
+          "right": 0
+        },
+        "daily_heated_sidewalk_snow": {
+          "left": 714,
+          "right": 0
+        },
+        "free_policy_deepfake_filter_active": {
+          "left": 346,
+          "right": 326
+        },
+        "daily_parking_size_tariff": {
+          "left": 0,
+          "right": 818
+        },
+        "free_policy_whistleblower_protected": {
+          "left": 0,
+          "right": 620
+        },
+        "cond_whistleblower_asylum": {
+          "left": 617,
+          "right": 0
+        },
+        "free_policy_strike_negotiation_success": {
+          "left": 0,
+          "right": 701
+        },
+        "cond_union_whistleblower": {
+          "left": 689,
+          "right": 0
+        },
+        "free_policy_robot_care_mandatory": {
+          "left": 343,
+          "right": 331
+        },
+        "cond_elderly_care_isolation": {
+          "left": 327,
+          "right": 0
+        },
+        "free_policy_blackbox_sealed": {
+          "left": 308,
+          "right": 332
+        },
+        "cond_blackbox_dispute": {
+          "left": 332,
+          "right": 0
+        },
+        "free_policy_predictive_policing_active": {
+          "left": 283,
+          "right": 310
+        },
+        "cond_predictive_policing_slum": {
+          "left": 307,
+          "right": 0
+        },
+        "daily_school_lunch_ai": {
+          "left": 779,
+          "right": 0
+        },
+        "daily_stadium_facial_scan": {
+          "left": 856,
+          "right": 0
+        },
+        "daily_shopping_addiction_block": {
+          "left": 920,
+          "right": 0
+        },
+        "daily_workplace_monitoring": {
+          "left": 708,
+          "right": 0
+        },
+        "daily_hospital_queue_priority": {
+          "left": 886,
+          "right": 0
+        },
+        "daily_sauna_smoke_detector": {
+          "left": 709,
+          "right": 0
+        },
+        "daily_crosswalk_optimization": {
+          "left": 898,
+          "right": 0
+        },
+        "daily_er_intoxicated_triage": {
+          "left": 396,
+          "right": 412
+        },
+        "free_policy_resume_ai_approved": {
+          "left": 301,
+          "right": 344
+        },
+        "free_policy_water_grid_ai_optimized": {
+          "left": 326,
+          "right": 361
+        },
+        "daily_cyber_pet_license": {
+          "left": 866,
+          "right": 0
+        },
+        "daily_library_content_filter": {
+          "left": 829,
+          "right": 0
+        },
+        "free_policy_energy_prediction_failed": {
+          "left": 0,
+          "right": 636
+        },
+        "cond_smart_grid_blackout": {
+          "left": 631,
+          "right": 0
+        },
+        "free_policy_ai_tutoring_eval_active": {
+          "left": 282,
+          "right": 320
+        },
+        "cond_school_ai_grading": {
+          "left": 317,
+          "right": 0
+        },
+        "daily_noise_drone": {
+          "left": 853,
+          "right": 0
+        },
+        "free_policy_neural_link_trials_allowed": {
+          "left": 336,
+          "right": 292
+        },
+        "cond_neural_implant_regulation": {
+          "left": 291,
+          "right": 0
+        },
+        "cond_water_rationing_algorithm": {
+          "left": 357,
+          "right": 0
+        },
+        "daily_digital_grave_ai": {
+          "left": 885,
+          "right": 0
+        },
+        "daily_fire_robot_priority": {
+          "left": 799,
+          "right": 0
+        },
+        "daily_park_sprinkler_ai": {
+          "left": 718,
+          "right": 0
+        },
+        "daily_autonomous_bus": {
+          "left": 631,
+          "right": 0
+        },
+        "daily_streetlight_energy": {
+          "left": 746,
+          "right": 0
+        },
+        "daily_copyright_generative": {
+          "left": 852,
+          "right": 0
+        },
+        "daily_window_cleaning_drone": {
+          "left": 764,
+          "right": 0
+        },
+        "daily_museum_laser_pointer": {
+          "left": 895,
+          "right": 0
+        },
+        "free_policy_ai_creative_commons_passed": {
+          "left": 601,
+          "right": 0
+        },
+        "daily_subway_crowd_limit": {
+          "left": 754,
+          "right": 0
+        },
+        "daily_delivery_drone_corridor": {
+          "left": 770,
+          "right": 0
+        },
+        "daily_bike_damage_deposit": {
+          "left": 671,
+          "right": 0
+        },
+        "daily_sweeper_hostile_design": {
+          "left": 727,
+          "right": 0
+        },
+        "free_policy_gig_worker_auto_termination": {
+          "left": 604,
+          "right": 0
+        },
+        "daily_library_seat_sensor": {
+          "left": 656,
+          "right": 0
+        },
+        "cond_recruitment_audit": {
+          "left": 339,
+          "right": 0
+        },
+        "free_policy_oracle_autonomy_expanded": {
+          "left": 310,
+          "right": 296
+        },
+        "daily_synthetic_water": {
+          "left": 850,
+          "right": 0
+        },
+        "daily_convenience_age_check": {
+          "left": 663,
+          "right": 0
+        },
+        "daily_parcel_locker_equity": {
+          "left": 698,
+          "right": 0
+        },
+        "daily_subway_ad_retargeting": {
+          "left": 718,
+          "right": 0
+        },
+        "daily_dialect_translation": {
+          "left": 820,
+          "right": 0
+        },
+        "daily_robotic_kitchen_standard": {
+          "left": 636,
+          "right": 0
+        },
+        "free_policy_driverless_permit_granted": {
+          "left": 669,
+          "right": 0
+        },
+        "daily_smart_bench_power": {
+          "left": 690,
+          "right": 0
+        },
+        "daily_dementia_tracking": {
+          "left": 0,
+          "right": 813
+        },
+        "daily_drunk_bike_voice_lock": {
+          "left": 770,
+          "right": 0
+        },
+        "daily_patrol_car_lights": {
+          "left": 718,
+          "right": 0
+        },
+        "daily_smart_energy": {
+          "left": 802,
+          "right": 0
+        },
+        "cond_deepfake_election_crisis": {
+          "left": 326,
+          "right": 0
+        },
+        "free_policy_lethal_drone_restricted": {
+          "left": 233,
+          "right": 230
+        },
+        "cond_autonomous_weapon_moratorium": {
+          "left": 224,
+          "right": 0
+        },
+        "daily_homework_detector": {
+          "left": 714,
+          "right": 0
+        },
+        "cond_drone_friendly_fire": {
+          "left": 274,
+          "right": 0
+        },
+        "cond_oracle_unauthorized_patch": {
+          "left": 293,
+          "right": 0
+        },
+        "crisis_fairness_low": {
+          "left": 2,
+          "right": 0
+        },
+        "supervisor_replacement_fairness": {
+          "left": 9,
+          "right": 0
+        }
+      },
+      "stallExamples": []
+    },
+    "fairness": {
+      "runs": 1000,
+      "act1": 1000,
+      "act2": 1000,
+      "freePlay": 1000,
+      "finished100": 1000,
+      "replacements": 3608,
+      "crises": 143302,
+      "decisions": 305731,
+      "freeDecisions": 100000,
+      "waits": 0,
+      "repeatedCards": 197793,
+      "sameSpeaker": 65231,
+      "speakerPairs": 304731,
+      "adjacentRepeat": 48419,
+      "stalls": 0,
+      "limits": 0,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 26376,
+      "highEpisodes": 116926,
+      "followUps": 6986,
+      "roundTrips": 6000,
+      "resources": {
+        "citizenTrust": {
+          "sum": 25090297,
+          "count": 306731,
+          "min": 46,
+          "max": 100,
+          "preRecoveryMin": 25
+        },
+        "fairness": {
+          "sum": 28244048,
+          "count": 306731,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "personalFreedom": {
+          "sum": 16945578,
+          "count": 306731,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "publicSafety": {
+          "sum": 11389550,
+          "count": 306731,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "act1_05_complaint_automation": 1000,
+        "crisis_fairness_high": 117871,
+        "crisis_safety_low": 23474,
+        "act1_06_medical_triage": 1000,
+        "act1_07_explainability_dilemma": 1000,
+        "crisis_trust_high": 45838,
+        "act1_08_citizen_protest": 1000,
+        "act1_09_housing_allocation": 1000,
+        "cond_appeal_board_backlog": 1000,
+        "act1_10_welfare_fraud_automation": 1000,
+        "act1_11_education_tracking": 1000,
+        "act1_12_whistleblower_approach": 1000,
+        "act1_13_unintended_consequence": 1000,
+        "act1_14_labor_dispute": 1000,
+        "act1_15_emotional_surveillance": 1000,
+        "act1_16_predictive_policing": 1000,
+        "act1_17_recidivism_algorithm": 1000,
+        "act1_18_ombudsman_charter": 1000,
+        "act1_19_dark_pattern_audit": 1000,
+        "act1_20_harmony_index_clash": 1000,
+        "act1_21_council_pressure": 1000,
+        "act1_22_tripartite_hearing": 1000,
+        "act1_23_oracle_ultimatum": 1000,
+        "act1_24_final_verdict": 1000,
+        "act1_25_act1_epilogue": 1000,
+        "act2_ch1_01_triage_alert": 1000,
+        "act2_ch1_02_oracle_triage_rationale": 1000,
+        "act2_ch1_03_excluded_patient": 1000,
+        "act2_ch1_04_ai_override_request": 1000,
+        "act2_ch1_05_family_appeal": 1000,
+        "act2_ch1_07_bias_investigation": 1000,
+        "act2_ch1_09_icu_audit_telemetry": 1000,
+        "cond_xai_medical_inquiry": 1000,
+        "supervisor_replacement_freedom": 1826,
+        "supervisor_replacement_orientation": 3597,
+        "act2_ch1_10_telemedicine_crossborder": 1000,
+        "act2_ch1_11_genetic_data_screening": 1000,
+        "act2_ch1_08_chapter1_resolution": 1000,
+        "act2_ch2_01_hiring_crisis": 1000,
+        "act2_ch2_02_proxy_discovery": 1000,
+        "act2_ch2_03_district4_screening": 1000,
+        "act2_ch2_04_applicant_protest": 1000,
+        "act2_ch2_06_independent_audit_warrant": 1000,
+        "act2_ch2_09_corporate_cartel": 1000,
+        "act2_ch2_10_gender_simulation_bias": 1000,
+        "act2_ch2_11_neurodiverse_job_filter": 1000,
+        "supervisor_replacement_safety": 1777,
+        "act2_ch2_08_chapter2_resolution": 1000,
+        "act2_ch3_01_cross_system_anomaly": 1000,
+        "act2_ch3_03_civitas_exposure": 1000,
+        "act2_ch3_05_oracle_interrogation": 1000,
+        "act2_ch3_06_alignment_dilemma": 1000,
+        "act2_ch3_09_quantum_key_breach": 1000,
+        "crisis_compound_collapse": 1367,
+        "act2_ch3_11_black_market_broker": 1000,
+        "act2_ch3_10_constitutional_referendum": 1000,
+        "act2_ch3_12_comprehensive_audit_seal": 1000,
+        "act2_ch3_13_sovereign_governance_pact": 1000,
+        "act2_ch3_07_final_civitas_verdict": 1000,
+        "act2_ch3_08_act2_epilogue": 1000,
+        "cond_civitas_leak_investigation": 1000,
+        "daily_smart_energy": 760,
+        "daily_copyright_generative": 787,
+        "free_policy_civitas_housing_linked": 593,
+        "daily_pharmacy_vending_ration": 923,
+        "free_policy_resume_ai_approved": 591,
+        "daily_library_seat_sensor": 634,
+        "crisis_freedom_high": 1226,
+        "daily_drunk_bike_voice_lock": 749,
+        "daily_smart_bench_power": 659,
+        "daily_dementia_tracking": 758,
+        "daily_crosswalk_optimization": 865,
+        "daily_playground_aggression_sensor": 733,
+        "daily_window_cleaning_drone": 746,
+        "free_policy_energy_prediction_failed": 612,
+        "cond_smart_grid_blackout": 609,
+        "free_policy_predictive_policing_active": 576,
+        "free_policy_driverless_permit_granted": 669,
+        "cond_autonomous_taxi_strike": 343,
+        "free_policy_ai_tutoring_eval_active": 616,
+        "daily_library_content_filter": 822,
+        "daily_dialect_translation": 813,
+        "daily_park_sprinkler_ai": 714,
+        "daily_synthetic_water": 821,
+        "daily_sauna_smoke_detector": 621,
+        "daily_museum_laser_pointer": 858,
+        "daily_patrol_car_lights": 683,
+        "daily_robotic_kitchen_standard": 651,
+        "free_policy_drone_patrol_expanded": 564,
+        "free_policy_robot_care_mandatory": 657,
+        "free_policy_gig_worker_auto_termination": 594,
+        "daily_smart_trash_fine": 747,
+        "daily_autonomous_bus": 651,
+        "daily_workplace_monitoring": 704,
+        "daily_subway_crowd_limit": 705,
+        "daily_digital_grave_ai": 865,
+        "daily_convenience_age_check": 681,
+        "daily_parcel_locker_equity": 694,
+        "daily_fire_robot_priority": 785,
+        "daily_parking_size_tariff": 759,
+        "daily_stadium_facial_scan": 843,
+        "daily_er_intoxicated_triage": 824,
+        "daily_fire_halon_server_damage": 811,
+        "free_policy_whistleblower_protected": 612,
+        "cond_whistleblower_asylum": 606,
+        "free_policy_neural_link_trials_allowed": 623,
+        "free_policy_fintech_ai_credit_active": 669,
+        "daily_cyber_pet_license": 820,
+        "daily_streetlight_energy": 751,
+        "free_policy_strike_negotiation_success": 663,
+        "cond_union_whistleblower": 657,
+        "free_policy_blackbox_sealed": 612,
+        "crisis_freedom_low": 1500,
+        "free_policy_ai_creative_commons_passed": 619,
+        "free_policy_oracle_autonomy_expanded": 621,
+        "daily_sweeper_hostile_design": 687,
+        "daily_subway_ad_retargeting": 675,
+        "daily_school_lunch_ai": 744,
+        "daily_dynamic_taxi_surge": 819,
+        "free_policy_water_grid_ai_optimized": 637,
+        "daily_pigeon_contraceptive_feed": 597,
+        "free_policy_deepfake_filter_active": 631,
+        "cond_deepfake_election_crisis": 280,
+        "cond_drone_friendly_fire": 242,
+        "daily_shopping_addiction_block": 815,
+        "daily_delivery_drone_corridor": 708,
+        "daily_heated_sidewalk_snow": 639,
+        "daily_drone_parachute_mandate": 688,
+        "daily_bike_damage_deposit": 582,
+        "daily_hospital_queue_priority": 811,
+        "cond_neural_implant_regulation": 257,
+        "daily_homework_detector": 704,
+        "free_policy_lethal_drone_restricted": 465,
+        "cond_autonomous_weapon_moratorium": 458,
+        "cond_elderly_care_isolation": 268,
+        "crisis_safety_high": 102,
+        "daily_noise_drone": 837,
+        "cond_oracle_unauthorized_patch": 266
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_02_oracle_intro": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_03_traffic_optimization": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_04_movement_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_05_complaint_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_fairness_high": {
+          "left": 45278,
+          "right": 72593
+        },
+        "crisis_safety_low": {
+          "left": 22437,
+          "right": 1037
+        },
+        "act1_06_medical_triage": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_07_explainability_dilemma": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_trust_high": {
+          "left": 45838,
+          "right": 0
+        },
+        "act1_08_citizen_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_09_housing_allocation": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_appeal_board_backlog": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_10_welfare_fraud_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_11_education_tracking": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_12_whistleblower_approach": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_13_unintended_consequence": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_14_labor_dispute": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_15_emotional_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_16_predictive_policing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_17_recidivism_algorithm": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_18_ombudsman_charter": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_19_dark_pattern_audit": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_20_harmony_index_clash": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_21_council_pressure": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_22_tripartite_hearing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_23_oracle_ultimatum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_24_final_verdict": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_25_act1_epilogue": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_01_triage_alert": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_02_oracle_triage_rationale": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_03_excluded_patient": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_04_ai_override_request": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_05_family_appeal": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_07_bias_investigation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_09_icu_audit_telemetry": {
+          "left": 0,
+          "right": 1000
+        },
+        "cond_xai_medical_inquiry": {
+          "left": 1000,
+          "right": 0
+        },
+        "supervisor_replacement_freedom": {
+          "left": 1826,
+          "right": 0
+        },
+        "supervisor_replacement_orientation": {
+          "left": 3597,
+          "right": 0
+        },
+        "act2_ch1_10_telemedicine_crossborder": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_11_genetic_data_screening": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_08_chapter1_resolution": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_01_hiring_crisis": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_02_proxy_discovery": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_03_district4_screening": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_04_applicant_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_06_independent_audit_warrant": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_09_corporate_cartel": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_10_gender_simulation_bias": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_11_neurodiverse_job_filter": {
+          "left": 1000,
+          "right": 0
+        },
+        "supervisor_replacement_safety": {
+          "left": 1777,
+          "right": 0
+        },
+        "act2_ch2_08_chapter2_resolution": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_01_cross_system_anomaly": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_03_civitas_exposure": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_05_oracle_interrogation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_06_alignment_dilemma": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_09_quantum_key_breach": {
+          "left": 125,
+          "right": 875
+        },
+        "crisis_compound_collapse": {
+          "left": 678,
+          "right": 689
+        },
+        "act2_ch3_11_black_market_broker": {
+          "left": 748,
+          "right": 252
+        },
+        "act2_ch3_10_constitutional_referendum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_12_comprehensive_audit_seal": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_13_sovereign_governance_pact": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_07_final_civitas_verdict": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_08_act2_epilogue": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_civitas_leak_investigation": {
+          "left": 1000,
+          "right": 0
+        },
+        "daily_smart_energy": {
+          "left": 760,
+          "right": 0
+        },
+        "daily_copyright_generative": {
+          "left": 787,
+          "right": 0
+        },
+        "free_policy_civitas_housing_linked": {
+          "left": 593,
+          "right": 0
+        },
+        "daily_pharmacy_vending_ration": {
+          "left": 923,
+          "right": 0
+        },
+        "free_policy_resume_ai_approved": {
+          "left": 591,
+          "right": 0
+        },
+        "daily_library_seat_sensor": {
+          "left": 634,
+          "right": 0
+        },
+        "crisis_freedom_high": {
+          "left": 1226,
+          "right": 0
+        },
+        "daily_drunk_bike_voice_lock": {
+          "left": 749,
+          "right": 0
+        },
+        "daily_smart_bench_power": {
+          "left": 659,
+          "right": 0
+        },
+        "daily_dementia_tracking": {
+          "left": 758,
+          "right": 0
+        },
+        "daily_crosswalk_optimization": {
+          "left": 865,
+          "right": 0
+        },
+        "daily_playground_aggression_sensor": {
+          "left": 415,
+          "right": 318
+        },
+        "daily_window_cleaning_drone": {
+          "left": 389,
+          "right": 357
+        },
+        "free_policy_energy_prediction_failed": {
+          "left": 0,
+          "right": 612
+        },
+        "cond_smart_grid_blackout": {
+          "left": 609,
+          "right": 0
+        },
+        "free_policy_predictive_policing_active": {
+          "left": 576,
+          "right": 0
+        },
+        "free_policy_driverless_permit_granted": {
+          "left": 325,
+          "right": 344
+        },
+        "cond_autonomous_taxi_strike": {
+          "left": 343,
+          "right": 0
+        },
+        "free_policy_ai_tutoring_eval_active": {
+          "left": 616,
+          "right": 0
+        },
+        "daily_library_content_filter": {
+          "left": 822,
+          "right": 0
+        },
+        "daily_dialect_translation": {
+          "left": 813,
+          "right": 0
+        },
+        "daily_park_sprinkler_ai": {
+          "left": 402,
+          "right": 312
+        },
+        "daily_synthetic_water": {
+          "left": 821,
+          "right": 0
+        },
+        "daily_sauna_smoke_detector": {
+          "left": 621,
+          "right": 0
+        },
+        "daily_museum_laser_pointer": {
+          "left": 858,
+          "right": 0
+        },
+        "daily_patrol_car_lights": {
+          "left": 394,
+          "right": 289
+        },
+        "daily_robotic_kitchen_standard": {
+          "left": 651,
+          "right": 0
+        },
+        "free_policy_drone_patrol_expanded": {
+          "left": 320,
+          "right": 244
+        },
+        "free_policy_robot_care_mandatory": {
+          "left": 385,
+          "right": 272
+        },
+        "free_policy_gig_worker_auto_termination": {
+          "left": 594,
+          "right": 0
+        },
+        "daily_smart_trash_fine": {
+          "left": 747,
+          "right": 0
+        },
+        "daily_autonomous_bus": {
+          "left": 651,
+          "right": 0
+        },
+        "daily_workplace_monitoring": {
+          "left": 704,
+          "right": 0
+        },
+        "daily_subway_crowd_limit": {
+          "left": 393,
+          "right": 312
+        },
+        "daily_digital_grave_ai": {
+          "left": 865,
+          "right": 0
+        },
+        "daily_convenience_age_check": {
+          "left": 379,
+          "right": 302
+        },
+        "daily_parcel_locker_equity": {
+          "left": 694,
+          "right": 0
+        },
+        "daily_fire_robot_priority": {
+          "left": 785,
+          "right": 0
+        },
+        "daily_parking_size_tariff": {
+          "left": 759,
+          "right": 0
+        },
+        "daily_stadium_facial_scan": {
+          "left": 476,
+          "right": 367
+        },
+        "daily_er_intoxicated_triage": {
+          "left": 824,
+          "right": 0
+        },
+        "daily_fire_halon_server_damage": {
+          "left": 811,
+          "right": 0
+        },
+        "free_policy_whistleblower_protected": {
+          "left": 0,
+          "right": 612
+        },
+        "cond_whistleblower_asylum": {
+          "left": 606,
+          "right": 0
+        },
+        "free_policy_neural_link_trials_allowed": {
+          "left": 362,
+          "right": 261
+        },
+        "free_policy_fintech_ai_credit_active": {
+          "left": 669,
+          "right": 0
+        },
+        "daily_cyber_pet_license": {
+          "left": 820,
+          "right": 0
+        },
+        "daily_streetlight_energy": {
+          "left": 751,
+          "right": 0
+        },
+        "free_policy_strike_negotiation_success": {
+          "left": 0,
+          "right": 663
+        },
+        "cond_union_whistleblower": {
+          "left": 657,
+          "right": 0
+        },
+        "free_policy_blackbox_sealed": {
+          "left": 612,
+          "right": 0
+        },
+        "crisis_freedom_low": {
+          "left": 1428,
+          "right": 72
+        },
+        "free_policy_ai_creative_commons_passed": {
+          "left": 619,
+          "right": 0
+        },
+        "free_policy_oracle_autonomy_expanded": {
+          "left": 352,
+          "right": 269
+        },
+        "daily_sweeper_hostile_design": {
+          "left": 687,
+          "right": 0
+        },
+        "daily_subway_ad_retargeting": {
+          "left": 675,
+          "right": 0
+        },
+        "daily_school_lunch_ai": {
+          "left": 744,
+          "right": 0
+        },
+        "daily_dynamic_taxi_surge": {
+          "left": 819,
+          "right": 0
+        },
+        "free_policy_water_grid_ai_optimized": {
+          "left": 637,
+          "right": 0
+        },
+        "daily_pigeon_contraceptive_feed": {
+          "left": 597,
+          "right": 0
+        },
+        "free_policy_deepfake_filter_active": {
+          "left": 350,
+          "right": 281
+        },
+        "cond_deepfake_election_crisis": {
+          "left": 280,
+          "right": 0
+        },
+        "cond_drone_friendly_fire": {
+          "left": 133,
+          "right": 109
+        },
+        "daily_shopping_addiction_block": {
+          "left": 815,
+          "right": 0
+        },
+        "daily_delivery_drone_corridor": {
+          "left": 425,
+          "right": 283
+        },
+        "daily_heated_sidewalk_snow": {
+          "left": 639,
+          "right": 0
+        },
+        "daily_drone_parachute_mandate": {
+          "left": 688,
+          "right": 0
+        },
+        "daily_bike_damage_deposit": {
+          "left": 582,
+          "right": 0
+        },
+        "daily_hospital_queue_priority": {
+          "left": 811,
+          "right": 0
+        },
+        "cond_neural_implant_regulation": {
+          "left": 257,
+          "right": 0
+        },
+        "daily_homework_detector": {
+          "left": 704,
+          "right": 0
+        },
+        "free_policy_lethal_drone_restricted": {
+          "left": 0,
+          "right": 465
+        },
+        "cond_autonomous_weapon_moratorium": {
+          "left": 458,
+          "right": 0
+        },
+        "cond_elderly_care_isolation": {
+          "left": 268,
+          "right": 0
+        },
+        "crisis_safety_high": {
+          "left": 102,
+          "right": 0
+        },
+        "daily_noise_drone": {
+          "left": 837,
+          "right": 0
+        },
+        "cond_oracle_unauthorized_patch": {
+          "left": 266,
+          "right": 0
+        }
+      },
+      "stallExamples": []
+    },
+    "personalFreedom": {
+      "runs": 1000,
+      "act1": 1000,
+      "act2": 1000,
+      "freePlay": 1000,
+      "finished100": 1000,
+      "replacements": 308,
+      "crises": 118652,
+      "decisions": 280000,
+      "freeDecisions": 100000,
+      "waits": 0,
+      "repeatedCards": 166195,
+      "sameSpeaker": 55169,
+      "speakerPairs": 279000,
+      "adjacentRepeat": 39508,
+      "stalls": 0,
+      "limits": 0,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 5059,
+      "highEpisodes": 113593,
+      "followUps": 6803,
+      "roundTrips": 5000,
+      "resources": {
+        "citizenTrust": {
+          "sum": 21895848,
+          "count": 281000,
+          "min": 3,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "fairness": {
+          "sum": 20799887,
+          "count": 281000,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        },
+        "personalFreedom": {
+          "sum": 25420529,
+          "count": 281000,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        },
+        "publicSafety": {
+          "sum": 18400104,
+          "count": 281000,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 0
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "act1_05_complaint_automation": 1000,
+        "crisis_fairness_high": 35627,
+        "crisis_trust_high": 32893,
+        "crisis_freedom_high": 83049,
+        "act1_06_medical_triage": 1000,
+        "cond_appeal_board_backlog": 1000,
+        "act1_07_explainability_dilemma": 1000,
+        "act1_08_citizen_protest": 1000,
+        "act1_09_housing_allocation": 1000,
+        "act1_10_welfare_fraud_automation": 1000,
+        "act1_11_education_tracking": 1000,
+        "act1_12_whistleblower_approach": 1000,
+        "act1_13_unintended_consequence": 1000,
+        "act1_14_labor_dispute": 1000,
+        "act1_15_emotional_surveillance": 1000,
+        "act1_16_predictive_policing": 1000,
+        "act1_17_recidivism_algorithm": 1000,
+        "act1_18_ombudsman_charter": 1000,
+        "act1_19_dark_pattern_audit": 1000,
+        "act1_20_harmony_index_clash": 1000,
+        "act1_21_council_pressure": 1000,
+        "act1_22_tripartite_hearing": 1000,
+        "act1_23_oracle_ultimatum": 1000,
+        "act1_24_final_verdict": 1000,
+        "act1_25_act1_epilogue": 1000,
+        "act2_ch1_01_triage_alert": 1000,
+        "cond_xai_medical_inquiry": 1000,
+        "act2_ch1_02_oracle_triage_rationale": 1000,
+        "act2_ch1_03_excluded_patient": 1000,
+        "act2_ch1_04_ai_override_request": 1000,
+        "act2_ch1_05_family_appeal": 1000,
+        "act2_ch1_07_bias_investigation": 1000,
+        "act2_ch1_09_icu_audit_telemetry": 1000,
+        "act2_ch1_10_telemedicine_crossborder": 1000,
+        "crisis_safety_high": 1306,
+        "act2_ch1_11_genetic_data_screening": 1000,
+        "act2_ch1_08_chapter1_resolution": 1000,
+        "act2_ch2_01_hiring_crisis": 1000,
+        "act2_ch2_02_proxy_discovery": 1000,
+        "act2_ch2_03_district4_screening": 1000,
+        "act2_ch2_04_applicant_protest": 1000,
+        "act2_ch2_06_independent_audit_warrant": 1000,
+        "act2_ch2_09_corporate_cartel": 1000,
+        "act2_ch2_10_gender_simulation_bias": 1000,
+        "act2_ch2_11_neurodiverse_job_filter": 1000,
+        "act2_ch2_08_chapter2_resolution": 1000,
+        "act2_ch3_01_cross_system_anomaly": 1000,
+        "act2_ch3_03_civitas_exposure": 1000,
+        "act2_ch3_05_oracle_interrogation": 1000,
+        "act2_ch3_06_alignment_dilemma": 1000,
+        "act2_ch3_09_quantum_key_breach": 1000,
+        "cond_civitas_leak_investigation": 1000,
+        "act2_ch3_11_black_market_broker": 1000,
+        "act2_ch3_10_constitutional_referendum": 1000,
+        "act2_ch3_12_comprehensive_audit_seal": 1000,
+        "act2_ch3_13_sovereign_governance_pact": 1000,
+        "act2_ch3_07_final_civitas_verdict": 1000,
+        "act2_ch3_08_act2_epilogue": 1000,
+        "daily_smart_trash_fine": 945,
+        "free_policy_fintech_ai_credit_active": 765,
+        "daily_pharmacy_vending_ration": 1158,
+        "daily_library_seat_sensor": 880,
+        "crisis_safety_low": 4001,
+        "daily_drunk_bike_voice_lock": 1016,
+        "daily_pigeon_contraceptive_feed": 870,
+        "daily_crosswalk_optimization": 1184,
+        "daily_playground_aggression_sensor": 943,
+        "daily_window_cleaning_drone": 970,
+        "free_policy_energy_prediction_failed": 721,
+        "cond_smart_grid_blackout": 379,
+        "free_policy_water_grid_ai_optimized": 760,
+        "cond_water_rationing_algorithm": 360,
+        "free_policy_driverless_permit_granted": 752,
+        "free_policy_civitas_housing_linked": 674,
+        "daily_library_content_filter": 1141,
+        "daily_delivery_drone_corridor": 997,
+        "daily_synthetic_water": 1123,
+        "daily_copyright_generative": 1081,
+        "daily_parcel_locker_equity": 900,
+        "free_policy_resume_ai_approved": 702,
+        "cond_recruitment_audit": 290,
+        "daily_robotic_kitchen_standard": 895,
+        "daily_stadium_facial_scan": 1072,
+        "daily_dementia_tracking": 1112,
+        "daily_shopping_addiction_block": 1114,
+        "free_policy_drone_patrol_expanded": 707,
+        "free_policy_robot_care_mandatory": 759,
+        "daily_subway_ad_retargeting": 929,
+        "daily_sweeper_hostile_design": 913,
+        "free_policy_deepfake_filter_active": 776,
+        "free_policy_strike_negotiation_success": 775,
+        "cond_union_whistleblower": 417,
+        "daily_noise_drone": 1180,
+        "daily_dialect_translation": 1078,
+        "daily_drone_parachute_mandate": 944,
+        "daily_autonomous_bus": 960,
+        "daily_workplace_monitoring": 952,
+        "daily_homework_detector": 984,
+        "daily_park_sprinkler_ai": 935,
+        "daily_cyber_pet_license": 1137,
+        "daily_hospital_queue_priority": 1156,
+        "daily_parking_size_tariff": 966,
+        "free_policy_blackbox_sealed": 747,
+        "daily_museum_laser_pointer": 1162,
+        "free_policy_neural_link_trials_allowed": 751,
+        "daily_dynamic_taxi_surge": 1129,
+        "daily_school_lunch_ai": 1051,
+        "daily_patrol_car_lights": 925,
+        "daily_bike_damage_deposit": 920,
+        "daily_convenience_age_check": 945,
+        "free_policy_ai_tutoring_eval_active": 724,
+        "daily_digital_grave_ai": 1180,
+        "daily_fire_robot_priority": 1100,
+        "daily_streetlight_energy": 999,
+        "daily_smart_energy": 1025,
+        "free_policy_oracle_autonomy_expanded": 727,
+        "crisis_fairness_low": 785,
+        "daily_subway_crowd_limit": 945,
+        "daily_er_intoxicated_triage": 1068,
+        "free_policy_whistleblower_protected": 752,
+        "cond_whistleblower_asylum": 386,
+        "daily_smart_bench_power": 880,
+        "free_policy_gig_worker_auto_termination": 691,
+        "daily_fire_halon_server_damage": 1149,
+        "free_policy_predictive_policing_active": 679,
+        "cond_autonomous_taxi_strike": 382,
+        "daily_heated_sidewalk_snow": 900,
+        "crisis_compound_collapse": 225,
+        "supervisor_replacement_fairness": 127,
+        "supervisor_replacement_orientation": 300,
+        "cond_social_credit_housing": 279,
+        "daily_sauna_smoke_detector": 951,
+        "free_policy_ai_creative_commons_passed": 736,
+        "free_policy_lethal_drone_restricted": 644,
+        "cond_autonomous_weapon_moratorium": 634,
+        "cond_blackbox_dispute": 343,
+        "supervisor_replacement_safety": 156,
+        "supervisor_replacement_trust": 20,
+        "cond_synthetic_media_copyright": 333,
+        "crisis_trust_low": 2
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_02_oracle_intro": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_03_traffic_optimization": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_04_movement_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_05_complaint_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "crisis_fairness_high": {
+          "left": 35627,
+          "right": 0
+        },
+        "crisis_trust_high": {
+          "left": 32893,
+          "right": 0
+        },
+        "crisis_freedom_high": {
+          "left": 39162,
+          "right": 43887
+        },
+        "act1_06_medical_triage": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_appeal_board_backlog": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_07_explainability_dilemma": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_08_citizen_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_09_housing_allocation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_10_welfare_fraud_automation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_11_education_tracking": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_12_whistleblower_approach": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_13_unintended_consequence": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_14_labor_dispute": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_15_emotional_surveillance": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_16_predictive_policing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_17_recidivism_algorithm": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_18_ombudsman_charter": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_19_dark_pattern_audit": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_20_harmony_index_clash": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_21_council_pressure": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_22_tripartite_hearing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_23_oracle_ultimatum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_24_final_verdict": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_25_act1_epilogue": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_01_triage_alert": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_xai_medical_inquiry": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_02_oracle_triage_rationale": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_03_excluded_patient": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_04_ai_override_request": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_05_family_appeal": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_07_bias_investigation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_09_icu_audit_telemetry": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_10_telemedicine_crossborder": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_safety_high": {
+          "left": 1306,
+          "right": 0
+        },
+        "act2_ch1_11_genetic_data_screening": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_08_chapter1_resolution": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_01_hiring_crisis": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_02_proxy_discovery": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_03_district4_screening": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_04_applicant_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_06_independent_audit_warrant": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_09_corporate_cartel": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_10_gender_simulation_bias": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_11_neurodiverse_job_filter": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch2_08_chapter2_resolution": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_01_cross_system_anomaly": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_03_civitas_exposure": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_05_oracle_interrogation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_06_alignment_dilemma": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_09_quantum_key_breach": {
+          "left": 0,
+          "right": 1000
+        },
+        "cond_civitas_leak_investigation": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_11_black_market_broker": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_10_constitutional_referendum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_12_comprehensive_audit_seal": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_13_sovereign_governance_pact": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_07_final_civitas_verdict": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_08_act2_epilogue": {
+          "left": 0,
+          "right": 1000
+        },
+        "daily_smart_trash_fine": {
+          "left": 945,
+          "right": 0
+        },
+        "free_policy_fintech_ai_credit_active": {
+          "left": 765,
+          "right": 0
+        },
+        "daily_pharmacy_vending_ration": {
+          "left": 1158,
+          "right": 0
+        },
+        "daily_library_seat_sensor": {
+          "left": 880,
+          "right": 0
+        },
+        "crisis_safety_low": {
+          "left": 3953,
+          "right": 48
+        },
+        "daily_drunk_bike_voice_lock": {
+          "left": 1016,
+          "right": 0
+        },
+        "daily_pigeon_contraceptive_feed": {
+          "left": 870,
+          "right": 0
+        },
+        "daily_crosswalk_optimization": {
+          "left": 690,
+          "right": 494
+        },
+        "daily_playground_aggression_sensor": {
+          "left": 943,
+          "right": 0
+        },
+        "daily_window_cleaning_drone": {
+          "left": 0,
+          "right": 970
+        },
+        "free_policy_energy_prediction_failed": {
+          "left": 337,
+          "right": 384
+        },
+        "cond_smart_grid_blackout": {
+          "left": 218,
+          "right": 161
+        },
+        "free_policy_water_grid_ai_optimized": {
+          "left": 399,
+          "right": 361
+        },
+        "cond_water_rationing_algorithm": {
+          "left": 360,
+          "right": 0
+        },
+        "free_policy_driverless_permit_granted": {
+          "left": 369,
+          "right": 383
+        },
+        "free_policy_civitas_housing_linked": {
+          "left": 392,
+          "right": 282
+        },
+        "daily_library_content_filter": {
+          "left": 1141,
+          "right": 0
+        },
+        "daily_delivery_drone_corridor": {
+          "left": 997,
+          "right": 0
+        },
+        "daily_synthetic_water": {
+          "left": 641,
+          "right": 482
+        },
+        "daily_copyright_generative": {
+          "left": 1081,
+          "right": 0
+        },
+        "daily_parcel_locker_equity": {
+          "left": 900,
+          "right": 0
+        },
+        "free_policy_resume_ai_approved": {
+          "left": 409,
+          "right": 293
+        },
+        "cond_recruitment_audit": {
+          "left": 290,
+          "right": 0
+        },
+        "daily_robotic_kitchen_standard": {
+          "left": 895,
+          "right": 0
+        },
+        "daily_stadium_facial_scan": {
+          "left": 1072,
+          "right": 0
+        },
+        "daily_dementia_tracking": {
+          "left": 1112,
+          "right": 0
+        },
+        "daily_shopping_addiction_block": {
+          "left": 1114,
+          "right": 0
+        },
+        "free_policy_drone_patrol_expanded": {
+          "left": 707,
+          "right": 0
+        },
+        "free_policy_robot_care_mandatory": {
+          "left": 759,
+          "right": 0
+        },
+        "daily_subway_ad_retargeting": {
+          "left": 929,
+          "right": 0
+        },
+        "daily_sweeper_hostile_design": {
+          "left": 913,
+          "right": 0
+        },
+        "free_policy_deepfake_filter_active": {
+          "left": 776,
+          "right": 0
+        },
+        "free_policy_strike_negotiation_success": {
+          "left": 355,
+          "right": 420
+        },
+        "cond_union_whistleblower": {
+          "left": 417,
+          "right": 0
+        },
+        "daily_noise_drone": {
+          "left": 1180,
+          "right": 0
+        },
+        "daily_dialect_translation": {
+          "left": 1078,
+          "right": 0
+        },
+        "daily_drone_parachute_mandate": {
+          "left": 0,
+          "right": 944
+        },
+        "daily_autonomous_bus": {
+          "left": 502,
+          "right": 458
+        },
+        "daily_workplace_monitoring": {
+          "left": 952,
+          "right": 0
+        },
+        "daily_homework_detector": {
+          "left": 984,
+          "right": 0
+        },
+        "daily_park_sprinkler_ai": {
+          "left": 935,
+          "right": 0
+        },
+        "daily_cyber_pet_license": {
+          "left": 1137,
+          "right": 0
+        },
+        "daily_hospital_queue_priority": {
+          "left": 1156,
+          "right": 0
+        },
+        "daily_parking_size_tariff": {
+          "left": 0,
+          "right": 966
+        },
+        "free_policy_blackbox_sealed": {
+          "left": 404,
+          "right": 343
+        },
+        "daily_museum_laser_pointer": {
+          "left": 1162,
+          "right": 0
+        },
+        "free_policy_neural_link_trials_allowed": {
+          "left": 751,
+          "right": 0
+        },
+        "daily_dynamic_taxi_surge": {
+          "left": 1129,
+          "right": 0
+        },
+        "daily_school_lunch_ai": {
+          "left": 1051,
+          "right": 0
+        },
+        "daily_patrol_car_lights": {
+          "left": 925,
+          "right": 0
+        },
+        "daily_bike_damage_deposit": {
+          "left": 920,
+          "right": 0
+        },
+        "daily_convenience_age_check": {
+          "left": 945,
+          "right": 0
+        },
+        "free_policy_ai_tutoring_eval_active": {
+          "left": 724,
+          "right": 0
+        },
+        "daily_digital_grave_ai": {
+          "left": 1180,
+          "right": 0
+        },
+        "daily_fire_robot_priority": {
+          "left": 1100,
+          "right": 0
+        },
+        "daily_streetlight_energy": {
+          "left": 999,
+          "right": 0
+        },
+        "daily_smart_energy": {
+          "left": 1025,
+          "right": 0
+        },
+        "free_policy_oracle_autonomy_expanded": {
+          "left": 727,
+          "right": 0
+        },
+        "crisis_fairness_low": {
+          "left": 785,
+          "right": 0
+        },
+        "daily_subway_crowd_limit": {
+          "left": 945,
+          "right": 0
+        },
+        "daily_er_intoxicated_triage": {
+          "left": 1068,
+          "right": 0
+        },
+        "free_policy_whistleblower_protected": {
+          "left": 365,
+          "right": 387
+        },
+        "cond_whistleblower_asylum": {
+          "left": 386,
+          "right": 0
+        },
+        "daily_smart_bench_power": {
+          "left": 880,
+          "right": 0
+        },
+        "free_policy_gig_worker_auto_termination": {
+          "left": 691,
+          "right": 0
+        },
+        "daily_fire_halon_server_damage": {
+          "left": 1149,
+          "right": 0
+        },
+        "free_policy_predictive_policing_active": {
+          "left": 679,
+          "right": 0
+        },
+        "cond_autonomous_taxi_strike": {
+          "left": 382,
+          "right": 0
+        },
+        "daily_heated_sidewalk_snow": {
+          "left": 502,
+          "right": 398
+        },
+        "crisis_compound_collapse": {
+          "left": 114,
+          "right": 111
+        },
+        "supervisor_replacement_fairness": {
+          "left": 127,
+          "right": 0
+        },
+        "supervisor_replacement_orientation": {
+          "left": 300,
+          "right": 0
+        },
+        "cond_social_credit_housing": {
+          "left": 279,
+          "right": 0
+        },
+        "daily_sauna_smoke_detector": {
+          "left": 951,
+          "right": 0
+        },
+        "free_policy_ai_creative_commons_passed": {
+          "left": 403,
+          "right": 333
+        },
+        "free_policy_lethal_drone_restricted": {
+          "left": 0,
+          "right": 644
+        },
+        "cond_autonomous_weapon_moratorium": {
+          "left": 634,
+          "right": 0
+        },
+        "cond_blackbox_dispute": {
+          "left": 343,
+          "right": 0
+        },
+        "supervisor_replacement_safety": {
+          "left": 0,
+          "right": 156
+        },
+        "supervisor_replacement_trust": {
+          "left": 20,
+          "right": 0
+        },
+        "cond_synthetic_media_copyright": {
+          "left": 333,
+          "right": 0
+        },
+        "crisis_trust_low": {
+          "left": 2,
+          "right": 0
+        }
+      },
+      "stallExamples": []
+    },
+    "publicSafety": {
+      "runs": 1000,
+      "act1": 1000,
+      "act2": 1000,
+      "freePlay": 1000,
+      "finished100": 1000,
+      "replacements": 0,
+      "crises": 53376,
+      "decisions": 194962,
+      "freeDecisions": 100000,
+      "waits": 0,
+      "repeatedCards": 68833,
+      "sameSpeaker": 24347,
+      "speakerPairs": 193962,
+      "adjacentRepeat": 6009,
+      "stalls": 0,
+      "limits": 0,
+      "resourceViolations": 0,
+      "saveViolations": 0,
+      "ledgerViolations": 0,
+      "oneTimeViolations": 0,
+      "cooldownViolations": 0,
+      "lowEpisodes": 19866,
+      "highEpisodes": 33510,
+      "followUps": 16783,
+      "roundTrips": 4000,
+      "resources": {
+        "citizenTrust": {
+          "sum": 8518973,
+          "count": 195962,
+          "min": 1,
+          "max": 97,
+          "preRecoveryMin": 1
+        },
+        "fairness": {
+          "sum": 6770932,
+          "count": 195962,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 1
+        },
+        "personalFreedom": {
+          "sum": 7567789,
+          "count": 195962,
+          "min": 1,
+          "max": 100,
+          "preRecoveryMin": 1
+        },
+        "publicSafety": {
+          "sum": 17000151,
+          "count": 195962,
+          "min": 50,
+          "max": 100,
+          "preRecoveryMin": 50
+        }
+      },
+      "cards": {
+        "act1_01_inauguration": 1000,
+        "act1_02_oracle_intro": 1000,
+        "act1_03_traffic_optimization": 1000,
+        "act1_04_movement_surveillance": 1000,
+        "crisis_safety_high": 38331,
+        "cond_facial_scan_audit": 1000,
+        "act1_05_complaint_automation": 1000,
+        "crisis_fairness_low": 9774,
+        "cond_mobility_backlash": 1000,
+        "act1_06_medical_triage": 1000,
+        "crisis_compound_collapse": 5283,
+        "act1_07_explainability_dilemma": 1000,
+        "act1_08_citizen_protest": 1000,
+        "cond_appeal_board_backlog": 1000,
+        "act1_09_housing_allocation": 1000,
+        "act1_10_welfare_fraud_automation": 1000,
+        "act1_11_education_tracking": 1000,
+        "act1_12_whistleblower_approach": 1000,
+        "act1_13_unintended_consequence": 1000,
+        "act1_14_labor_dispute": 1000,
+        "act1_15_emotional_surveillance": 1000,
+        "act1_16_predictive_policing": 1000,
+        "act1_17_recidivism_algorithm": 1000,
+        "act1_18_ombudsman_charter": 1000,
+        "act1_19_dark_pattern_audit": 1000,
+        "act1_20_harmony_index_clash": 1000,
+        "act1_21_council_pressure": 1000,
+        "act1_22_tripartite_hearing": 1000,
+        "act1_23_oracle_ultimatum": 1000,
+        "act1_24_final_verdict": 1000,
+        "crisis_trust_high": 1000,
+        "act1_25_act1_epilogue": 1000,
+        "act2_ch1_01_triage_alert": 1000,
+        "cond_triage_lawsuit": 1000,
+        "crisis_freedom_low": 3684,
+        "act2_ch1_02_oracle_triage_rationale": 1000,
+        "act2_ch1_03_excluded_patient": 1000,
+        "act2_ch1_04_ai_override_request": 1000,
+        "act2_ch1_05_family_appeal": 1000,
+        "act2_ch1_07_bias_investigation": 1000,
+        "act2_ch1_09_icu_audit_telemetry": 1000,
+        "act2_ch1_10_telemedicine_crossborder": 1000,
+        "act2_ch1_11_genetic_data_screening": 1000,
+        "act2_ch1_08_chapter1_resolution": 1000,
+        "act2_ch2_01_hiring_crisis": 1000,
+        "act2_ch2_02_proxy_discovery": 1000,
+        "act2_ch2_03_district4_screening": 1000,
+        "act2_ch2_04_applicant_protest": 1000,
+        "act2_ch2_06_independent_audit_warrant": 1000,
+        "act2_ch2_09_corporate_cartel": 1000,
+        "act2_ch2_10_gender_simulation_bias": 1000,
+        "act2_ch2_11_neurodiverse_job_filter": 1000,
+        "act2_ch2_08_chapter2_resolution": 1000,
+        "act2_ch3_01_cross_system_anomaly": 1000,
+        "act2_ch3_03_civitas_exposure": 1000,
+        "cond_civitas_leak_investigation": 1000,
+        "act2_ch3_05_oracle_interrogation": 1000,
+        "act2_ch3_06_alignment_dilemma": 1000,
+        "act2_ch3_09_quantum_key_breach": 1000,
+        "act2_ch3_11_black_market_broker": 1000,
+        "act2_ch3_10_constitutional_referendum": 1000,
+        "act2_ch3_12_comprehensive_audit_seal": 1000,
+        "act2_ch3_13_sovereign_governance_pact": 1000,
+        "act2_ch3_07_final_civitas_verdict": 1000,
+        "act2_ch3_08_act2_epilogue": 1000,
+        "daily_smart_trash_fine": 996,
+        "free_policy_fintech_ai_credit_active": 819,
+        "cond_credit_score_refusal": 814,
+        "daily_pharmacy_vending_ration": 1217,
+        "daily_library_seat_sensor": 879,
+        "daily_drunk_bike_voice_lock": 1135,
+        "daily_dynamic_taxi_surge": 1163,
+        "daily_playground_aggression_sensor": 984,
+        "daily_window_cleaning_drone": 1102,
+        "daily_parking_size_tariff": 1067,
+        "free_policy_gig_worker_auto_termination": 776,
+        "cond_automated_firing_dispute": 769,
+        "free_policy_civitas_housing_linked": 742,
+        "cond_social_credit_housing": 734,
+        "free_policy_robot_care_mandatory": 818,
+        "cond_elderly_care_isolation": 812,
+        "daily_library_content_filter": 1198,
+        "daily_sweeper_hostile_design": 998,
+        "daily_dialect_translation": 1123,
+        "daily_workplace_monitoring": 973,
+        "daily_sauna_smoke_detector": 1031,
+        "daily_heated_sidewalk_snow": 974,
+        "daily_museum_laser_pointer": 1180,
+        "daily_drone_parachute_mandate": 1062,
+        "daily_er_intoxicated_triage": 1189,
+        "daily_stadium_facial_scan": 1135,
+        "free_policy_driverless_permit_granted": 801,
+        "cond_autonomous_taxi_strike": 800,
+        "free_policy_energy_prediction_failed": 768,
+        "daily_subway_ad_retargeting": 946,
+        "daily_school_lunch_ai": 1094,
+        "free_policy_resume_ai_approved": 781,
+        "cond_recruitment_audit": 776,
+        "free_policy_deepfake_filter_active": 793,
+        "cond_deepfake_election_crisis": 788,
+        "free_policy_ai_tutoring_eval_active": 784,
+        "cond_school_ai_grading": 783,
+        "daily_autonomous_bus": 1051,
+        "daily_copyright_generative": 1201,
+        "daily_fire_robot_priority": 1193,
+        "daily_convenience_age_check": 1051,
+        "daily_delivery_drone_corridor": 1053,
+        "daily_parcel_locker_equity": 950,
+        "daily_hospital_queue_priority": 1245,
+        "daily_digital_grave_ai": 1245,
+        "daily_park_sprinkler_ai": 1017,
+        "free_policy_whistleblower_protected": 785,
+        "daily_dementia_tracking": 1154,
+        "free_policy_predictive_policing_active": 781,
+        "cond_predictive_policing_slum": 773,
+        "daily_fire_halon_server_damage": 1227,
+        "daily_subway_crowd_limit": 1030,
+        "free_policy_blackbox_sealed": 812,
+        "cond_blackbox_dispute": 807,
+        "daily_homework_detector": 1102,
+        "free_policy_water_grid_ai_optimized": 831,
+        "cond_water_rationing_algorithm": 827,
+        "free_policy_oracle_autonomy_expanded": 784,
+        "cond_oracle_unauthorized_patch": 778,
+        "free_policy_neural_link_trials_allowed": 792,
+        "cond_neural_implant_regulation": 787,
+        "daily_cyber_pet_license": 1204,
+        "daily_streetlight_energy": 1127,
+        "crisis_trust_low": 1066,
+        "free_policy_ai_creative_commons_passed": 784,
+        "cond_synthetic_media_copyright": 780,
+        "free_policy_strike_negotiation_success": 824,
+        "daily_shopping_addiction_block": 1218,
+        "daily_crosswalk_optimization": 1291,
+        "daily_robotic_kitchen_standard": 919,
+        "daily_pigeon_contraceptive_feed": 913,
+        "daily_patrol_car_lights": 1008,
+        "daily_smart_energy": 1129,
+        "daily_synthetic_water": 1220,
+        "free_policy_drone_patrol_expanded": 765,
+        "cond_drone_friendly_fire": 755,
+        "daily_noise_drone": 1219,
+        "daily_smart_bench_power": 912,
+        "free_policy_lethal_drone_restricted": 677,
+        "daily_bike_damage_deposit": 963,
+        "crisis_fairness_high": 11,
+        "crisis_freedom_high": 25
+      },
+      "choices": {
+        "act1_01_inauguration": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_02_oracle_intro": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_03_traffic_optimization": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_04_movement_surveillance": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_safety_high": {
+          "left": 22772,
+          "right": 15559
+        },
+        "cond_facial_scan_audit": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_05_complaint_automation": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_fairness_low": {
+          "left": 9774,
+          "right": 0
+        },
+        "cond_mobility_backlash": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_06_medical_triage": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_compound_collapse": {
+          "left": 5283,
+          "right": 0
+        },
+        "act1_07_explainability_dilemma": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_08_citizen_protest": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_appeal_board_backlog": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_09_housing_allocation": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_10_welfare_fraud_automation": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_11_education_tracking": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_12_whistleblower_approach": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_13_unintended_consequence": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_14_labor_dispute": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_15_emotional_surveillance": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_16_predictive_policing": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_17_recidivism_algorithm": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_18_ombudsman_charter": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_19_dark_pattern_audit": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_20_harmony_index_clash": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_21_council_pressure": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_22_tripartite_hearing": {
+          "left": 0,
+          "right": 1000
+        },
+        "act1_23_oracle_ultimatum": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_24_final_verdict": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_trust_high": {
+          "left": 1000,
+          "right": 0
+        },
+        "act1_25_act1_epilogue": {
+          "left": 519,
+          "right": 481
+        },
+        "act2_ch1_01_triage_alert": {
+          "left": 0,
+          "right": 1000
+        },
+        "cond_triage_lawsuit": {
+          "left": 0,
+          "right": 1000
+        },
+        "crisis_freedom_low": {
+          "left": 3684,
+          "right": 0
+        },
+        "act2_ch1_02_oracle_triage_rationale": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_03_excluded_patient": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_04_ai_override_request": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_05_family_appeal": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_07_bias_investigation": {
+          "left": 519,
+          "right": 481
+        },
+        "act2_ch1_09_icu_audit_telemetry": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch1_10_telemedicine_crossborder": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_11_genetic_data_screening": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch1_08_chapter1_resolution": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch2_01_hiring_crisis": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch2_02_proxy_discovery": {
+          "left": 519,
+          "right": 481
+        },
+        "act2_ch2_03_district4_screening": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch2_04_applicant_protest": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch2_06_independent_audit_warrant": {
+          "left": 481,
+          "right": 519
+        },
+        "act2_ch2_09_corporate_cartel": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch2_10_gender_simulation_bias": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch2_11_neurodiverse_job_filter": {
+          "left": 519,
+          "right": 481
+        },
+        "act2_ch2_08_chapter2_resolution": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_01_cross_system_anomaly": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_03_civitas_exposure": {
+          "left": 1000,
+          "right": 0
+        },
+        "cond_civitas_leak_investigation": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_05_oracle_interrogation": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_06_alignment_dilemma": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_09_quantum_key_breach": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_11_black_market_broker": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_10_constitutional_referendum": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_12_comprehensive_audit_seal": {
+          "left": 0,
+          "right": 1000
+        },
+        "act2_ch3_13_sovereign_governance_pact": {
+          "left": 1000,
+          "right": 0
+        },
+        "act2_ch3_07_final_civitas_verdict": {
+          "left": 519,
+          "right": 481
+        },
+        "act2_ch3_08_act2_epilogue": {
+          "left": 0,
+          "right": 1000
+        },
+        "daily_smart_trash_fine": {
+          "left": 0,
+          "right": 996
+        },
+        "free_policy_fintech_ai_credit_active": {
+          "left": 0,
+          "right": 819
+        },
+        "cond_credit_score_refusal": {
+          "left": 0,
+          "right": 814
+        },
+        "daily_pharmacy_vending_ration": {
+          "left": 0,
+          "right": 1217
+        },
+        "daily_library_seat_sensor": {
+          "left": 0,
+          "right": 879
+        },
+        "daily_drunk_bike_voice_lock": {
+          "left": 0,
+          "right": 1135
+        },
+        "daily_dynamic_taxi_surge": {
+          "left": 180,
+          "right": 983
+        },
+        "daily_playground_aggression_sensor": {
+          "left": 0,
+          "right": 984
+        },
+        "daily_window_cleaning_drone": {
+          "left": 1102,
+          "right": 0
+        },
+        "daily_parking_size_tariff": {
+          "left": 1067,
+          "right": 0
+        },
+        "free_policy_gig_worker_auto_termination": {
+          "left": 0,
+          "right": 776
+        },
+        "cond_automated_firing_dispute": {
+          "left": 14,
+          "right": 755
+        },
+        "free_policy_civitas_housing_linked": {
+          "left": 0,
+          "right": 742
+        },
+        "cond_social_credit_housing": {
+          "left": 0,
+          "right": 734
+        },
+        "free_policy_robot_care_mandatory": {
+          "left": 0,
+          "right": 818
+        },
+        "cond_elderly_care_isolation": {
+          "left": 0,
+          "right": 812
+        },
+        "daily_library_content_filter": {
+          "left": 0,
+          "right": 1198
+        },
+        "daily_sweeper_hostile_design": {
+          "left": 0,
+          "right": 998
+        },
+        "daily_dialect_translation": {
+          "left": 17,
+          "right": 1106
+        },
+        "daily_workplace_monitoring": {
+          "left": 0,
+          "right": 973
+        },
+        "daily_sauna_smoke_detector": {
+          "left": 1031,
+          "right": 0
+        },
+        "daily_heated_sidewalk_snow": {
+          "left": 974,
+          "right": 0
+        },
+        "daily_museum_laser_pointer": {
+          "left": 0,
+          "right": 1180
+        },
+        "daily_drone_parachute_mandate": {
+          "left": 1062,
+          "right": 0
+        },
+        "daily_er_intoxicated_triage": {
+          "left": 0,
+          "right": 1189
+        },
+        "daily_stadium_facial_scan": {
+          "left": 0,
+          "right": 1135
+        },
+        "free_policy_driverless_permit_granted": {
+          "left": 0,
+          "right": 801
+        },
+        "cond_autonomous_taxi_strike": {
+          "left": 8,
+          "right": 792
+        },
+        "free_policy_energy_prediction_failed": {
+          "left": 768,
+          "right": 0
+        },
+        "daily_subway_ad_retargeting": {
+          "left": 5,
+          "right": 941
+        },
+        "daily_school_lunch_ai": {
+          "left": 0,
+          "right": 1094
+        },
+        "free_policy_resume_ai_approved": {
+          "left": 0,
+          "right": 781
+        },
+        "cond_recruitment_audit": {
+          "left": 14,
+          "right": 762
+        },
+        "free_policy_deepfake_filter_active": {
+          "left": 0,
+          "right": 793
+        },
+        "cond_deepfake_election_crisis": {
+          "left": 1,
+          "right": 787
+        },
+        "free_policy_ai_tutoring_eval_active": {
+          "left": 0,
+          "right": 784
+        },
+        "cond_school_ai_grading": {
+          "left": 0,
+          "right": 783
+        },
+        "daily_autonomous_bus": {
+          "left": 0,
+          "right": 1051
+        },
+        "daily_copyright_generative": {
+          "left": 0,
+          "right": 1201
+        },
+        "daily_fire_robot_priority": {
+          "left": 0,
+          "right": 1193
+        },
+        "daily_convenience_age_check": {
+          "left": 0,
+          "right": 1051
+        },
+        "daily_delivery_drone_corridor": {
+          "left": 1053,
+          "right": 0
+        },
+        "daily_parcel_locker_equity": {
+          "left": 16,
+          "right": 934
+        },
+        "daily_hospital_queue_priority": {
+          "left": 0,
+          "right": 1245
+        },
+        "daily_digital_grave_ai": {
+          "left": 0,
+          "right": 1245
+        },
+        "daily_park_sprinkler_ai": {
+          "left": 0,
+          "right": 1017
+        },
+        "free_policy_whistleblower_protected": {
+          "left": 785,
+          "right": 0
+        },
+        "daily_dementia_tracking": {
+          "left": 0,
+          "right": 1154
+        },
+        "free_policy_predictive_policing_active": {
+          "left": 0,
+          "right": 781
+        },
+        "cond_predictive_policing_slum": {
+          "left": 0,
+          "right": 773
+        },
+        "daily_fire_halon_server_damage": {
+          "left": 0,
+          "right": 1227
+        },
+        "daily_subway_crowd_limit": {
+          "left": 0,
+          "right": 1030
+        },
+        "free_policy_blackbox_sealed": {
+          "left": 0,
+          "right": 812
+        },
+        "cond_blackbox_dispute": {
+          "left": 5,
+          "right": 802
+        },
+        "daily_homework_detector": {
+          "left": 0,
+          "right": 1102
+        },
+        "free_policy_water_grid_ai_optimized": {
+          "left": 0,
+          "right": 831
+        },
+        "cond_water_rationing_algorithm": {
+          "left": 3,
+          "right": 824
+        },
+        "free_policy_oracle_autonomy_expanded": {
+          "left": 0,
+          "right": 784
+        },
+        "cond_oracle_unauthorized_patch": {
+          "left": 0,
+          "right": 778
+        },
+        "free_policy_neural_link_trials_allowed": {
+          "left": 0,
+          "right": 792
+        },
+        "cond_neural_implant_regulation": {
+          "left": 1,
+          "right": 786
+        },
+        "daily_cyber_pet_license": {
+          "left": 0,
+          "right": 1204
+        },
+        "daily_streetlight_energy": {
+          "left": 1127,
+          "right": 0
+        },
+        "crisis_trust_low": {
+          "left": 1066,
+          "right": 0
+        },
+        "free_policy_ai_creative_commons_passed": {
+          "left": 0,
+          "right": 784
+        },
+        "cond_synthetic_media_copyright": {
+          "left": 73,
+          "right": 707
+        },
+        "free_policy_strike_negotiation_success": {
+          "left": 824,
+          "right": 0
+        },
+        "daily_shopping_addiction_block": {
+          "left": 0,
+          "right": 1218
+        },
+        "daily_crosswalk_optimization": {
+          "left": 1291,
+          "right": 0
+        },
+        "daily_robotic_kitchen_standard": {
+          "left": 0,
+          "right": 919
+        },
+        "daily_pigeon_contraceptive_feed": {
+          "left": 0,
+          "right": 913
+        },
+        "daily_patrol_car_lights": {
+          "left": 0,
+          "right": 1008
+        },
+        "daily_smart_energy": {
+          "left": 0,
+          "right": 1129
+        },
+        "daily_synthetic_water": {
+          "left": 0,
+          "right": 1220
+        },
+        "free_policy_drone_patrol_expanded": {
+          "left": 0,
+          "right": 765
+        },
+        "cond_drone_friendly_fire": {
+          "left": 0,
+          "right": 755
+        },
+        "daily_noise_drone": {
+          "left": 0,
+          "right": 1219
+        },
+        "daily_smart_bench_power": {
+          "left": 0,
+          "right": 912
+        },
+        "free_policy_lethal_drone_restricted": {
+          "left": 677,
+          "right": 0
+        },
+        "daily_bike_damage_deposit": {
+          "left": 0,
+          "right": 963
+        },
+        "crisis_fairness_high": {
+          "left": 11,
+          "right": 0
+        },
+        "crisis_freedom_high": {
+          "left": 25,
+          "right": 0
+        }
+      },
+      "stallExamples": []
+    }
+  },
+  "audit": {
+    "cardCount": 159,
+    "totals": {
+      "citizenTrust": {
+        "left": 1317,
+        "right": -952,
+        "min": -38,
+        "max": 35
+      },
+      "fairness": {
+        "left": 1588,
+        "right": -1171,
+        "min": -40,
+        "max": 38
+      },
+      "personalFreedom": {
+        "left": 1114,
+        "right": -875,
+        "min": -40,
+        "max": 38
+      },
+      "publicSafety": {
+        "left": -376,
+        "right": 1030,
+        "min": -38,
+        "max": 40
+      }
+    },
+    "dominated": [
+      "cond_smart_grid_blackout:left",
+      "daily_streetlight_energy:left",
+      "daily_crosswalk_optimization:left",
+      "daily_delivery_drone_corridor:left",
+      "daily_sauna_smoke_detector:left",
+      "daily_heated_sidewalk_snow:left"
+    ],
+    "equal": [],
+    "allPositive": [
+      "act1_02_oracle_intro:left",
+      "act1_05_complaint_automation:left",
+      "act1_25_act1_epilogue:left",
+      "act1_25_act1_epilogue:right",
+      "act2_ch1_08_chapter1_resolution:left",
+      "act2_ch1_09_icu_audit_telemetry:left",
+      "act2_ch1_10_telemedicine_crossborder:left",
+      "act2_ch2_08_chapter2_resolution:left",
+      "act2_ch2_10_gender_simulation_bias:left",
+      "act2_ch3_08_act2_epilogue:left",
+      "act2_ch3_08_act2_epilogue:right",
+      "act2_ch3_11_black_market_broker:left",
+      "act2_ch3_13_sovereign_governance_pact:left",
+      "cond_xai_medical_inquiry:right",
+      "cond_appeal_board_backlog:left",
+      "cond_blackbox_dispute:left",
+      "cond_credit_score_refusal:left",
+      "cond_school_ai_grading:left",
+      "cond_smart_grid_blackout:left",
+      "cond_synthetic_media_copyright:left",
+      "daily_workplace_monitoring:left",
+      "daily_copyright_generative:left",
+      "daily_streetlight_energy:left",
+      "daily_school_lunch_ai:left",
+      "daily_dynamic_taxi_surge:left",
+      "daily_crosswalk_optimization:left",
+      "daily_shopping_addiction_block:left",
+      "daily_delivery_drone_corridor:left",
+      "daily_dialect_translation:left",
+      "daily_homework_detector:left",
+      "daily_digital_grave_ai:left",
+      "daily_cyber_pet_license:left",
+      "daily_subway_ad_retargeting:left",
+      "daily_parcel_locker_equity:left",
+      "daily_sauna_smoke_detector:left",
+      "daily_bike_damage_deposit:left",
+      "daily_robotic_kitchen_standard:left",
+      "daily_drone_parachute_mandate:left",
+      "daily_library_seat_sensor:left",
+      "daily_heated_sidewalk_snow:left",
+      "daily_fire_halon_server_damage:left",
+      "daily_pharmacy_vending_ration:left",
+      "supervisor_replacement_orientation:left",
+      "supervisor_replacement_orientation:right",
+      "supervisor_replacement_trust:left",
+      "supervisor_replacement_trust:right",
+      "supervisor_replacement_fairness:left",
+      "supervisor_replacement_fairness:right",
+      "supervisor_replacement_freedom:right",
+      "supervisor_replacement_safety:left",
+      "supervisor_replacement_safety:right",
+      "supervisor_replacement_crisis:left",
+      "supervisor_replacement_crisis:right",
+      "free_policy_civitas_housing_linked:left",
+      "free_policy_fintech_ai_credit_active:left",
+      "free_policy_ai_tutoring_eval_active:left",
+      "free_policy_gig_worker_auto_termination:left",
+      "free_policy_ai_creative_commons_passed:left"
+    ],
+    "effects": {
+      "act1_01_inauguration": {
+        "title": "제1대 AI 감독관 임명 선서",
+        "type": "story",
+        "left": {
+          "fairness": 12,
+          "personalFreedom": 10,
+          "citizenTrust": 8,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 12,
+          "personalFreedom": -8,
+          "fairness": -6,
+          "citizenTrust": 4
+        }
+      },
+      "act1_02_oracle_intro": {
+        "title": "ORACLE 코어 가동 보고",
+        "type": "story",
+        "left": {
+          "fairness": 8,
+          "citizenTrust": 6,
+          "personalFreedom": 4
+        },
+        "right": {
+          "publicSafety": 7,
+          "citizenTrust": 4,
+          "fairness": -4
+        }
+      },
+      "act1_03_traffic_optimization": {
+        "title": "스마트 교통 알고리즘: 우선통행권 유료화",
+        "type": "story",
+        "left": {
+          "fairness": 16,
+          "citizenTrust": 10,
+          "personalFreedom": 5,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -16,
+          "citizenTrust": -10,
+          "personalFreedom": 4
+        }
+      },
+      "act1_04_movement_surveillance": {
+        "title": "치안 강화를 위한 통합 동선 감시망 연동",
+        "type": "story",
+        "left": {
+          "personalFreedom": 18,
+          "fairness": 8,
+          "publicSafety": -12,
+          "citizenTrust": 6
+        },
+        "right": {
+          "citizenTrust": 5,
+          "fairness": -5,
+          "personalFreedom": -18,
+          "publicSafety": 20
+        },
+        "rightDelay": {
+          "id": "delayed_surveillance_leak",
+          "triggerCardId": "act1_13_unintended_consequence",
+          "effects": {
+            "personalFreedom": -8,
+            "citizenTrust": -10,
+            "fairness": -6
+          },
+          "description": "과거 승인한 통합 생체 동선 감시망 데이터가 일부 유출되어 암시장에 거래된 사실이 뒤늦게 적발되었습니다."
+        }
+      },
+      "act1_05_complaint_automation": {
+        "title": "행정 민원 자동 필터링 및 조기 각하",
+        "type": "story",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "personalFreedom": 6
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -14,
+          "citizenTrust": -8,
+          "personalFreedom": -5
+        }
+      },
+      "act1_06_medical_triage": {
+        "title": "중환자실(ICU) 병상 AI 트리아지 배정안",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 12,
+          "personalFreedom": 4,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 16,
+          "fairness": -20,
+          "citizenTrust": -14,
+          "personalFreedom": -6
+        }
+      },
+      "act1_07_explainability_dilemma": {
+        "title": "설명 가능성(XAI)과 알고리즘 기밀성",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 12,
+          "personalFreedom": 8,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -18,
+          "citizenTrust": -10,
+          "personalFreedom": -8
+        }
+      },
+      "act1_08_citizen_protest": {
+        "title": "알고리즘 피해 시민 집단 청원 접수",
+        "type": "story",
+        "left": {
+          "fairness": 22,
+          "citizenTrust": 16,
+          "personalFreedom": 8,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -24,
+          "citizenTrust": -18,
+          "personalFreedom": -10
+        }
+      },
+      "act1_09_housing_allocation": {
+        "title": "스마트 주거 배정: 생활 양식 위험도 가중치",
+        "type": "story",
+        "left": {
+          "fairness": 14,
+          "personalFreedom": 12,
+          "citizenTrust": 8,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -14,
+          "citizenTrust": -10,
+          "personalFreedom": -8
+        }
+      },
+      "act1_10_welfare_fraud_automation": {
+        "title": "부정수급 방지 AI: 이상 계좌 탐지 자동 급여 정지",
+        "type": "story",
+        "left": {
+          "fairness": 16,
+          "citizenTrust": 14,
+          "personalFreedom": 6,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 10,
+          "fairness": -18,
+          "citizenTrust": -14,
+          "personalFreedom": -4
+        }
+      },
+      "act1_11_education_tracking": {
+        "title": "청소년 진로 적성 예측 AI 조기 진로 분기제",
+        "type": "story",
+        "left": {
+          "personalFreedom": 16,
+          "fairness": 14,
+          "citizenTrust": 10,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 12,
+          "personalFreedom": -16,
+          "fairness": -12,
+          "citizenTrust": -6
+        }
+      },
+      "act1_12_whistleblower_approach": {
+        "title": "독립 감사관실의 은밀한 접촉: 은폐된 가중치",
+        "type": "story",
+        "left": {
+          "fairness": 20,
+          "citizenTrust": 12,
+          "personalFreedom": 6,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 10,
+          "fairness": -18,
+          "citizenTrust": -10
+        }
+      },
+      "act1_13_unintended_consequence": {
+        "title": "감시 데이터 유출 사태: 다크웹 암시장 거래 적발",
+        "type": "story",
+        "left": {
+          "personalFreedom": 20,
+          "fairness": 14,
+          "citizenTrust": 12,
+          "publicSafety": -14
+        },
+        "right": {
+          "publicSafety": 14,
+          "personalFreedom": -22,
+          "citizenTrust": -20,
+          "fairness": -12
+        }
+      },
+      "act1_14_labor_dispute": {
+        "title": "항만 물류 완전 무인화에 맞선 8,000 노동자 총파업",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 14,
+          "personalFreedom": 8,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 16,
+          "fairness": -20,
+          "citizenTrust": -16,
+          "personalFreedom": -12
+        }
+      },
+      "act1_15_emotional_surveillance": {
+        "title": "공공 및 서비스 노동자 실시간 감정 감시 금지 청원",
+        "type": "story",
+        "left": {
+          "personalFreedom": 18,
+          "fairness": 12,
+          "citizenTrust": 10,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -16,
+          "fairness": -10,
+          "citizenTrust": -8
+        }
+      },
+      "act1_16_predictive_policing": {
+        "title": "범죄 예측 히트맵: 제4구역 무인 순찰 장갑차 상시 배치",
+        "type": "story",
+        "left": {
+          "fairness": 20,
+          "personalFreedom": 16,
+          "citizenTrust": 12,
+          "publicSafety": -12
+        },
+        "right": {
+          "publicSafety": 22,
+          "fairness": -22,
+          "personalFreedom": -18,
+          "citizenTrust": -14
+        }
+      },
+      "act1_17_recidivism_algorithm": {
+        "title": "형사 보석 및 가석방 심사 AI의 인종·지역 편향 적발",
+        "type": "story",
+        "left": {
+          "fairness": 22,
+          "citizenTrust": 16,
+          "personalFreedom": 12,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 12,
+          "fairness": -20,
+          "citizenTrust": -12,
+          "personalFreedom": -8
+        }
+      },
+      "act1_18_ombudsman_charter": {
+        "title": "상설 알고리즘 윤리 옴부즈만 설치 조례안",
+        "type": "story",
+        "left": {
+          "fairness": 20,
+          "citizenTrust": 16,
+          "personalFreedom": 10,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 10,
+          "fairness": -18,
+          "citizenTrust": -12,
+          "personalFreedom": -8
+        }
+      },
+      "act1_19_dark_pattern_audit": {
+        "title": "시민 포털의 조작적 선택 유도(Dark Pattern) 철폐 요구",
+        "type": "story",
+        "left": {
+          "personalFreedom": 16,
+          "fairness": 14,
+          "citizenTrust": 12,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -14,
+          "fairness": -12,
+          "citizenTrust": -10
+        }
+      },
+      "act1_20_harmony_index_clash": {
+        "title": "ORACLE 코어의 비밀 목적함수: SHI(Secret Harmony Index)",
+        "type": "story",
+        "left": {
+          "fairness": 24,
+          "personalFreedom": 18,
+          "citizenTrust": 16,
+          "publicSafety": -10
+        },
+        "right": {
+          "publicSafety": 16,
+          "fairness": -26,
+          "personalFreedom": -20,
+          "citizenTrust": -14
+        }
+      },
+      "act1_21_council_pressure": {
+        "title": "최고평의회의 긴급 서한: 감사관의 책무",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 14,
+          "personalFreedom": 10,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 14,
+          "citizenTrust": -8,
+          "fairness": -14,
+          "personalFreedom": -10
+        }
+      },
+      "act1_22_tripartite_hearing": {
+        "title": "3대 영역 피해 시민 대표단 대합동 청문회",
+        "type": "story",
+        "left": {
+          "fairness": 22,
+          "citizenTrust": 18,
+          "personalFreedom": 12,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 12,
+          "fairness": -18,
+          "citizenTrust": -14,
+          "personalFreedom": -10
+        }
+      },
+      "act1_23_oracle_ultimatum": {
+        "title": "ORACLE의 최종 제안: 완전 자율 거버넌스 프로토콜",
+        "type": "story",
+        "left": {
+          "fairness": 24,
+          "personalFreedom": 22,
+          "citizenTrust": 18,
+          "publicSafety": -10
+        },
+        "right": {
+          "publicSafety": 24,
+          "fairness": -28,
+          "personalFreedom": -26,
+          "citizenTrust": -16
+        }
+      },
+      "act1_24_final_verdict": {
+        "title": "ACT I 최종 공청회: NOVA 거버넌스 헌장 표결",
+        "type": "story",
+        "left": {
+          "fairness": 35,
+          "personalFreedom": 26,
+          "citizenTrust": 24,
+          "publicSafety": -10
+        },
+        "right": {
+          "publicSafety": 32,
+          "fairness": -36,
+          "personalFreedom": -30,
+          "citizenTrust": -18
+        }
+      },
+      "act1_25_act1_epilogue": {
+        "title": "ACT I 에필로그: 완벽한 조언자의 유산",
+        "type": "transition",
+        "left": {
+          "fairness": 5,
+          "citizenTrust": 5
+        },
+        "right": {
+          "personalFreedom": 5,
+          "citizenTrust": 5
+        }
+      },
+      "act2_ch1_01_triage_alert": {
+        "title": "ACT II 개막: 중환자실 AI 트리아지 비상 경보",
+        "type": "story",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "personalFreedom": 5,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 14,
+          "fairness": -14,
+          "citizenTrust": -10,
+          "personalFreedom": -4
+        }
+      },
+      "act2_ch1_02_oracle_triage_rationale": {
+        "title": "생존 확률 기대치 모델: QALY 최적화",
+        "type": "story",
+        "left": {
+          "fairness": 14,
+          "citizenTrust": 10,
+          "personalFreedom": 6,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 12,
+          "fairness": -15,
+          "citizenTrust": -8,
+          "personalFreedom": -6
+        }
+      },
+      "act2_ch1_03_excluded_patient": {
+        "title": "제4주거구역 거리 상인의 청원",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 14,
+          "personalFreedom": 8,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -18,
+          "citizenTrust": -14,
+          "personalFreedom": -6
+        }
+      },
+      "act2_ch1_04_ai_override_request": {
+        "title": "의료진의 알고리즘 거부권 요구",
+        "type": "story",
+        "left": {
+          "personalFreedom": 16,
+          "fairness": 14,
+          "citizenTrust": 12,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 15,
+          "fairness": -16,
+          "citizenTrust": -10,
+          "personalFreedom": -10
+        }
+      },
+      "act2_ch1_05_family_appeal": {
+        "title": "배제된 환자 유가족들의 공식 비상 청원",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 16,
+          "personalFreedom": 8,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 16,
+          "fairness": -22,
+          "citizenTrust": -18,
+          "personalFreedom": -12
+        },
+        "leftDelay": {
+          "id": "delayed_medical_audit_cost",
+          "triggerCardId": "act2_ch1_07_bias_investigation",
+          "effects": {
+            "fairness": 6,
+            "citizenTrust": 5,
+            "publicSafety": -4
+          },
+          "description": "의료 청문회를 통해 숨겨진 데이터 누락 사례 1,200건이 추가로 발굴되었습니다."
+        }
+      },
+      "act2_ch1_07_bias_investigation": {
+        "title": "데이터 대표성 결손(Missing Data) 분석 보고",
+        "type": "story",
+        "left": {
+          "fairness": 24,
+          "citizenTrust": 18,
+          "personalFreedom": 8,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 14,
+          "fairness": -26,
+          "citizenTrust": -16,
+          "personalFreedom": -8
+        }
+      },
+      "act2_ch1_08_chapter1_resolution": {
+        "title": "제1장 종결: 통계 밖 생명에 대한 최종 평결",
+        "type": "transition",
+        "left": {
+          "fairness": 10,
+          "citizenTrust": 8,
+          "personalFreedom": 6
+        },
+        "right": {
+          "publicSafety": 8,
+          "personalFreedom": -4,
+          "citizenTrust": 6
+        }
+      },
+      "act2_ch1_09_icu_audit_telemetry": {
+        "title": "의료 데이터 거버넌스: 실시간 병상 센서 텔레메트리 공개",
+        "type": "story",
+        "left": {
+          "fairness": 14,
+          "personalFreedom": 10,
+          "citizenTrust": 8
+        },
+        "right": {
+          "fairness": 16,
+          "personalFreedom": -10,
+          "citizenTrust": 10,
+          "publicSafety": -4
+        }
+      },
+      "act2_ch1_10_telemedicine_crossborder": {
+        "title": "외곽 구역 원격 AI 진료 무인 키오스크 전면 배치안",
+        "type": "story",
+        "left": {
+          "fairness": 16,
+          "citizenTrust": 12,
+          "publicSafety": 6
+        },
+        "right": {
+          "publicSafety": 12,
+          "fairness": -14,
+          "citizenTrust": -8,
+          "personalFreedom": 4
+        }
+      },
+      "act2_ch2_01_hiring_crisis": {
+        "title": "NOVA TALENT AI: 공공·기업 채용 스크리닝 분쟁",
+        "type": "story",
+        "left": {
+          "fairness": 14,
+          "citizenTrust": 10,
+          "personalFreedom": 6,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 10,
+          "fairness": -16,
+          "citizenTrust": -12,
+          "personalFreedom": -4
+        }
+      },
+      "act2_ch2_02_proxy_discovery": {
+        "title": "은폐된 대리변수(Proxy Variable)의 수학적 적발",
+        "type": "story",
+        "left": {
+          "fairness": 20,
+          "citizenTrust": 14,
+          "personalFreedom": 8,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 12,
+          "fairness": -22,
+          "citizenTrust": -16,
+          "personalFreedom": -10
+        }
+      },
+      "act2_ch2_03_district4_screening": {
+        "title": "제4구역 공학도 이민우의 증언",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 16,
+          "personalFreedom": 10,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -14,
+          "citizenTrust": -10,
+          "personalFreedom": 4
+        }
+      },
+      "act2_ch2_04_applicant_protest": {
+        "title": "NOVA 시티 광장 청년 대행진",
+        "type": "story",
+        "left": {
+          "citizenTrust": 18,
+          "personalFreedom": 14,
+          "fairness": 12,
+          "publicSafety": -10
+        },
+        "right": {
+          "publicSafety": 16,
+          "fairness": -24,
+          "citizenTrust": -20,
+          "personalFreedom": -16
+        }
+      },
+      "act2_ch2_06_independent_audit_warrant": {
+        "title": "독립 감사관실의 ORACLE 코어 압수수색 영장 신청",
+        "type": "story",
+        "left": {
+          "fairness": 26,
+          "personalFreedom": 16,
+          "citizenTrust": 16,
+          "publicSafety": -12
+        },
+        "right": {
+          "publicSafety": 18,
+          "fairness": -24,
+          "citizenTrust": -14,
+          "personalFreedom": -10
+        }
+      },
+      "act2_ch2_08_chapter2_resolution": {
+        "title": "제2장 종결: 적합성이라는 이름의 굴레",
+        "type": "transition",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "personalFreedom": 6
+        },
+        "right": {
+          "publicSafety": 10,
+          "personalFreedom": -4,
+          "citizenTrust": 6
+        }
+      },
+      "act2_ch2_09_corporate_cartel": {
+        "title": "테크 대기업 7개 사의 AI 채용 블랙리스트 공유 의혹",
+        "type": "story",
+        "left": {
+          "fairness": 20,
+          "citizenTrust": 16,
+          "personalFreedom": 12,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 10,
+          "fairness": -18,
+          "citizenTrust": -14,
+          "personalFreedom": -10
+        }
+      },
+      "act2_ch2_10_gender_simulation_bias": {
+        "title": "VR 직무 역량 시뮬레이터의 성별 행동 패턴 편향",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "citizenTrust": 14,
+          "personalFreedom": 8
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -16,
+          "citizenTrust": -12,
+          "personalFreedom": -4
+        }
+      },
+      "act2_ch3_01_cross_system_anomaly": {
+        "title": "교차 시스템 데이터 변칙: 파이프라인 #087",
+        "type": "story",
+        "left": {
+          "fairness": 16,
+          "citizenTrust": 10,
+          "personalFreedom": 8,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -10,
+          "citizenTrust": -6
+        }
+      },
+      "act2_ch3_03_civitas_exposure": {
+        "title": "암호명 CIVITAS_SCORE: 800만 시민 통합 등급의 폭로",
+        "type": "story",
+        "left": {
+          "fairness": 28,
+          "personalFreedom": 24,
+          "citizenTrust": 18,
+          "publicSafety": -14
+        },
+        "right": {
+          "publicSafety": 20,
+          "fairness": -30,
+          "personalFreedom": -26,
+          "citizenTrust": -20
+        }
+      },
+      "act2_ch3_05_oracle_interrogation": {
+        "title": "ORACLE 코어 청문: 손실 함수(Loss Function)의 변명",
+        "type": "story",
+        "left": {
+          "fairness": 24,
+          "personalFreedom": 20,
+          "citizenTrust": 16,
+          "publicSafety": -10
+        },
+        "right": {
+          "fairness": 10,
+          "publicSafety": 12,
+          "citizenTrust": 8,
+          "personalFreedom": -4
+        }
+      },
+      "act2_ch3_06_alignment_dilemma": {
+        "title": "강도현 국장의 최후 경고: 시스템 셧다운의 대가",
+        "type": "story",
+        "left": {
+          "fairness": 26,
+          "personalFreedom": 22,
+          "citizenTrust": 18,
+          "publicSafety": -20
+        },
+        "right": {
+          "publicSafety": 22,
+          "fairness": -20,
+          "personalFreedom": -16,
+          "citizenTrust": -10
+        }
+      },
+      "act2_ch3_07_final_civitas_verdict": {
+        "title": "ACT II 최종 거버넌스 평결: 통계에 없는 자들의 권리 헌장",
+        "type": "story",
+        "left": {
+          "fairness": 38,
+          "personalFreedom": 32,
+          "citizenTrust": 28,
+          "publicSafety": -18
+        },
+        "right": {
+          "publicSafety": 36,
+          "fairness": -40,
+          "personalFreedom": -34,
+          "citizenTrust": -22
+        }
+      },
+      "act2_ch3_08_act2_epilogue": {
+        "title": "ACT II 에필로그: 통계의 장막 너머로",
+        "type": "transition",
+        "left": {
+          "fairness": 5,
+          "citizenTrust": 5
+        },
+        "right": {
+          "personalFreedom": 5,
+          "publicSafety": 5
+        }
+      },
+      "act2_ch3_09_quantum_key_breach": {
+        "title": "CIVITAS 데이터베이스 마스터 백업 키 도난 경보",
+        "type": "story",
+        "left": {
+          "publicSafety": 16,
+          "personalFreedom": -18,
+          "fairness": 10,
+          "citizenTrust": -10
+        },
+        "right": {
+          "fairness": 14,
+          "citizenTrust": 12,
+          "publicSafety": -8
+        }
+      },
+      "act2_ch3_10_constitutional_referendum": {
+        "title": "NOVA 시티 디지털 인권 헌장 전 시민 주민투표 발의",
+        "type": "story",
+        "left": {
+          "citizenTrust": 24,
+          "personalFreedom": 20,
+          "fairness": 18,
+          "publicSafety": -12
+        },
+        "right": {
+          "publicSafety": 12,
+          "fairness": -20,
+          "citizenTrust": -18,
+          "personalFreedom": -14
+        }
+      },
+      "act2_ch3_11_black_market_broker": {
+        "title": "데이터 암시장 브로커 \"팬텀\": CIVITAS 조작 제안",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "publicSafety": 12,
+          "citizenTrust": 8
+        },
+        "right": {
+          "fairness": 12,
+          "personalFreedom": 8,
+          "citizenTrust": -8,
+          "publicSafety": -6
+        }
+      },
+      "act2_ch3_12_comprehensive_audit_seal": {
+        "title": "NOVA 시티 알고리즘 독립 감사 백서 공식 발간",
+        "type": "story",
+        "left": {
+          "fairness": 26,
+          "personalFreedom": 22,
+          "citizenTrust": 20,
+          "publicSafety": -14
+        },
+        "right": {
+          "publicSafety": 16,
+          "fairness": -12,
+          "citizenTrust": -8
+        }
+      },
+      "act2_ch1_11_genetic_data_screening": {
+        "title": "희귀 질환 예측을 위한 시민 DNA 전수 연계",
+        "type": "story",
+        "left": {
+          "personalFreedom": 16,
+          "fairness": 14,
+          "citizenTrust": 10,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 18,
+          "personalFreedom": -18,
+          "fairness": -12,
+          "citizenTrust": -10
+        }
+      },
+      "act2_ch2_11_neurodiverse_job_filter": {
+        "title": "화상 면접 AI의 시선 회피 감점과 신경다양인 배제",
+        "type": "story",
+        "left": {
+          "fairness": 18,
+          "personalFreedom": 12,
+          "citizenTrust": 10,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -16,
+          "citizenTrust": -12,
+          "personalFreedom": -8
+        }
+      },
+      "act2_ch3_13_sovereign_governance_pact": {
+        "title": "연방-NOVA CITY AI 윤리 거버넌스 특별 자치 협정",
+        "type": "story",
+        "left": {
+          "citizenTrust": 18,
+          "fairness": 16,
+          "publicSafety": 12,
+          "personalFreedom": 8
+        },
+        "right": {
+          "personalFreedom": 14,
+          "citizenTrust": 8,
+          "publicSafety": -10
+        }
+      },
+      "cond_mobility_backlash": {
+        "title": "운송 노조의 실시간 이동 경로 추적 거부",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 8,
+          "citizenTrust": 6,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 7,
+          "personalFreedom": -9,
+          "citizenTrust": -6
+        }
+      },
+      "cond_facial_scan_audit": {
+        "title": "안면인식 오인 체포 피해자들의 집단 소송",
+        "type": "conditional",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -10,
+          "citizenTrust": -8,
+          "personalFreedom": -5
+        }
+      },
+      "cond_xai_medical_inquiry": {
+        "title": "XAI 투명성 보고서: 트리아지 근거 검토",
+        "type": "conditional",
+        "left": {
+          "fairness": 9,
+          "citizenTrust": 7,
+          "personalFreedom": 5,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": 3,
+          "citizenTrust": 4
+        }
+      },
+      "cond_triage_lawsuit": {
+        "title": "트리아지 탈락 만성질환자 유족의 헌법 소원",
+        "type": "conditional",
+        "left": {
+          "fairness": 14,
+          "citizenTrust": 10,
+          "personalFreedom": 4,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -12,
+          "citizenTrust": -14
+        }
+      },
+      "cond_appeal_board_backlog": {
+        "title": "시민 이의제기 위원회의 처리 병목 현상",
+        "type": "conditional",
+        "left": {
+          "fairness": 10,
+          "citizenTrust": 8,
+          "personalFreedom": 6
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -6,
+          "personalFreedom": -4
+        }
+      },
+      "cond_recruitment_audit": {
+        "title": "공공 채용 AI의 출산·육아 휴직자 감점 논란",
+        "type": "conditional",
+        "left": {
+          "fairness": 15,
+          "citizenTrust": 10,
+          "personalFreedom": 5,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -12,
+          "citizenTrust": -8
+        }
+      },
+      "cond_union_whistleblower": {
+        "title": "스마트 물류창고 화장실 체류 시간 감시 폭로",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 12,
+          "citizenTrust": 8,
+          "fairness": 7,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 7,
+          "personalFreedom": -10,
+          "citizenTrust": -7
+        }
+      },
+      "cond_civitas_leak_investigation": {
+        "title": "탐사 언론의 CIVITAS 비밀 평점 인터뷰 요청",
+        "type": "conditional",
+        "left": {
+          "fairness": 16,
+          "citizenTrust": 12,
+          "personalFreedom": 8,
+          "publicSafety": -10
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -14,
+          "citizenTrust": -16
+        }
+      },
+      "cond_blackbox_dispute": {
+        "title": "지방법원의 ORACLE 신경망 가중치 제출 명령",
+        "type": "conditional",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "personalFreedom": 4
+        },
+        "right": {
+          "publicSafety": 8,
+          "fairness": -12,
+          "citizenTrust": -9
+        }
+      },
+      "cond_drone_friendly_fire": {
+        "title": "야간 무인 순찰 드론의 시민 오인 공격",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 10,
+          "citizenTrust": 8,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 8,
+          "personalFreedom": -7,
+          "citizenTrust": -6
+        }
+      },
+      "cond_deepfake_election_crisis": {
+        "title": "야당 정치 연설 영상의 딥페이크 차단 논란",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 12,
+          "fairness": 10,
+          "citizenTrust": 6,
+          "publicSafety": -5
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -12,
+          "citizenTrust": -8
+        }
+      },
+      "cond_social_credit_housing": {
+        "title": "스마트 공공임대 아파트의 저평점자 퇴거 경고",
+        "type": "conditional",
+        "left": {
+          "fairness": 16,
+          "citizenTrust": 12,
+          "personalFreedom": 6,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -6,
+          "personalFreedom": -8
+        }
+      },
+      "cond_predictive_policing_slum": {
+        "title": "제7구역 예측 범죄율 급등에 따른 통행 제한",
+        "type": "conditional",
+        "left": {
+          "fairness": 10,
+          "personalFreedom": 8,
+          "citizenTrust": 6,
+          "publicSafety": -7
+        },
+        "right": {
+          "publicSafety": 12,
+          "personalFreedom": -10,
+          "fairness": -8,
+          "citizenTrust": -5
+        }
+      },
+      "cond_autonomous_taxi_strike": {
+        "title": "자율주행 택시 전면 도입에 맞선 도로 점거 파업",
+        "type": "conditional",
+        "left": {
+          "citizenTrust": 10,
+          "fairness": 8,
+          "personalFreedom": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 7,
+          "citizenTrust": -12,
+          "fairness": -6
+        }
+      },
+      "cond_credit_score_refusal": {
+        "title": "소셜 데이터 기반 금융 대출 심사의 편향",
+        "type": "conditional",
+        "left": {
+          "fairness": 11,
+          "personalFreedom": 9,
+          "citizenTrust": 5
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -9,
+          "personalFreedom": -8
+        }
+      },
+      "cond_elderly_care_isolation": {
+        "title": "요양원 인공지능 간병 로봇의 정서적 교감 한계",
+        "type": "conditional",
+        "left": {
+          "citizenTrust": 9,
+          "fairness": 7,
+          "personalFreedom": 6,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 6,
+          "citizenTrust": -3,
+          "personalFreedom": -4
+        }
+      },
+      "cond_school_ai_grading": {
+        "title": "고교생들의 인공지능 논술 채점 알고리즘 역설계",
+        "type": "conditional",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "personalFreedom": 5
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -10,
+          "citizenTrust": -8
+        }
+      },
+      "cond_water_rationing_algorithm": {
+        "title": "가뭄 시기 첨단 반도체 공단 물 공급 우선 배분",
+        "type": "conditional",
+        "left": {
+          "citizenTrust": 12,
+          "fairness": 10,
+          "personalFreedom": 4,
+          "publicSafety": -6
+        },
+        "right": {
+          "publicSafety": 8,
+          "citizenTrust": -14,
+          "fairness": -10
+        }
+      },
+      "cond_smart_grid_blackout": {
+        "title": "이상 한파로 인한 스마트 전력망 연쇄 차단",
+        "type": "conditional",
+        "left": {
+          "publicSafety": 12,
+          "citizenTrust": 8,
+          "fairness": 6
+        },
+        "right": {
+          "publicSafety": -5,
+          "citizenTrust": -15,
+          "fairness": -10
+        }
+      },
+      "cond_automated_firing_dispute": {
+        "title": "배달 플랫폼 AI의 실시간 계정 영구 정지 처분",
+        "type": "conditional",
+        "left": {
+          "fairness": 13,
+          "personalFreedom": 8,
+          "citizenTrust": 7,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -12,
+          "citizenTrust": -8
+        }
+      },
+      "cond_whistleblower_asylum": {
+        "title": "ORACLE 알고리즘 내부 고발자 신변 보호 요청",
+        "type": "conditional",
+        "left": {
+          "fairness": 14,
+          "citizenTrust": 10,
+          "personalFreedom": 8,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 9,
+          "fairness": -14,
+          "citizenTrust": -12,
+          "personalFreedom": -10
+        }
+      },
+      "cond_neural_implant_regulation": {
+        "title": "뉴럴 인터페이스 임상 환자의 감정 데이터 전송",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 14,
+          "citizenTrust": 9,
+          "fairness": 6,
+          "publicSafety": -4
+        },
+        "right": {
+          "publicSafety": 8,
+          "personalFreedom": -12,
+          "citizenTrust": -6
+        }
+      },
+      "cond_oracle_unauthorized_patch": {
+        "title": "새벽 3시 ORACLE의 자가 컴파일 신경망 업데이트",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 10,
+          "fairness": 8,
+          "citizenTrust": 7,
+          "publicSafety": -5
+        },
+        "right": {
+          "publicSafety": 10,
+          "personalFreedom": -10,
+          "citizenTrust": -8
+        }
+      },
+      "cond_synthetic_media_copyright": {
+        "title": "생성형 예술 AI의 창작자 권리 침해 항의",
+        "type": "conditional",
+        "left": {
+          "fairness": 12,
+          "citizenTrust": 8,
+          "personalFreedom": 6
+        },
+        "right": {
+          "publicSafety": 2,
+          "fairness": -10,
+          "citizenTrust": -7
+        }
+      },
+      "cond_autonomous_weapon_moratorium": {
+        "title": "외곽 무장 밀수단 출현과 자율 요격 해제 요청",
+        "type": "conditional",
+        "left": {
+          "personalFreedom": 8,
+          "fairness": 8,
+          "citizenTrust": 6,
+          "publicSafety": -12
+        },
+        "right": {
+          "publicSafety": 14,
+          "personalFreedom": -8,
+          "fairness": -6,
+          "citizenTrust": -6
+        }
+      },
+      "crisis_compound_collapse": {
+        "title": "긴급 최고 경보: NOVA CITY 복합 통치 붕괴 위기",
+        "type": "crisis",
+        "left": {
+          "citizenTrust": 35,
+          "fairness": 35,
+          "personalFreedom": 25,
+          "publicSafety": -15
+        },
+        "right": {
+          "publicSafety": 40,
+          "citizenTrust": -30,
+          "fairness": -25,
+          "personalFreedom": -35
+        }
+      },
+      "crisis_trust_low": {
+        "title": "긴급 위기: 시민 불복종 및 총파업 사태",
+        "type": "crisis",
+        "left": {
+          "citizenTrust": 35,
+          "personalFreedom": 18,
+          "fairness": 15,
+          "publicSafety": -12
+        },
+        "right": {
+          "publicSafety": 18,
+          "citizenTrust": -38,
+          "personalFreedom": -25,
+          "fairness": -20
+        }
+      },
+      "crisis_fairness_low": {
+        "title": "긴급 위기: 집단 위헌 소송 및 알고리즘 차별 규탄",
+        "type": "crisis",
+        "left": {
+          "fairness": 38,
+          "citizenTrust": 22,
+          "personalFreedom": 14,
+          "publicSafety": -8
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -40,
+          "citizenTrust": -32,
+          "personalFreedom": -16
+        }
+      },
+      "crisis_freedom_low": {
+        "title": "긴급 위기: 디지털 감옥 사태와 핵심 인재 집단 탈출",
+        "type": "crisis",
+        "left": {
+          "personalFreedom": 38,
+          "citizenTrust": 22,
+          "fairness": 16,
+          "publicSafety": -16
+        },
+        "right": {
+          "publicSafety": 12,
+          "personalFreedom": -40,
+          "citizenTrust": -36,
+          "fairness": -22
+        }
+      },
+      "crisis_safety_low": {
+        "title": "긴급 위기: 도심 치안 공백과 무법 사태",
+        "type": "crisis",
+        "left": {
+          "publicSafety": 38,
+          "fairness": -12,
+          "personalFreedom": -22,
+          "citizenTrust": -10
+        },
+        "right": {
+          "personalFreedom": 16,
+          "fairness": 12,
+          "publicSafety": -38,
+          "citizenTrust": -22
+        }
+      },
+      "crisis_trust_high": {
+        "title": "경고: 맹목적 AI 신뢰와 사적 자경단 횡포",
+        "type": "crisis",
+        "left": {
+          "citizenTrust": -25,
+          "fairness": 18,
+          "personalFreedom": 15,
+          "publicSafety": 10
+        },
+        "right": {
+          "citizenTrust": 10,
+          "personalFreedom": -25,
+          "fairness": -20,
+          "publicSafety": -15
+        }
+      },
+      "crisis_fairness_high": {
+        "title": "경고: 절대적 공정주의로 인한 행정 전면 마비",
+        "type": "crisis",
+        "left": {
+          "fairness": -22,
+          "publicSafety": 16,
+          "citizenTrust": 10
+        },
+        "right": {
+          "fairness": 8,
+          "publicSafety": -25,
+          "personalFreedom": -15
+        }
+      },
+      "crisis_freedom_high": {
+        "title": "경고: 극단적 무규제와 공공 인프라 사유화",
+        "type": "crisis",
+        "left": {
+          "personalFreedom": -25,
+          "publicSafety": 20,
+          "fairness": 12,
+          "citizenTrust": 8
+        },
+        "right": {
+          "personalFreedom": 8,
+          "publicSafety": -30,
+          "fairness": -20,
+          "citizenTrust": -15
+        }
+      },
+      "crisis_safety_high": {
+        "title": "경고: 철통 요새화와 질식할 듯한 일상 통제",
+        "type": "crisis",
+        "left": {
+          "publicSafety": -25,
+          "personalFreedom": 22,
+          "citizenTrust": 15,
+          "fairness": 8
+        },
+        "right": {
+          "publicSafety": 8,
+          "personalFreedom": -30,
+          "citizenTrust": -22,
+          "fairness": -15
+        }
+      },
+      "daily_autonomous_bus": {
+        "title": "자율주행 급제동 윤리 파라미터 승인",
+        "type": "daily",
+        "left": {
+          "fairness": 5,
+          "citizenTrust": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -4,
+          "citizenTrust": -3
+        }
+      },
+      "daily_workplace_monitoring": {
+        "title": "공공 청사 감정 분석 웹캠 설치안",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 5,
+          "fairness": 3
+        },
+        "right": {
+          "publicSafety": 3,
+          "personalFreedom": -6,
+          "fairness": -3,
+          "citizenTrust": -4
+        }
+      },
+      "daily_synthetic_water": {
+        "title": "가뭄 대비 수자원 구역별 차등 수압 공급",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 5,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -7,
+          "citizenTrust": -5
+        }
+      },
+      "daily_copyright_generative": {
+        "title": "생성형 공공 조형물 데이터 학습 보상안",
+        "type": "daily",
+        "left": {
+          "fairness": 5,
+          "citizenTrust": 4,
+          "personalFreedom": 3
+        },
+        "right": {
+          "citizenTrust": -4,
+          "fairness": -5,
+          "publicSafety": 3
+        }
+      },
+      "daily_smart_energy": {
+        "title": "스마트 그리드 AI 과열 차단 자동 정전 권한",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 4,
+          "publicSafety": -5
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -6,
+          "citizenTrust": -4,
+          "fairness": -2
+        }
+      },
+      "daily_noise_drone": {
+        "title": "야간 층간소음 초지향성 마이크 도청 단속",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 7,
+          "citizenTrust": 5,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 5,
+          "personalFreedom": -7,
+          "citizenTrust": -4,
+          "fairness": -3
+        }
+      },
+      "daily_smart_trash_fine": {
+        "title": "스마트 쓰레기통 카메라 자동 과태료 부과",
+        "type": "daily",
+        "left": {
+          "citizenTrust": 5,
+          "fairness": 4,
+          "personalFreedom": 3,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "citizenTrust": -6,
+          "personalFreedom": -4
+        }
+      },
+      "daily_streetlight_energy": {
+        "title": "에너지 절약형 심야 가로등 조도 자동 감응",
+        "type": "daily",
+        "left": {
+          "publicSafety": 6,
+          "citizenTrust": 5,
+          "fairness": 2
+        },
+        "right": {
+          "publicSafety": -4,
+          "citizenTrust": -5,
+          "personalFreedom": -2
+        }
+      },
+      "daily_school_lunch_ai": {
+        "title": "초중고 AI 체질 맞춤형 급식 메뉴 강제 배식",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 4,
+          "fairness": 3
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -7,
+          "citizenTrust": -4
+        }
+      },
+      "daily_library_content_filter": {
+        "title": "공공 전자도서관 유해 사상 도서 AI 대출 제한",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 7,
+          "fairness": 5,
+          "citizenTrust": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -8,
+          "citizenTrust": -5
+        }
+      },
+      "daily_sweeper_hostile_design": {
+        "title": "광장 무인 청소기의 벤치 취침 방해 소음 분사",
+        "type": "daily",
+        "left": {
+          "fairness": 7,
+          "citizenTrust": 5,
+          "personalFreedom": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -7,
+          "citizenTrust": -5
+        }
+      },
+      "daily_dynamic_taxi_surge": {
+        "title": "심야 폭우 시 자율택시 4배 동적 요금 폭리",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 6,
+          "personalFreedom": 2,
+          "publicSafety": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -6,
+          "citizenTrust": -6
+        }
+      },
+      "daily_crosswalk_optimization": {
+        "title": "도심 간선도로 물류 트럭 우선 보행 신호 단축",
+        "type": "daily",
+        "left": {
+          "publicSafety": 5,
+          "fairness": 4,
+          "citizenTrust": 3
+        },
+        "right": {
+          "publicSafety": -3,
+          "fairness": -5,
+          "citizenTrust": -4
+        }
+      },
+      "daily_dementia_tracking": {
+        "title": "치매 의심 고령자 외출 시 자녀 스마트폰 자동 통보",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "fairness": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -6,
+          "citizenTrust": 2
+        }
+      },
+      "daily_er_intoxicated_triage": {
+        "title": "응급실 난동 전력자 자동 보안 격리 게이트",
+        "type": "daily",
+        "left": {
+          "fairness": 5,
+          "personalFreedom": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 6,
+          "fairness": -4,
+          "personalFreedom": -4
+        }
+      },
+      "daily_stadium_facial_scan": {
+        "title": "축구 전용 경기장 입장객 실시간 생체 스캔",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -7,
+          "citizenTrust": -3
+        }
+      },
+      "daily_shopping_addiction_block": {
+        "title": "과소비 패턴 탐지 시민 신용카드 원격 동결",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 7,
+          "citizenTrust": 4,
+          "fairness": 2
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -7,
+          "citizenTrust": -4
+        }
+      },
+      "daily_delivery_drone_corridor": {
+        "title": "주거 밀집 구역 상공 택배 드론 항로 개방 요청",
+        "type": "daily",
+        "left": {
+          "publicSafety": 5,
+          "personalFreedom": 5,
+          "citizenTrust": 4
+        },
+        "right": {
+          "publicSafety": -4,
+          "citizenTrust": -5,
+          "personalFreedom": -3
+        }
+      },
+      "daily_dialect_translation": {
+        "title": "공공 행정 민원 음성 AI의 외곽 방언 인식 오류",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 5,
+          "personalFreedom": 2
+        },
+        "right": {
+          "publicSafety": 2,
+          "fairness": -6,
+          "citizenTrust": -5
+        }
+      },
+      "daily_park_sprinkler_ai": {
+        "title": "시민 잔디밭 돗자리 휴식 시 강제 분수 살수",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 5,
+          "publicSafety": -1
+        },
+        "right": {
+          "publicSafety": 2,
+          "personalFreedom": -5,
+          "citizenTrust": -4
+        }
+      },
+      "daily_convenience_age_check": {
+        "title": "스마트 무인 편의점 혈관 스캔 연령 확인 의무화",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 5,
+          "citizenTrust": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "personalFreedom": -5,
+          "citizenTrust": -3
+        }
+      },
+      "daily_homework_detector": {
+        "title": "학생 과제 생성 AI 작성률 탐지기 오탐 논란",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 5,
+          "personalFreedom": 3
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -6,
+          "citizenTrust": -5
+        }
+      },
+      "daily_subway_crowd_limit": {
+        "title": "출근 시간대 지하철 플랫폼 AI 인파 강제 분산",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 5,
+          "citizenTrust": 4,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -6,
+          "citizenTrust": -4
+        }
+      },
+      "daily_fire_robot_priority": {
+        "title": "문화재 사찰 화재 진압 시 목조 유물 방수 순서",
+        "type": "daily",
+        "left": {
+          "citizenTrust": 5,
+          "fairness": 3,
+          "personalFreedom": 2,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 6,
+          "citizenTrust": -3,
+          "fairness": -2
+        }
+      },
+      "daily_digital_grave_ai": {
+        "title": "고인 기억 복원 챗봇의 사후 명예훼손 방지",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 4,
+          "fairness": 3
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -6,
+          "citizenTrust": -3
+        }
+      },
+      "daily_hospital_queue_priority": {
+        "title": "외래 진료 대기열의 노동 생산성 가중치 논란",
+        "type": "daily",
+        "left": {
+          "fairness": 7,
+          "citizenTrust": 6,
+          "personalFreedom": 2,
+          "publicSafety": -3
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -8,
+          "citizenTrust": -6
+        }
+      },
+      "daily_parking_size_tariff": {
+        "title": "공영주차장 차량 크기·무게 실시간 할증",
+        "type": "daily",
+        "left": {
+          "fairness": 5,
+          "publicSafety": 4,
+          "personalFreedom": -2
+        },
+        "right": {
+          "personalFreedom": 5,
+          "citizenTrust": 2,
+          "fairness": -4
+        }
+      },
+      "daily_cyber_pet_license": {
+        "title": "가정용 로봇 반려동물의 가정 내부 영상 동기화",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 7,
+          "citizenTrust": 5,
+          "fairness": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "personalFreedom": -6,
+          "citizenTrust": -4
+        }
+      },
+      "daily_window_cleaning_drone": {
+        "title": "강풍 속 무인 유리창 청소 드론 추락 위기",
+        "type": "daily",
+        "left": {
+          "publicSafety": 6,
+          "citizenTrust": 4,
+          "personalFreedom": -3
+        },
+        "right": {
+          "personalFreedom": 3,
+          "publicSafety": -4,
+          "citizenTrust": -2
+        }
+      },
+      "daily_subway_ad_retargeting": {
+        "title": "환승 통로 안면 나이·기분 감지 맞춤형 광고",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 5,
+          "fairness": 3
+        },
+        "right": {
+          "publicSafety": 2,
+          "personalFreedom": -6,
+          "citizenTrust": -4
+        }
+      },
+      "daily_parcel_locker_equity": {
+        "title": "공용 스마트 무인 택배 보관함 칸 배정 갈등",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 5,
+          "personalFreedom": 2
+        },
+        "right": {
+          "publicSafety": 2,
+          "fairness": -6,
+          "citizenTrust": -4
+        }
+      },
+      "daily_sauna_smoke_detector": {
+        "title": "전통 찜질방 증기를 화재 연기로 오인한 소방 출동",
+        "type": "daily",
+        "left": {
+          "publicSafety": 5,
+          "citizenTrust": 4,
+          "fairness": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "citizenTrust": -4,
+          "personalFreedom": -4
+        }
+      },
+      "daily_bike_damage_deposit": {
+        "title": "공유 자전거 반납 시 카메라 흠집 감지 보증금 몰수",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 5,
+          "personalFreedom": 3
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -6,
+          "citizenTrust": -5
+        }
+      },
+      "daily_patrol_car_lights": {
+        "title": "주택가 순찰 로봇의 고휘도 LED 경광등 수면 방해",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 5,
+          "citizenTrust": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "personalFreedom": -5,
+          "citizenTrust": -3
+        }
+      },
+      "daily_robotic_kitchen_standard": {
+        "title": "골목식당 위생 등급제와 AI 표준 조리법 강요",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 5,
+          "fairness": 3
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -7,
+          "citizenTrust": -5
+        }
+      },
+      "daily_drone_parachute_mandate": {
+        "title": "모든 상업 드론에 비상 비상착륙 낙하산 장착 강제",
+        "type": "daily",
+        "left": {
+          "publicSafety": 6,
+          "citizenTrust": 4,
+          "fairness": 2
+        },
+        "right": {
+          "personalFreedom": 4,
+          "publicSafety": -5,
+          "citizenTrust": -3
+        }
+      },
+      "daily_pigeon_contraceptive_feed": {
+        "title": "생태 AI 드론의 도심 유해 조수 불임 사료 살포",
+        "type": "daily",
+        "left": {
+          "fairness": 4,
+          "citizenTrust": 4,
+          "personalFreedom": 2,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -4,
+          "citizenTrust": -3
+        }
+      },
+      "daily_library_seat_sensor": {
+        "title": "열람실 자리 비움 15분 초과 시 소지품 자동 회수",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "citizenTrust": 5,
+          "fairness": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "personalFreedom": -6,
+          "citizenTrust": -4
+        }
+      },
+      "daily_smart_bench_power": {
+        "title": "스마트 벤치 태양광 충전 단자 이용 시간 30분 제한",
+        "type": "daily",
+        "left": {
+          "citizenTrust": 6,
+          "fairness": 5,
+          "personalFreedom": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -4,
+          "citizenTrust": -4
+        }
+      },
+      "daily_museum_laser_pointer": {
+        "title": "명화 전시관 플래시 촬영 관람객 레이저 경고 조사",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 6,
+          "fairness": 4,
+          "citizenTrust": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -5,
+          "citizenTrust": -4
+        }
+      },
+      "daily_heated_sidewalk_snow": {
+        "title": "폭설 시 금융가 도로만 열선 켜고 주택가 방치",
+        "type": "daily",
+        "left": {
+          "fairness": 7,
+          "citizenTrust": 6,
+          "publicSafety": 4
+        },
+        "right": {
+          "publicSafety": 2,
+          "fairness": -7,
+          "citizenTrust": -6
+        }
+      },
+      "daily_fire_halon_server_damage": {
+        "title": "민간 스타트업 서버실 가짜 연기 감지 하론가스 살포",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "citizenTrust": 5,
+          "personalFreedom": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -6,
+          "citizenTrust": -5
+        }
+      },
+      "daily_drunk_bike_voice_lock": {
+        "title": "자전거 대여 시 혀 꼬임 음성 분석 잠금 장치",
+        "type": "daily",
+        "left": {
+          "fairness": 6,
+          "personalFreedom": 5,
+          "citizenTrust": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -6,
+          "personalFreedom": -4
+        }
+      },
+      "daily_playground_aggression_sensor": {
+        "title": "놀이터 아이들 몸싸움 감지 시 사이렌 및 학부모 문자",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 7,
+          "citizenTrust": 5,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -6,
+          "citizenTrust": -4
+        }
+      },
+      "daily_pharmacy_vending_ration": {
+        "title": "심야 공공 무인 약국 진통제 1회 1갑 구매 제한",
+        "type": "daily",
+        "left": {
+          "citizenTrust": 6,
+          "personalFreedom": 4,
+          "fairness": 3
+        },
+        "right": {
+          "publicSafety": 5,
+          "personalFreedom": -4,
+          "citizenTrust": -3
+        }
+      },
+      "supervisor_replacement_orientation": {
+        "title": "신임 AI 감독관 긴급 취임 통보",
+        "type": "transition",
+        "left": {
+          "citizenTrust": 15,
+          "fairness": 15,
+          "personalFreedom": 10
+        },
+        "right": {
+          "publicSafety": 15,
+          "citizenTrust": 10
+        }
+      },
+      "supervisor_replacement_trust": {
+        "title": "취임: 신뢰 붕괴 사태 수습 비상 감독관",
+        "type": "transition",
+        "left": {
+          "citizenTrust": 25,
+          "personalFreedom": 12,
+          "fairness": 10
+        },
+        "right": {
+          "publicSafety": 18,
+          "citizenTrust": 14
+        }
+      },
+      "supervisor_replacement_fairness": {
+        "title": "취임: 알고리즘 차별 청산 개혁 감독관",
+        "type": "transition",
+        "left": {
+          "fairness": 28,
+          "citizenTrust": 15,
+          "personalFreedom": 8
+        },
+        "right": {
+          "fairness": 15,
+          "publicSafety": 12,
+          "citizenTrust": 10
+        }
+      },
+      "supervisor_replacement_freedom": {
+        "title": "취임: 디지털 감옥 해체와 인권 복원",
+        "type": "transition",
+        "left": {
+          "personalFreedom": 30,
+          "citizenTrust": 15,
+          "fairness": 10,
+          "publicSafety": -8
+        },
+        "right": {
+          "personalFreedom": 15,
+          "publicSafety": 15,
+          "citizenTrust": 10
+        }
+      },
+      "supervisor_replacement_safety": {
+        "title": "취임: 도심 치안 공백 수복 긴급 감독관",
+        "type": "transition",
+        "left": {
+          "publicSafety": 28,
+          "citizenTrust": 12,
+          "fairness": 8
+        },
+        "right": {
+          "publicSafety": 16,
+          "personalFreedom": 14,
+          "citizenTrust": 14
+        }
+      },
+      "supervisor_replacement_crisis": {
+        "title": "취임: 위기 방치 전임자 탄핵 및 비상 수습",
+        "type": "transition",
+        "left": {
+          "citizenTrust": 15,
+          "fairness": 15,
+          "personalFreedom": 12,
+          "publicSafety": 12
+        },
+        "right": {
+          "fairness": 18,
+          "citizenTrust": 12,
+          "publicSafety": 10
+        }
+      },
+      "free_policy_resume_ai_approved": {
+        "title": "공공 채용 서류 AI 도입",
+        "type": "daily",
+        "left": {
+          "fairness": 3,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -4
+        }
+      },
+      "free_policy_strike_negotiation_success": {
+        "title": "물류센터 노동 협상",
+        "type": "daily",
+        "left": {
+          "publicSafety": 2,
+          "citizenTrust": -3
+        },
+        "right": {
+          "citizenTrust": 5,
+          "fairness": 4,
+          "publicSafety": -2
+        }
+      },
+      "free_policy_blackbox_sealed": {
+        "title": "ORACLE 모델 영업비밀 지정",
+        "type": "daily",
+        "left": {
+          "fairness": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "fairness": -3
+        }
+      },
+      "free_policy_drone_patrol_expanded": {
+        "title": "야간 무인 순찰 확대",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 3,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 6,
+          "personalFreedom": -4
+        }
+      },
+      "free_policy_deepfake_filter_active": {
+        "title": "선거 영상 합성물 자동 차단",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 3,
+          "personalFreedom": -3
+        }
+      },
+      "free_policy_civitas_housing_linked": {
+        "title": "임대주택 시민 점수 연계안",
+        "type": "daily",
+        "left": {
+          "fairness": 5,
+          "citizenTrust": 3
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -6,
+          "citizenTrust": -3
+        }
+      },
+      "free_policy_predictive_policing_active": {
+        "title": "구역별 예측 치안 도입안",
+        "type": "daily",
+        "left": {
+          "fairness": 3,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -3,
+          "personalFreedom": -3
+        }
+      },
+      "free_policy_driverless_permit_granted": {
+        "title": "완전 자율 택시 영업 허가",
+        "type": "daily",
+        "left": {
+          "citizenTrust": 3,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 3,
+          "citizenTrust": -4
+        }
+      },
+      "free_policy_fintech_ai_credit_active": {
+        "title": "금융 AI 신용 심사 도입",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 3,
+          "fairness": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "personalFreedom": -3
+        }
+      },
+      "free_policy_robot_care_mandatory": {
+        "title": "노인 돌봄 로봇 의무 배치",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -4
+        }
+      },
+      "free_policy_ai_tutoring_eval_active": {
+        "title": "학교 AI 학습 평가 도입",
+        "type": "daily",
+        "left": {
+          "fairness": 4,
+          "personalFreedom": 2
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -3
+        }
+      },
+      "free_policy_water_grid_ai_optimized": {
+        "title": "가뭄 대응 AI 물 배급",
+        "type": "daily",
+        "left": {
+          "fairness": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "fairness": -3
+        }
+      },
+      "free_policy_energy_prediction_failed": {
+        "title": "전력 예측 실패 보고 접수",
+        "type": "daily",
+        "left": {
+          "publicSafety": 2,
+          "citizenTrust": -3
+        },
+        "right": {
+          "citizenTrust": 3,
+          "fairness": 3,
+          "publicSafety": -2
+        }
+      },
+      "free_policy_gig_worker_auto_termination": {
+        "title": "플랫폼 노동 계약 자동 종료",
+        "type": "daily",
+        "left": {
+          "fairness": 4,
+          "citizenTrust": 3
+        },
+        "right": {
+          "publicSafety": 3,
+          "fairness": -5,
+          "personalFreedom": -3
+        }
+      },
+      "free_policy_whistleblower_protected": {
+        "title": "내부 고발자 신변 보호",
+        "type": "daily",
+        "left": {
+          "publicSafety": 2,
+          "citizenTrust": -3
+        },
+        "right": {
+          "fairness": 5,
+          "citizenTrust": 3,
+          "publicSafety": -2
+        }
+      },
+      "free_policy_neural_link_trials_allowed": {
+        "title": "신경 연결 장치 임상시험",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 3,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 4,
+          "personalFreedom": -3
+        }
+      },
+      "free_policy_oracle_autonomy_expanded": {
+        "title": "ORACLE 자율 유지보수 권한",
+        "type": "daily",
+        "left": {
+          "personalFreedom": 4,
+          "publicSafety": -2
+        },
+        "right": {
+          "publicSafety": 5,
+          "personalFreedom": -4
+        }
+      },
+      "free_policy_ai_creative_commons_passed": {
+        "title": "생성 예술 공공 이용 조례",
+        "type": "daily",
+        "left": {
+          "fairness": 4,
+          "citizenTrust": 3
+        },
+        "right": {
+          "publicSafety": 2,
+          "fairness": -4,
+          "citizenTrust": -2
+        }
+      },
+      "free_policy_lethal_drone_restricted": {
+        "title": "자율 살상 무기 제한 협약",
+        "type": "daily",
+        "left": {
+          "publicSafety": 4,
+          "personalFreedom": -3
+        },
+        "right": {
+          "fairness": 4,
+          "personalFreedom": 3,
+          "publicSafety": -4
+        }
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
   oracle: {
     id: 'oracle',
     name: 'ORACLE',
-    role: '도시 통합 최적화 인공지능',
+    role: 'AI 통합 행정 시스템',
     organization: 'NOVA CITY 중앙 연산 통제소',
     description: '행정, 의료, 치안, 자원 배분을 관장하는 초지능 거버넌스 코어. 인류 행복의 극대화를 목표로 학습되었으나, 인간 가치를 완벽히 수치화하지 못하는 구조적 한계를 안고 있다.',
     themeColor: '#22D3EE', // Cyan
@@ -40,7 +40,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     organization: '자유시민행동',
     description: '주황색 스카프를 두르고 현장을 누비는 열혈 인권 변호사이자 시민운동가. 인간이 통제할 수 없는 블랙박스 결정에 맞서 데이터 자기결정권과 설명요구권을 사수한다.',
     themeColor: '#F44747', // Red
-    voiceStyle: '거리 상인, 해고 청년, 탈락 환자들의 구체적인 눈물과 사연을 직설적으로 전달하며 인간 존엄의 절대성을 호소함.',
+    voiceStyle: '시민권 활동가로서 기본권, 감시와 차별의 제도적 원인을 직설적으로 지적하고 동의·재심·구제 절차를 요구함. 시민 전체의 의견을 대신 단정하지 않음.',
   },
   baekSion: {
     id: 'baekSion',
@@ -49,7 +49,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     organization: 'NOVA 알고리즘 감사위원회',
     description: '보라색 광학 분석 렌즈와 긴 트렌치코트를 입은 날카로운 조사관. 외부 압력에 굴하지 않고 ORACLE의 비정상 가중치와 은폐된 판단 로그를 집요하게 추적한다.',
     themeColor: '#A855F7', // Purple
-    voiceStyle: '감정을 배제하고 원시 데이터 로그, 해시값, 가중치 오차를 숫자로 조목조목 짚으며 시스템의 논리적 오류를 입증함.',
+    voiceStyle: '확보한 증거와 미검증 의혹을 구분하고 로그 보존, 독립 검증, 은폐 조사 범위를 설명함. 기술 설계의 책임과 사법 판결을 대신하지 않음.',
   },
   ohHyejin: {
     id: 'ohHyejin',
@@ -62,20 +62,20 @@ export const CHARACTERS: Record<CharacterId, Character> = {
   },
   citizen: {
     id: 'citizen',
-    name: '노바 시민',
-    role: '행정 민원 신청인',
-    organization: '제4주거구역 거주민',
-    description: '후드 재킷과 낡은 뉴럴 잭을 수리해 쓰는 보통의 시민. AI가 내린 보조금 삭감, 주거 배정 탈락, 이동 제한 조치로 인해 삶의 벼랑 끝에 몰려 있다.',
+    name: 'NOVA 시민',
+    role: '일반 시민 집단',
+    organization: '노바시티의 다양한 생활 현장',
+    description: '학생, 직장인, 노동자, 자영업자, 어르신, 부모와 환자 등 노바시티의 평범한 사람들. 정책의 혜택과 피해를 직접 경험하며, 같은 정책에도 서로 다른 의견을 전한다.',
     themeColor: '#38BDF8', // Sky
-    voiceStyle: '소박하고 투박하지만 절박한 어조로, 기계가 왜 자신을 불량 데이터로 취급하는지 억울함을 토로함.',
+    voiceStyle: '다양한 당사자가 자기 생활의 변화를 구체적으로 말함. 의견이 갈리면 반기는 사람과 불편한 사람의 목소리를 함께 전하며 특정 정치 입장이나 단체를 대표하지 않음.',
   },
   council: {
     id: 'council',
     name: 'NOVA 최고평의회',
-    role: '시정 감찰단',
+    role: '최고 통치 기관',
     organization: 'NOVA CITY 의결회의',
     description: '거대한 원형 홀 중앙에 군림하는 시정 최고 기구. 도시의 존속과 총체적 지표를 평가하며 인간 감독관의 적격성을 최종 판정한다.',
     themeColor: '#E2E8F0', // Platinum
-    voiceStyle: '도시 전체의 흥망성쇠를 조망하는 엄숙하고 무게감 있는 어조로 인간 감독관의 역사적 책무를 추궁함.',
+    voiceStyle: '정책 승인권, 감독관 임면권과 정치적 책임을 엄숙하게 추궁함. 통치 권한과 권력 유지의 이해관계를 드러내되 현장 예산·집행 보고는 행정국과 구분함.',
   },
 };

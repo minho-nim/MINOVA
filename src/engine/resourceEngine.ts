@@ -9,8 +9,8 @@ export const RESOURCE_BOUNDS = {
   MIN: 0,
   MAX: 100,
   INITIAL: 50,
-  CRISIS_LOW: 10,   // 자원 10 이하: 위기 카드 등장
-  WARNING_LOW: 20,  // 자원 20 이하: 경고 상태
+  CRISIS_LOW: 10, // 자원 10 이하: 위기 카드 등장
+  WARNING_LOW: 20, // 자원 20 이하: 경고 상태
 };
 
 export const RESOURCE_ORDER: ResourceId[] = [
@@ -67,8 +67,10 @@ export function getResourceStatus(value: number): {
   level: 'critical-low' | 'warning-low' | 'stable' | 'optimal';
   text: string;
 } {
-  if (value <= RESOURCE_BOUNDS.CRISIS_LOW) return { level: 'critical-low', text: '위기 상태 (10 이하)' };
-  if (value <= RESOURCE_BOUNDS.WARNING_LOW) return { level: 'warning-low', text: '경고 상태 (20 이하)' };
+  if (value <= RESOURCE_BOUNDS.CRISIS_LOW)
+    return { level: 'critical-low', text: '위기 상태 (10 이하)' };
+  if (value <= RESOURCE_BOUNDS.WARNING_LOW)
+    return { level: 'warning-low', text: '경고 상태 (20 이하)' };
   if (value < 80) return { level: 'stable', text: '안정 구간' };
   return { level: 'optimal', text: '모범적 보장' };
 }
@@ -76,40 +78,37 @@ export function getResourceStatus(value: number): {
 export function detectResourceCrisis(
   resources: Resources,
   currentCrisis: CrisisState | null,
-  day: number
+  day: number,
 ): CrisisState | null {
-  // Check for critical resources (<= 10)
-  const criticalResources = RESOURCE_ORDER.filter(
-    (key) => resources[key] <= RESOURCE_BOUNDS.CRISIS_LOW
-  );
-
-  // 1. Compound Crisis: If 2 or more resources are <= 10 simultaneously
-  if (criticalResources.length >= 2) {
-    return {
-      resourceId: 'compound',
-      crisisType: 'low',
-      crisisCardId: 'crisis_compound_collapse',
-      triggeredDay: currentCrisis?.triggeredDay || day,
-      strikeCount: (currentCrisis?.strikeCount || 0) + 1,
-    };
-  }
-
-  // 2. Single Resource Crisis
-  if (criticalResources.length === 1) {
-    const key = criticalResources[0];
-    let cardId = 'crisis_trust_low';
-    if (key === 'fairness') cardId = 'crisis_fairness_low';
-    else if (key === 'personalFreedom') cardId = 'crisis_freedom_low';
-    else if (key === 'publicSafety') cardId = 'crisis_safety_low';
-
-    return {
-      resourceId: key,
-      crisisType: 'low',
-      crisisCardId: cardId,
-      triggeredDay: currentCrisis?.triggeredDay || day,
-      strikeCount: (currentCrisis?.strikeCount || 0) + 1,
-    };
-  }
-
-  return null;
+  const low = RESOURCE_ORDER.filter((key) => resources[key] <= RESOURCE_BOUNDS.CRISIS_LOW);
+  // A strong value is a success, not a failure. These legacy crisis stories require
+  // an observable competing harm as well: rights, service delivery or equal treatment.
+  const harms: Record<ResourceId, ResourceId> = {
+    citizenTrust: 'fairness', fairness: 'publicSafety',
+    personalFreedom: 'publicSafety', publicSafety: 'personalFreedom',
+  };
+  const high = RESOURCE_ORDER.find((key) => resources[key] >= 95 && resources[harms[key]] <= RESOURCE_BOUNDS.WARNING_LOW);
+  const names = {
+    citizenTrust: 'trust',
+    fairness: 'fairness',
+    personalFreedom: 'freedom',
+    publicSafety: 'safety',
+  };
+  const key = low[0] || high;
+  if (!key) return null;
+  const crisisCardId =
+    low.length >= 2
+      ? 'crisis_compound_collapse'
+      : 'crisis_' + names[key] + (low.length ? '_low' : '_high');
+  const same = currentCrisis?.crisisCardId === crisisCardId;
+  return {
+    resourceId: low.length >= 2 ? 'compound' : key,
+    crisisType: low.length >= 2 ? 'compound' : low.length ? 'low' : 'high',
+    crisisCardId,
+    triggeredDay: same ? currentCrisis.triggeredDay : day,
+    instanceId: same
+      ? currentCrisis.instanceId || crisisCardId + ':' + currentCrisis.triggeredDay
+      : crisisCardId + ':' + day,
+    strikeCount: same ? currentCrisis.strikeCount : 0,
+  };
 }
