@@ -11,7 +11,6 @@ import { CharacterPortrait } from './CharacterPortrait';
 import { DISPLAY_ROLES } from '../data/characterArt';
 import { getCardSpeaker } from '../data/cardSpeakers';
 import { readableDialogue } from '../data/readableDialogue';
-import { dialoguePages } from '../utils/dialoguePages';
 import { resolveCardDialogue } from '../engine/gameEngine';
 import { Check, X, ShieldAlert } from 'lucide-react';
 
@@ -41,14 +40,12 @@ export const GameCard: React.FC<GameCardProps> = ({
   const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null);
   const startPosRef = useRef({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
+  const dialogueRef = useRef<HTMLDivElement>(null);
 
   const character = CHARACTERS[card.characterId];
   const speaker = getCardSpeaker(card);
   const dialogueText = readableDialogue(card.id, resolveCardDialogue(card, storyFlags, resources, dialogueContext));
-  const pages=dialoguePages(dialogueText);
-  const [readingPage,setReadingPage]=useState(0);
-  const pageIndex=Math.min(readingPage,pages.length-1);
-  useEffect(()=>setReadingPage(0),[card.id,dialogueText]);
+  useEffect(()=>{if(dialogueRef.current)dialogueRef.current.scrollTop=0;},[card.id,dialogueText]);
 
   // Compute swipe progress (-1 to 1)
   const swipeProgress = Math.max(-1, Math.min(1, dragOffset.x / SWIPE_THRESHOLD));
@@ -347,14 +344,9 @@ export const GameCard: React.FC<GameCardProps> = ({
           </h4>
 
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
-          <div className="verdict-copy py-1" aria-live="polite" aria-atomic="true">
-            {pages.map((page,index)=><p key={index} hidden={index!==pageIndex} className="verdict-dialogue text-[#F1F5F9] font-normal select-text">{page}</p>)}
+          <div ref={dialogueRef} className="verdict-copy py-1" tabIndex={0} aria-label="대사 전체 · 위아래 스크롤" aria-live="polite" aria-atomic="true">
+            <p className="verdict-dialogue text-[#F1F5F9] font-normal select-text">{dialogueText}</p>
           </div>
-          {pages.length>1&&<nav className="dialogue-pager" aria-label="대화 나누어 읽기">
-            <button type="button" disabled={pageIndex===0} onClick={()=>setReadingPage(index=>Math.max(0,index-1))}>이전</button>
-            <span>{pageIndex+1} / {pages.length}</span>
-            <button type="button" disabled={pageIndex===pages.length-1} onClick={()=>setReadingPage(index=>Math.min(pages.length-1,index+1))}>다음</button>
-          </nav>}
           </section>
 
           {/* Card Bottom Meta Footer */}

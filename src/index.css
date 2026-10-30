@@ -105,12 +105,14 @@ body.game-active { height:100dvh; overflow:hidden; }
 .verdict-reading::-webkit-scrollbar-thumb { background:#456879; border-radius:6px; }
 .verdict-reading:focus-visible { outline:1px solid #5cecff; outline-offset:3px; }
 .verdict-reading .verdict-headline { margin-top:0; flex-shrink:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
-.dialogue-pager { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; height:30px; margin-top:4px; border-top:1px solid #214453; font-size:12px; color:#b4ced9; }
-.dialogue-pager button { min-width:58px; padding:3px 10px; border:1px solid #285565; border-radius:4px; color:#a9eef1; }
-.dialogue-pager button:disabled { opacity:.35; cursor:default; }
+.verdict-copy:focus-visible { outline:1px solid #5cecff; outline-offset:-1px; }
 .verdict-footer { flex-shrink:0; height:26px; }
 .character-portrait.natural-portrait > img { height:auto; object-fit:contain; }
 .cast-art .character-portrait > img { object-position:top center; }
+.cast-art { height:auto; aspect-ratio:1; }
+.cast-art .character-portrait > img { object-fit:cover; object-position:50% 15%; }
+.character-dossier > * { min-width:0; }
+.character-dossier blockquote { width:100%; overflow-wrap:anywhere; }
 @media(max-width:480px) { .verdict-character { --dialogue-portrait-size:88px; } }
 @media(max-width:380px) { .verdict-character { --dialogue-portrait-size:80px; } }
 .story-result-backdrop { position:fixed; inset:0; z-index:50; background:#030b12f5; overflow-y:auto; padding:28px 18px; }
@@ -257,6 +259,11 @@ body.game-active { height:100dvh; overflow:hidden; }
   .faction-hero svg { object-fit:cover; }
 }
 @media(max-width:760px) {
+  .cast-art { height:auto; aspect-ratio:1; }
+  .expression-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; }
+  .expression-list > div { min-width:0; }
+  .expression-list .character-portrait { width:100% !important; height:auto !important; aspect-ratio:4/3; }
+  .expression-list .character-portrait > img { object-fit:cover; object-position:center; }
   .cast-name h3 { font-size:20px; }.cast-name p { font-size:12px; }
   .cast-tag { font-size:9px; }.section-caption > span { font-size:9px; }
   .section-caption h2 { font-size:15px; }.character-dossier { grid-template-columns:1fr; }

@@ -10,7 +10,7 @@ export function StartBriefing({onStart,onClose,hasSavedGame=false}:{onStart:()=>
     <ul>
       <li><strong>시민 신뢰 · 공정성 · 개인 자유 · 사회 안전</strong>이 선택에 따라 변합니다. 한쪽이 무너지지 않도록 살펴보세요.</li>
       <li>왼쪽·오른쪽 버튼으로 정책을 선택합니다. 선택지 전문에서 전체 내용을 읽을 수 있습니다.</li>
-      <li>긴 대사는 이전·다음으로 나누어 읽고, 진행 중 목표는 상단의 목표 버튼에서 다시 확인할 수 있습니다.</li>
+      <li>긴 대사는 대사 창 안에서 아래로 스크롤해 읽고, 진행 중 목표는 상단의 목표 버튼에서 다시 확인할 수 있습니다.</li>
     </ul>
     {hasSavedGame&&<p className="briefing-save-note">새 게임을 시작하면 기존 진행 대신 새 감독관의 기록을 저장합니다.</p>}
     <button className="start-button" type="button" onClick={onStart}>첫 목표 확인하고 시작</button>
