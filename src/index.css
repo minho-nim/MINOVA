@@ -167,7 +167,6 @@ body.game-active { height:100dvh; overflow:hidden; }
 .card-glossary summary { cursor:pointer; color:#8aeeed; }
 .card-glossary p { margin:6px 0; color:#d5e5ef; }
 .game-main { position:relative; }
-.decision-pause { position:absolute; top:4px; left:8px; right:8px; z-index:60; padding:12px; border:1px solid #568491; background:#092432f5; color:#c9f7f7; text-align:center; font-size:13px; pointer-events:none; }
 .faction-section { margin-top:42px; }
 .intro-tabs { display:flex; gap:8px; margin:8px 0 24px; padding-bottom:12px; border-bottom:1px solid #204555; }
 .intro-tabs button { flex:1; padding:13px 16px; border:1px solid #244a5c; border-radius:5px; color:#a9c3d3; background:#07151d; font-size:15px; }

@@ -154,8 +154,8 @@ export default function App() {
         setIsProcessing(false);
         decisionLock.current = false;
         decisionTimers.current=[];
-      }, 450));
-      },650));
+      }, 150));
+      },200));
     },
     [gameState, isProcessing, soundEnabled, inputLocked],
   );
@@ -299,7 +299,7 @@ export default function App() {
 
         {/* 3. Main Center Area: Swipeable Card */}
         <main className="game-main flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
-          {isProcessing&&<div className="decision-pause" role="status">선택을 기록했습니다 · 다음 안건을 준비합니다</div>}
+          {isProcessing&&<div className="sr-only" role="status">선택을 기록했습니다 · 다음 안건을 준비합니다</div>}
           {gameState.flowPhase === 'playing' && !gameState.waitingUntilDay ? (
             <GameCard
               key={currentCard.id}
