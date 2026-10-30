@@ -52,6 +52,8 @@ export default function App() {
   const [isReplacementModalOpen, setIsReplacementModalOpen] = useState<boolean>(false);
   const [lastSupervisorRecord, setLastSupervisorRecord] = useState<SupervisorRecord | null>(null);
   const decisionLock = useRef(false);
+  const decisionTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(()=>()=>decisionTimers.current.forEach(clearTimeout),[]);
   const inputLocked =
     isHistoryOpen || isSettingsOpen || isReplacementModalOpen || isChoiceDetailsOpen || gameState?.flowPhase !== 'playing';
   const applySessionAction = (action: SessionAction) => {
@@ -72,6 +74,9 @@ export default function App() {
 
   // Handle starting a new game
   const handleStartNewGame = () => {
+    decisionTimers.current.forEach(clearTimeout);
+    decisionTimers.current=[];
+    setIsProcessing(false);
     setIsSettingsOpen(false);
     setIsHistoryOpen(false);
     setIsReplacementModalOpen(false);
@@ -122,8 +127,10 @@ export default function App() {
       });
 
       // Persist state
-      setGameState(nextState);
       persistGame(nextState);
+      setPreviewDirection(null);
+      decisionTimers.current.push(setTimeout(()=>{
+      setGameState(nextState);
 
       // Check if replacement was triggered
       if (replaced) {
@@ -143,10 +150,12 @@ export default function App() {
       }
 
       // Re-enable interactions after brief cool-down
-      setTimeout(() => {
+      decisionTimers.current.push(setTimeout(() => {
         setIsProcessing(false);
         decisionLock.current = false;
-      }, 150);
+        decisionTimers.current=[];
+      }, 450));
+      },650));
     },
     [gameState, isProcessing, soundEnabled, inputLocked],
   );
@@ -290,6 +299,7 @@ export default function App() {
 
         {/* 3. Main Center Area: Swipeable Card */}
         <main className="game-main flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
+          {isProcessing&&<div className="decision-pause" role="status">선택을 기록했습니다 · 다음 안건을 준비합니다</div>}
           {gameState.flowPhase === 'playing' && !gameState.waitingUntilDay ? (
             <GameCard
               key={currentCard.id}
@@ -300,6 +310,7 @@ export default function App() {
               onDecision={handleDecision}
               onHoverDirectionChange={handleHoverDirectionChange}
               isProcessing={isProcessing || inputLocked}
+              previewDirection={isProcessing?null:previewDirection}
             />
           ) : gameState.waitingUntilDay ? (
             <div className="p-8 text-center">

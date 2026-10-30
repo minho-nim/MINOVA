@@ -1,3 +1,4 @@
+import {dialogueParagraphs} from '../src/data/ethicsGlossary';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -16,8 +17,10 @@ test('all 159 dialogues render their full branching text in one scroll pane with
   for(const card of ALL_CARDS)for(const flags of cases){
     const original=readableDialogue(card.id,resolveCardDialogue(card,flags,resources));
     const html=renderToStaticMarkup(React.createElement(GameCard,{card,storyFlags:flags,resources,onDecision(){},onHoverDirectionChange(){},isProcessing:false}));
-    const escaped=original.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    for(const paragraph of dialogueParagraphs(original)){
+    const escaped=paragraph.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;');
     assert.ok(html.includes(escaped),card.id);
+    }
     assert.match(html,/대사 전체 · 위아래 스크롤/,card.id);
     assert.doesNotMatch(html,/dialogue-pager|대화 나누어 읽기|class="verdict-dialogue[^>]*hidden=/,card.id);
   }

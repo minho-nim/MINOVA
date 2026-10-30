@@ -1,3 +1,4 @@
+import {dialogueParagraphs} from '../src/data/ethicsGlossary';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ALL_CARDS, CARD_MAP} from '../src/data/cards';
@@ -46,6 +47,6 @@ test('all actual cards use a uniform dialogue frame and a fully readable scroll 
     assert.doesNotMatch(html,/natural-portrait/);
     assert.match(html,/aria-label="사건 설명과 대화" tabindex="0"/);
     const text=readableDialogue(card.id,resolveCardDialogue(card,{},resources));
-    assert.ok(html.includes(text.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;')),card.id);
+    for(const text of dialogueParagraphs(readableDialogue(card.id,resolveCardDialogue(card,{},resources))))assert.ok(html.includes(text.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;')),card.id);
   }
 });

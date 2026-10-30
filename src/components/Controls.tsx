@@ -38,6 +38,7 @@ export const Controls: React.FC<ControlsProps> = ({
 
   return (
     <div className="game-controls w-full max-w-[480px] sm:max-w-[500px] mx-auto px-3 py-2 flex flex-col gap-2 shrink-0">
+      <button type="button" onClick={()=>{setDetailsOpen(true);onDetailsOpenChange?.(true);}} className="choice-details-button">선택지 전문</button>
       {/* Primary Decision Action Buttons */}
       <div className="choice-actions grid grid-cols-2 gap-2">
         {/* Left Choice Button */}
@@ -120,7 +121,6 @@ export const Controls: React.FC<ControlsProps> = ({
           <Settings size={13} />
           <span>설정</span>
         </button>
-        <button type="button" onClick={()=>{setDetailsOpen(true);onDetailsOpenChange?.(true);}} className="choice-details-button">선택지 전문</button>
       </div>
       {detailsOpen&&<ReadingModal title="선택지 전문" onClose={closeDetails}>
         <p>각 선택지의 전체 내용입니다. 읽은 뒤 창을 닫고 선택하세요.</p>
