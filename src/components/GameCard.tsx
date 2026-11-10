@@ -42,8 +42,7 @@ export const GameCard: React.FC<GameCardProps> = ({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null);
-  const startPosRef = useRef({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
+  const gesture = useRef<{ id: number; x: number; y: number; horizontal: boolean } | null>(null);
   const dialogueRef = useRef<HTMLDivElement>(null);
 
   const character = CHARACTERS[card.characterId];
@@ -51,7 +50,9 @@ export const GameCard: React.FC<GameCardProps> = ({
   const dialogueText = readableDialogue(card.id, resolveCardDialogue(card, storyFlags, resources, dialogueContext));
   useEffect(()=>{if(dialogueRef.current)dialogueRef.current.scrollTop=0;},[card.id,dialogueText]);
 
-  // Compute swipe progress (-1 to 1)
+  useEffect(() => {
+    if (!isProcessing) setExitDirection(null);
+  }, [isProcessing]);
 
   // Sync preview with parent resource bar
   useEffect(() => {
@@ -70,11 +71,8 @@ export const GameCard: React.FC<GameCardProps> = ({
       if (isProcessing || exitDirection) return;
       setExitDirection(direction);
       onHoverDirectionChange(null);
-      setTimeout(() => {
-        onDecision(direction);
-        setExitDirection(null);
-        setDragOffset({ x: 0, y: 0 });
-      }, 220);
+      setDragOffset({ x: 0, y: 0 });
+      onDecision(direction);
     },
     [isProcessing, exitDirection, onDecision, onHoverDirectionChange],
   );
@@ -103,65 +101,40 @@ export const GameCard: React.FC<GameCardProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [triggerDecision]);
 
-  // Mouse drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (isProcessing || exitDirection) return;
-    if ((e.target as Element).closest('[data-reading-area],button,a,summary')) return;
-    setIsDragging(true);
-    startPosRef.current = { x: e.clientX, y: e.clientY };
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isProcessing || exitDirection || !event.isPrimary || event.button !== 0) return;
+    if ((event.target as Element).closest('button, a, summary, input, textarea, select')) return;
+    gesture.current = { id: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
+    // Keep tracking even when the card moves away from the pointer.
+    event.currentTarget.setPointerCapture(event.pointerId);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || isProcessing || exitDirection) return;
-    const dx = e.clientX - startPosRef.current.x;
-    const dy = (e.clientY - startPosRef.current.y) * 0.25;
-    setDragOffset({ x: dx, y: dy });
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = gesture.current;
+    if (!start || start.id !== event.pointerId || isProcessing || exitDirection) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (!start.horizontal) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 10) return;
+      if (Math.abs(dy) >= Math.abs(dx)) {
+        gesture.current = null;
+        return;
+      }
+      start.horizontal = true;
+      setIsDragging(true);
+    }
+    setDragOffset({ x: dx, y: dy * 0.25 });
   };
 
-  const handleMouseUp = () => {
-    if (!isDragging || isProcessing || exitDirection) return;
+  const endPointerGesture = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = gesture.current;
+    if (!start || start.id !== event.pointerId) return;
+    gesture.current = null;
     setIsDragging(false);
-    if (dragOffset.x <= -SWIPE_THRESHOLD) {
-      triggerDecision('left');
-    } else if (dragOffset.x >= SWIPE_THRESHOLD) {
-      triggerDecision('right');
-    } else {
-      setDragOffset({ x: 0, y: 0 });
-    }
-  };
-
-  // Touch handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (isProcessing || exitDirection || e.touches.length === 0) return;
-    if((e.target as Element).closest('button,a,summary'))return;
-    setIsDragging(true);
-    const touch = e.touches[0];
-    startPosRef.current = { x: touch.clientX, y: touch.clientY };
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || isProcessing || exitDirection || e.touches.length === 0) return;
-    const touch = e.touches[0];
-    const dx = touch.clientX - startPosRef.current.x;
-    const rawDy = touch.clientY - startPosRef.current.y;
-    // Let the reading pane scroll vertically; only a horizontal gesture swipes.
-    if (Math.abs(rawDy)>Math.abs(dx) && Math.abs(rawDy)>10) {
-      setIsDragging(false); setDragOffset({x:0,y:0}); return;
-    }
-    const dy = rawDy * 0.25;
-    setDragOffset({ x: dx, y: dy });
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging || isProcessing || exitDirection) return;
-    setIsDragging(false);
-    if (dragOffset.x <= -SWIPE_THRESHOLD) {
-      triggerDecision('left');
-    } else if (dragOffset.x >= SWIPE_THRESHOLD) {
-      triggerDecision('right');
-    } else {
-      setDragOffset({ x: 0, y: 0 });
-    }
+    setDragOffset({ x: 0, y: 0 });
+    if (event.type !== 'pointerup' || !start.horizontal) return;
+    const dx = event.clientX - start.x;
+    if (Math.abs(dx) >= SWIPE_THRESHOLD) triggerDecision(dx < 0 ? 'left' : 'right');
   };
 
   // Compute card transform
@@ -198,14 +171,11 @@ export const GameCard: React.FC<GameCardProps> = ({
 
         {/* Top Interactive Card */}
         <div
-          ref={cardRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endPointerGesture}
+          onPointerCancel={endPointerGesture}
+          onLostPointerCapture={endPointerGesture}
           style={{
             transform: transformStyle,
             transition: transitionStyle,
@@ -274,7 +244,7 @@ export const GameCard: React.FC<GameCardProps> = ({
 
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
           <div ref={dialogueRef} className="verdict-copy py-1" tabIndex={0} aria-label="대사 전체 · 위아래 스크롤" aria-live="polite" aria-atomic="true">
-            {dialogueParagraphs(dialogueText).map((paragraph,index)=><p key={index} className="verdict-dialogue text-[#F1F5F9] font-normal select-text">{paragraph}</p>)}
+            {dialogueParagraphs(dialogueText).map((paragraph,index)=><p key={index} className="verdict-dialogue text-[#F1F5F9] font-normal">{paragraph}</p>)}
             <CardGlossary text={[dialogueText,card.title,choicePresentation(card,'left',storyFlags).text,choicePresentation(card,'right',storyFlags).text].join(' ')} />
           </div>
           </section>

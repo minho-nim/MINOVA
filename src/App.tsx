@@ -154,8 +154,8 @@ export default function App() {
         setIsProcessing(false);
         decisionLock.current = false;
         decisionTimers.current=[];
-      }, 150));
-      },200));
+      }, 250));
+      },350));
     },
     [gameState, isProcessing, soundEnabled, inputLocked],
   );
