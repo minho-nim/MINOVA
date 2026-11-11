@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameState, ResourceDelta, ResourceId } from '../types/game';
 import { RESOURCE_META } from '../engine/resourceEngine';
 import { ALL_OBJECTIVES, CHAPTER_METAS, getCurrentChapterKey } from '../engine/storyEngine';
@@ -19,7 +19,7 @@ import {
   KeyRound,
   AlertTriangle,
   Link as LinkIcon,
-  FileText,
+  Sparkles,
 } from 'lucide-react';
 
 export interface DecisionHistoryModalProps {
@@ -35,11 +35,15 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
   state,
   initialTab = 'history',
 }) => {
-  const [activeTab, setActiveTab] = useState<'objectives' | 'history' | 'investigations' | 'secrets'>(
-    initialTab
-  );
+  const [activeTab, setActiveTab] = useState<
+    'objectives' | 'history' | 'investigations' | 'secrets'
+  >(initialTab);
   const [filterTopic, setFilterTopic] = useState<string>('all');
 
+  const [filterMode, setFilterMode] = useState('all');
+  useEffect(() => {
+    if (isOpen) setActiveTab(initialTab);
+  }, [isOpen, initialTab]);
   if (!isOpen) return null;
 
   const currentChKey = getCurrentChapterKey(state);
@@ -50,10 +54,11 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
 
   const topics = Array.from(new Set(state.decisionHistory.map((h) => h.topic).filter(Boolean)));
 
+  const modeHistory = state.decisionHistory.filter(
+    (h) => filterMode === 'all' || (h.gameMode || 'story') === filterMode,
+  );
   const filteredHistory =
-    filterTopic === 'all'
-      ? state.decisionHistory
-      : state.decisionHistory.filter((h) => h.topic === filterTopic);
+    filterTopic === 'all' ? modeHistory : modeHistory.filter((h) => h.topic === filterTopic);
 
   const formatDelta = (delta: ResourceDelta) => {
     const items: Array<{ key: ResourceId; val: number; label: string }> = [];
@@ -141,8 +146,8 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85  animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-[#0D111A] text-slate-100 rounded-2xl shadow-none border border-slate-800 flex flex-col max-h-[88vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg bg-[#0D111A] text-slate-100 rounded-2xl shadow-2xl border border-slate-800 flex flex-col max-h-[88vh] overflow-hidden">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-[#090D15]">
           <div className="flex items-center gap-2.5">
@@ -150,7 +155,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
               <History size={16} />
             </div>
             <div>
-              <h2 className="text-xs sm:text-sm font-medium text-slate-100 flex items-center gap-2">
+              <h2 className="text-xs sm:text-sm font-bold text-slate-100 flex items-center gap-2">
                 <span>사건 및 판단 기록부 (Case Dossier)</span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/60 font-mono">
                   {currentChapterMeta.actTitle.split(':')[0].trim()}
@@ -164,7 +169,6 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="기록부 닫기"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X size={18} />
@@ -182,7 +186,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            <Target size={16} strokeWidth={1.5} />
+            <Target size={13} />
             <span className="text-[11px]">현재 목표</span>
           </button>
 
@@ -195,7 +199,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            <FileSearch size={16} strokeWidth={1.5} />
+            <FileSearch size={13} />
             <span className="text-[11px]">판단 기록</span>
           </button>
 
@@ -208,7 +212,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            <FileText size={16} strokeWidth={1.5} />
+            <Sparkles size={13} />
             <span className="text-[11px]">사건·조사</span>
           </button>
 
@@ -221,7 +225,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            <KeyRound size={16} strokeWidth={1.5} />
+            <KeyRound size={13} />
             <span className="text-[11px]">발견 기밀 ({state.discoveredSecrets.length})</span>
           </button>
         </div>
@@ -230,7 +234,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
         {activeTab === 'objectives' && (
           <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
             <div className="p-3 rounded-xl bg-indigo-950/40 border border-indigo-900/60 text-xs">
-              <div className="font-medium text-indigo-300 mb-0.5">{currentChapterMeta.actTitle}</div>
+              <div className="font-bold text-indigo-300 mb-0.5">{currentChapterMeta.actTitle}</div>
               <div className="text-[11px] text-slate-300 font-semibold mb-1">
                 {currentChapterMeta.chapterTitle} ({currentChapterMeta.subtitle})
               </div>
@@ -240,7 +244,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
             </div>
 
             <div className="space-y-2.5">
-              <h3 className="text-xs font-medium text-slate-300  tracking-normal">
+              <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                 챕터 주요 사건 목표 (Reigns Objectives)
               </h3>
               {actObjectives.map((obj) => {
@@ -250,12 +254,12 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 return (
                   <div
                     key={obj.id}
-                    className={`p-3 rounded-xl border transition-colors ${
+                    className={`p-3 rounded-xl border transition-all ${
                       isCompleted
                         ? 'bg-emerald-950/30 border-emerald-900/60 text-slate-200'
                         : isCurrentOrPastChapter
-                        ? 'bg-[#121824] border-slate-800 text-slate-300'
-                        : 'bg-[#0B0E16]/80 border-slate-900 text-slate-500'
+                          ? 'bg-[#121824] border-slate-800 text-slate-300'
+                          : 'bg-[#0B0E16]/80 border-slate-900 text-slate-500'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -265,16 +269,16 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                         ) : isCurrentOrPastChapter ? (
                           <Target size={16} className="text-amber-400 shrink-0" />
                         ) : (
-                          <Lock size={16} strokeWidth={1.5} className="text-slate-600 shrink-0" />
+                          <Lock size={15} className="text-slate-600 shrink-0" />
                         )}
                         <div>
                           <div
-                            className={`text-xs font-medium leading-snug ${
+                            className={`text-xs font-bold leading-snug ${
                               isCompleted
                                 ? 'text-emerald-300'
                                 : isCurrentOrPastChapter
-                                ? 'text-slate-100'
-                                : 'text-slate-500'
+                                  ? 'text-slate-100'
+                                  : 'text-slate-500'
                             }`}
                           >
                             {isCompleted || isCurrentOrPastChapter
@@ -287,12 +291,12 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                         </div>
                       </div>
                       <span
-                        className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-medium  ${
+                        className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold uppercase ${
                           isCompleted
                             ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-700/60'
                             : isCurrentOrPastChapter
-                            ? 'bg-amber-950/60 text-amber-300 border border-amber-800/60'
-                            : 'bg-slate-900 text-slate-600 border border-slate-800'
+                              ? 'bg-amber-950/60 text-amber-300 border border-amber-800/60'
+                              : 'bg-slate-900 text-slate-600 border border-slate-800'
                         }`}
                       >
                         {isCompleted ? '달성 완료' : isCurrentOrPastChapter ? '조사 진행' : '잠금'}
@@ -314,16 +318,29 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
         {/* Tab 2: History View */}
         {activeTab === 'history' && (
           <div className="flex-1 flex flex-col overflow-hidden">
+            <label className="px-5 py-2 text-xs text-slate-400 flex gap-3 items-center">
+              기록 모드
+              <select
+                aria-label="기록 모드"
+                value={filterMode}
+                onChange={(e) => setFilterMode(e.target.value)}
+                className="bg-slate-900 border border-slate-700 rounded p-1"
+              >
+                <option value="all">전체</option>
+                <option value="story">메인 스토리</option>
+                <option value="freePlay">자유 운영</option>
+              </select>
+            </label>
             {/* Filter Bar */}
             {topics.length > 0 && (
               <div className="px-5 py-2.5 bg-[#0B0E17] border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
-                <Filter size={16} strokeWidth={1.5} className="text-slate-500 shrink-0" />
+                <Filter size={13} className="text-slate-500 shrink-0" />
                 <button
                   type="button"
                   onClick={() => setFilterTopic('all')}
                   className={`px-2.5 py-1 text-xs font-medium rounded-md whitespace-nowrap transition-colors cursor-pointer ${
                     filterTopic === 'all'
-                      ? 'bg-slate-200 text-slate-900 font-medium'
+                      ? 'bg-slate-200 text-slate-900 font-bold'
                       : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 border border-slate-700/60'
                   }`}
                 >
@@ -336,7 +353,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                     onClick={() => setFilterTopic(t)}
                     className={`px-2.5 py-1 text-xs font-medium rounded-md whitespace-nowrap transition-colors cursor-pointer ${
                       filterTopic === t
-                        ? 'bg-slate-200 text-slate-900 font-medium'
+                        ? 'bg-slate-200 text-slate-900 font-bold'
                         : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 border border-slate-700/60'
                     }`}
                   >
@@ -367,7 +384,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                         <span className="text-indigo-400 font-medium">{item.topic}</span>
                       </div>
                       <span
-                        className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                           item.direction === 'right'
                             ? 'bg-slate-800 text-slate-200 border border-slate-700'
                             : 'bg-rose-950/80 text-rose-300 border border-rose-800/60'
@@ -378,14 +395,17 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                     </div>
 
                     {/* Case Title */}
-                    <h4 className="text-xs sm:text-sm font-medium text-slate-100">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-100">
+                      <span className="text-[10px] text-cyan-400 mr-2">
+                        {item.gameMode === 'freePlay' ? '자유 운영' : '스토리'}
+                      </span>
                       {item.cardTitle}
                     </h4>
 
                     {/* Decision made */}
                     <div className="mt-1.5 p-2 bg-[#121824] rounded-lg border border-slate-800 text-xs text-slate-300">
                       <div className="font-semibold text-slate-200 mb-0.5 flex items-center gap-1">
-                        <ArrowRight size={16} strokeWidth={1.5} className="text-slate-400" />
+                        <ArrowRight size={12} className="text-slate-400" />
                         <span>선택한 결정:</span>
                       </div>
                       <p className="text-slate-200 pl-4">{item.choiceText}</p>
@@ -404,16 +424,14 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                     {/* Delayed Effect Applied Notice */}
                     {item.delayedEffectApplied && (
                       <div className="mt-2 p-2 bg-amber-950/40 rounded-lg border border-amber-900/60 text-xs text-amber-200">
-                        <div className="font-medium flex items-center gap-1 text-amber-300 mb-0.5">
-                          <AlertTriangle size={16} strokeWidth={1.5} />
+                        <div className="font-bold flex items-center gap-1 text-amber-300 mb-0.5">
+                          <AlertTriangle size={12} />
                           <span>과거 정책의 지연 효과(Delayed Fallout) 발동:</span>
                         </div>
                         <p className="text-[11px] text-amber-100/90 leading-tight">
                           {item.delayedEffectApplied.description}
                         </p>
-                        <div className="mt-1">
-                          {formatDelta(item.delayedEffectApplied.delta)}
-                        </div>
+                        <div className="mt-1">{formatDelta(item.delayedEffectApplied.delta)}</div>
                       </div>
                     )}
 
@@ -440,7 +458,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
         {/* Tab 3: Investigations View */}
         {activeTab === 'investigations' && (
           <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3.5">
-            <h3 className="text-xs font-medium text-slate-300  tracking-normal">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
               도시 주요 거버넌스 사건 및 진행 중인 조사
             </h3>
 
@@ -450,9 +468,9 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 className="p-3.5 rounded-xl bg-[#121824] border border-slate-800 space-y-1.5"
               >
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-medium text-slate-100">{inv.title}</h4>
+                  <h4 className="text-xs font-bold text-slate-100">{inv.title}</h4>
                   <span
-                    className={`text-[10px] font-mono px-2 py-0.5 rounded font-medium ${
+                    className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
                       inv.status === '규명 완료'
                         ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                         : 'bg-amber-950 text-amber-300 border border-amber-800'
@@ -466,10 +484,11 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
             ))}
 
             <div className="p-3 rounded-xl bg-[#0B0E16] border border-slate-800 text-[11px] text-slate-400 space-y-1">
-              <span className="font-medium text-slate-300">인과관계 시스템 정보:</span>
+              <span className="font-bold text-slate-300">인과관계 시스템 정보:</span>
               <p>
-                플레이어가 ACT I 및 ACT II에서 내린 결정들은 고유 스토리 플래그와 지연 효과로 보존되며,
-                감독관이 파면·교체되어도 도시의 거버넌스 역사와 조사 기록은 영구 승계됩니다.
+                플레이어가 ACT I 및 ACT II에서 내린 결정들은 고유 스토리 플래그와 지연 효과로
+                보존되며, 감독관이 파면·교체되어도 도시의 거버넌스 역사와 조사 기록은 영구
+                승계됩니다.
               </p>
             </div>
           </div>
@@ -478,7 +497,7 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
         {/* Tab 4: Secrets View */}
         {activeTab === 'secrets' && (
           <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3.5">
-            <h3 className="text-xs font-medium text-slate-300  tracking-normal">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
               폭로된 ORACLE 시스템 기밀 ({state.discoveredSecrets.length}건)
             </h3>
 
@@ -496,10 +515,10 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
                 return (
                   <div
                     key={secretKey}
-                    className="p-3.5 rounded-xl bg-[#1b2026]   border border-indigo-800/60 text-xs shadow-none space-y-1.5"
+                    className="p-3.5 rounded-xl bg-gradient-to-br from-indigo-950/60 to-[#101624] border border-indigo-800/60 text-xs shadow-md space-y-1.5"
                   >
-                    <div className="flex items-center gap-1.5 font-medium text-indigo-300">
-                      <KeyRound size={16} strokeWidth={1.5} className="text-amber-400" />
+                    <div className="flex items-center gap-1.5 font-bold text-indigo-300">
+                      <KeyRound size={14} className="text-amber-400" />
                       <span>{secret.title}</span>
                     </div>
                     <p className="text-slate-300 text-[11px] leading-relaxed">{secret.desc}</p>
@@ -515,7 +534,6 @@ export const DecisionHistoryModal: React.FC<DecisionHistoryModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="기록부 닫기"
             className="px-4 py-2 text-xs font-semibold text-slate-900 bg-slate-200 rounded-lg hover:bg-white transition-colors cursor-pointer"
           >
             기록부 닫기

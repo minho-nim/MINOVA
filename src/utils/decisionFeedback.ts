@@ -26,7 +26,7 @@ export function getDecisionFeedback(before: GameState, after: GameState): Decisi
     delta,
     adjustment: replacement
       ? '감독관 교체에 따른 지표 회복을 포함한 변화입니다.'
-      : decision.delayedEffectApplied
+      : decision.delayedEffectApplied || decision.delayedEffectsApplied?.length
       ? '이전 결정의 후속 효과를 포함한 변화입니다.'
       : null,
   };

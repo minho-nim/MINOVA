@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { GameState, ResourceDelta, SupervisorRecord } from './types/game';
 import { CARD_MAP } from './data/cards';
-import { createInitialGameState, executeDecision, startAct2 } from './engine/gameEngine';
+import { createInitialGameState } from './engine/gameEngine';
 import { loadGameState, saveGameState, clearGameState } from './services/saveManager';
 import { playDecisionChime, playCrisisAlarm, playSwipeTick } from './utils/audio';
 
@@ -20,9 +20,11 @@ import { SettingsModal } from './components/SettingsModal';
 import { SupervisorReplacementModal } from './components/SupervisorReplacementModal';
 import { ActCompleteModal } from './components/ActCompleteModal';
 import { ActTransitionModal } from './components/ActTransitionModal';
+import { transitionSession, SessionAction } from './engine/gameSession';
+import { Act2CompleteScreen } from './components/Act2CompleteScreen';
 import { NotificationToast } from './components/NotificationToast';
 import { CHARACTERS } from './data/characters';
-import { MAIN_CAST } from './data/characterArt';
+import { MAIN_CAST, DISPLAY_ROLES } from './data/characterArt';
 import { CharacterPortrait } from './components/CharacterPortrait';
 import { DecisionFeedback } from './components/DecisionFeedback';
 import { DecisionFeedbackData, getDecisionFeedback } from './utils/decisionFeedback';
@@ -33,20 +35,39 @@ export default function App() {
   const [previewDirection, setPreviewDirection] = useState<'left' | 'right' | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
-
   const [decisionFeedback, setDecisionFeedback] = useState<DecisionFeedbackData | null>(null);
   const dismissDecisionFeedback = useCallback((id: string) => {
     setDecisionFeedback(current => current?.id === id ? null : current);
   }, []);
+  const [saveError, setSaveError] = useState(false);
+  const persistGame = useCallback((state: GameState) => {
+    setSaveError(!saveGameState(state));
+  }, []);
 
   // Modals & Panels
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
-  const [dossierTab, setDossierTab] = useState<'objectives' | 'history' | 'investigations' | 'secrets'>('history');
+  const [isChoiceDetailsOpen,setIsChoiceDetailsOpen]=useState(false);
+  useEffect(()=>{
+    document.body.classList.toggle('game-active',!inTitleScreen);
+    return()=>document.body.classList.remove('game-active');
+  },[inTitleScreen]);
+  const [dossierTab, setDossierTab] = useState<
+    'objectives' | 'history' | 'investigations' | 'secrets'
+  >('history');
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isReplacementModalOpen, setIsReplacementModalOpen] = useState<boolean>(false);
   const [lastSupervisorRecord, setLastSupervisorRecord] = useState<SupervisorRecord | null>(null);
-  const [isActCompleteModalOpen, setIsActCompleteModalOpen] = useState<boolean>(false);
-  const [isTransitionModalOpen, setIsTransitionModalOpen] = useState<boolean>(false);
+  const decisionLock = useRef(false);
+  const decisionTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(()=>()=>decisionTimers.current.forEach(clearTimeout),[]);
+  const inputLocked =
+    isHistoryOpen || isSettingsOpen || isReplacementModalOpen || isChoiceDetailsOpen || gameState?.flowPhase !== 'playing';
+  const applySessionAction = (action: SessionAction) => {
+    if (!gameState) return;
+    const result = transitionSession(gameState, action);
+    setGameState(result.nextState);
+    persistGame(result.nextState);
+  };
 
   // Check saved game on mount
   useEffect(() => {
@@ -60,15 +81,17 @@ export default function App() {
   // Handle starting a new game
   const handleStartNewGame = () => {
     setDecisionFeedback(null);
-    setIsActCompleteModalOpen(false);
-    setIsTransitionModalOpen(false);
-    setIsReplacementModalOpen(false);
-    setIsHistoryOpen(false);
+    decisionTimers.current.forEach(clearTimeout);
+    decisionTimers.current=[];
+    setIsProcessing(false);
     setIsSettingsOpen(false);
+    setIsHistoryOpen(false);
+    setIsReplacementModalOpen(false);
+    decisionLock.current = false;
     clearGameState();
     const freshState = createInitialGameState();
     setGameState(freshState);
-    saveGameState(freshState);
+    persistGame(freshState);
     setInTitleScreen(false);
   };
 
@@ -77,9 +100,6 @@ export default function App() {
     setDecisionFeedback(null);
     if (gameState) {
       setInTitleScreen(false);
-      setIsActCompleteModalOpen(Boolean(gameState.currentAct === 'ACT_II'
-        ? gameState.storyFlags.act2_viewed_epilogue
-        : gameState.storyFlags.act1_viewed_epilogue));
     } else {
       handleStartNewGame();
     }
@@ -102,20 +122,24 @@ export default function App() {
   // Handle swipe or button decision commit
   const handleDecision = useCallback(
     (direction: 'left' | 'right') => {
-      if (!gameState || isProcessing) return;
+      if (!gameState || isProcessing || inputLocked || decisionLock.current) return;
+      decisionLock.current = true;
       setIsProcessing(true);
 
       // Play audio feedback
       playDecisionChime(direction, soundEnabled);
 
-      const { nextState, replaced, dismissalReason } = executeDecision(gameState, direction);
-
-      setDecisionFeedback(getDecisionFeedback(gameState, nextState));
-      setPreviewDirection(null);
+      const { nextState, replaced, dismissalReason } = transitionSession(gameState, {
+        type: 'decision',
+        direction,
+      });
 
       // Persist state
+      persistGame(nextState);
+      setPreviewDirection(null);
+      decisionTimers.current.push(setTimeout(()=>{
       setGameState(nextState);
-      saveGameState(nextState);
+      setDecisionFeedback(getDecisionFeedback(gameState, nextState));
 
       // Check if replacement was triggered
       if (replaced) {
@@ -134,20 +158,15 @@ export default function App() {
         playCrisisAlarm(soundEnabled);
       }
 
-      // Reaching either epilogue opens its report, even after a final verdict.
-      if (
-        (!gameState.storyFlags.act1_viewed_epilogue && nextState.storyFlags.act1_viewed_epilogue) ||
-        (!gameState.storyFlags.act2_viewed_epilogue && nextState.storyFlags.act2_viewed_epilogue)
-      ) {
-        setIsActCompleteModalOpen(true);
-      }
-
       // Re-enable interactions after brief cool-down
-      setTimeout(() => {
+      decisionTimers.current.push(setTimeout(() => {
         setIsProcessing(false);
-      }, 150);
+        decisionLock.current = false;
+        decisionTimers.current=[];
+      }, 250));
+      },350));
     },
-    [gameState, isProcessing, soundEnabled, currentCard]
+    [gameState, isProcessing, soundEnabled, inputLocked],
   );
 
   const handleHoverDirectionChange = useCallback(
@@ -157,7 +176,7 @@ export default function App() {
         playSwipeTick(soundEnabled);
       }
     },
-    [soundEnabled]
+    [soundEnabled],
   );
 
   const handleToggleSound = () => {
@@ -168,20 +187,8 @@ export default function App() {
     setIsReplacementModalOpen(false);
   };
 
-  // Launch ACT II Transition
-  const handleInitiateAct2 = () => {
-    setIsActCompleteModalOpen(false);
-    setIsTransitionModalOpen(true);
-  };
-
-  const handleConfirmAct2Transition = () => {
-    if (!gameState) return;
-    setDecisionFeedback(null);
-    const act2State = startAct2(gameState);
-    setGameState(act2State);
-    saveGameState(act2State);
-    setIsTransitionModalOpen(false);
-  };
+  const handleInitiateAct2 = () => applySessionAction({ type: 'requestAct2' });
+  const handleConfirmAct2Transition = () => applySessionAction({ type: 'confirmAct2' });
 
   const handleOpenObjectives = () => {
     setDossierTab('objectives');
@@ -227,16 +234,63 @@ export default function App() {
 
   return (
     <div className="game-shell min-h-screen text-slate-100 font-sans antialiased selection:bg-cyan-900 selection:text-white relative">
+      {decisionFeedback && <DecisionFeedback
+        key={decisionFeedback.id}
+        feedback={decisionFeedback}
+        onDismiss={dismissDecisionFeedback}
+      />}
+      {saveError && (
+        <div
+          role="alert"
+          className="fixed top-0 left-0 right-0 z-[70] bg-amber-950 text-amber-100 px-4 py-2 text-xs text-center"
+        >
+          브라우저에 진행을 저장하지 못했습니다. 이 화면을 닫기 전에 저장 공간을 확인해 주세요.
+        </div>
+      )}
       <aside className="game-sidebar">
-        <a className="wordmark" href="#" onClick={(event) => { event.preventDefault(); setInTitleScreen(true); }}>MINOVA</a>
-        <p className="eyebrow">노바시 · 감독관실</p>
-        <h1>오늘의 안건</h1>
-        <p className="sidebar-copy">제안을 읽고 결정을 내려주세요.<br />이전 선택은 판단 기록부에 남습니다.</p>
-        <div className="sidebar-roster">{MAIN_CAST.map(id => <div key={id} className={`roster-person ${currentCard.characterId === id ? 'is-speaking' : ''}`} style={{ '--character-color': CHARACTERS[id].themeColor } as React.CSSProperties}><CharacterPortrait characterId={id} size={46} /><div><strong>{CHARACTERS[id].name}</strong><span>{CHARACTERS[id].role}</span></div>{currentCard.characterId === id && <i className="live-dot" />}</div>)}</div>
-        <button className="return-title" onClick={() => setInTitleScreen(true)}>← 도시와 인물 소개</button>
+        <a
+          className="wordmark"
+          href="#"
+          onClick={(event) => {
+            event.preventDefault();
+            setInTitleScreen(true);
+          }}
+        >
+          MINOVA
+        </a>
+        <p className="eyebrow">NOVA CITY / HUMAN OVERSIGHT</p>
+        <h1>
+          당신의 판단이
+          <br />
+          도시의 내일이 됩니다.
+        </h1>
+        <p className="sidebar-copy">
+          하나의 도시, 서로 다른 진실.
+          <br />
+          사람들의 목소리를 듣고 선택하세요.
+        </p>
+        <div className="sidebar-roster">
+          {MAIN_CAST.map((id) => (
+            <div
+              key={id}
+              className={`roster-person ${currentCard.characterId === id ? 'is-speaking' : ''}`}
+              style={{ '--character-color': CHARACTERS[id].themeColor } as React.CSSProperties}
+            >
+              <CharacterPortrait characterId={id} size={46} />
+              <div>
+                <strong>{CHARACTERS[id].name}</strong>
+                <span>{DISPLAY_ROLES[id] ?? CHARACTERS[id].role}</span>
+              </div>
+              {currentCard.characterId === id && <i className="live-dot" />}
+            </div>
+          ))}
+        </div>
+        <button className="return-title" onClick={() => setInTitleScreen(true)}>
+          ← 도시와 인물 소개
+        </button>
       </aside>
       {/* Centered Mobile/PC container with max-w 480-500px matching Reigns viewport */}
-      <div className="game-console w-full max-w-[560px] min-h-screen bg-[#0B0F19] flex flex-col justify-between shadow-none border-slate-800/80 relative overflow-hidden">
+      <div className="game-console w-full max-w-[480px] sm:max-w-[500px] min-h-screen bg-[#0B0F19] flex flex-col justify-between shadow-[0_0_60px_rgba(0,0,0,0.8)] sm:border-x border-slate-800/80 relative overflow-hidden">
         {/* Floating Objective / System Notification Toast */}
         <NotificationToast
           notification={gameState.activeNotification}
@@ -257,38 +311,49 @@ export default function App() {
           activeCrisisResourceId={gameState.crisisState?.resourceId || null}
         />
 
-        {decisionFeedback && <DecisionFeedback
-          key={decisionFeedback.id}
-          feedback={decisionFeedback}
-          onDismiss={dismissDecisionFeedback}
-          onOpenHistory={() => {
-            setDecisionFeedback(null);
-            handleOpenHistory();
-          }}
-        />}
-
         {/* 3. Main Center Area: Swipeable Card */}
-        <main className="story-stage flex-1 flex flex-col items-center justify-center px-4 py-2 w-full">
-          <GameCard
-            key={currentCard.id}
-            card={currentCard}
-            storyFlags={gameState.storyFlags}
-            resources={gameState.resources}
-            onDecision={handleDecision}
-            onHoverDirectionChange={handleHoverDirectionChange}
-            isProcessing={isProcessing}
-          />
+        <main className="game-main flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
+          {isProcessing&&<div className="sr-only" role="status">선택을 기록했습니다 · 다음 안건을 준비합니다</div>}
+          {gameState.flowPhase === 'playing' && !gameState.waitingUntilDay ? (
+            <GameCard
+              key={currentCard.id}
+              card={currentCard}
+              storyFlags={gameState.storyFlags}
+              resources={gameState.resources}
+              dialogueContext={gameState}
+              onDecision={handleDecision}
+              onHoverDirectionChange={handleHoverDirectionChange}
+              isProcessing={isProcessing || inputLocked}
+              previewDirection={isProcessing?null:previewDirection}
+            />
+          ) : gameState.waitingUntilDay ? (
+            <div className="p-8 text-center">
+              <h2>새 안건 대기</h2>
+              <p className="text-sm text-slate-400 my-4">
+                정책 검토 간격을 지키며 다음 안건을 기다립니다.
+              </p>
+              <button className="start-button" onClick={() => applySessionAction({ type: 'wait' })}>
+                다음 심의일로
+              </button>
+            </div>
+          ) : (
+            <p className="text-slate-400 text-sm">스토리 결과를 확인해 주세요.</p>
+          )}
         </main>
 
         {/* 4. Bottom Controls (Left/Right buttons, History, Settings) */}
-        <Controls
-          card={currentCard}
-          onDecision={handleDecision}
-          onOpenHistory={handleOpenHistory}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          onHoverDirectionChange={handleHoverDirectionChange}
-          isProcessing={isProcessing}
-        />
+        {gameState.flowPhase === 'playing' && (
+          <Controls
+            card={currentCard}
+            storyFlags={gameState.storyFlags}
+            onDecision={handleDecision}
+            onOpenHistory={handleOpenHistory}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+            onHoverDirectionChange={handleHoverDirectionChange}
+            isProcessing={isProcessing || inputLocked || Boolean(gameState.waitingUntilDay)}
+            onDetailsOpenChange={setIsChoiceDetailsOpen}
+          />
+        )}
       </div>
 
       {/* Decision History & Case Dossier Modal */}
@@ -318,17 +383,24 @@ export default function App() {
 
       {/* ACT I Completion Modal */}
       <ActCompleteModal
-        isOpen={isActCompleteModalOpen}
-        onClose={() => setIsActCompleteModalOpen(false)}
+        isOpen={gameState.flowPhase === 'act1Complete' && !isReplacementModalOpen && !isHistoryOpen}
+        onClose={() => setInTitleScreen(true)}
         state={gameState}
         onOpenHistory={handleOpenHistory}
         onRestart={handleStartNewGame}
-        onStartAct2={gameState.currentAct === 'ACT_I' ? handleInitiateAct2 : undefined}
+        onStartAct2={handleInitiateAct2}
       />
 
+      {gameState.flowPhase === 'act2Complete' && !isReplacementModalOpen && (
+        <Act2CompleteScreen
+          state={gameState}
+          onFreePlay={() => applySessionAction({ type: 'enterFreePlay' })}
+          onMainMenu={() => setInTitleScreen(true)}
+        />
+      )}
       {/* ACT II Cinematic Transition Modal */}
       <ActTransitionModal
-        isOpen={isTransitionModalOpen}
+        isOpen={gameState.flowPhase === 'act2Intro'}
         onConfirm={handleConfirmAct2Transition}
       />
     </div>

@@ -3,10 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { choicePresentation } from '../data/cardPresentation';
 import { CARD_MAP } from '../data/cards';
 import { CHARACTERS } from '../data/characters';
 import {
   CharacterId,
+  CardDialogueContext,
   DecisionRecord,
   DelayedEffect,
   GameCard,
@@ -17,11 +19,26 @@ import {
   StoryFlags,
   SupervisorRecord,
 } from '../types/game';
-import { selectNextCard } from './cardSelector';
-import { applyResourceDelta, detectResourceCrisis, RESOURCE_BOUNDS } from './resourceEngine';
-import { evaluateCompletedObjectives, getNewlyCompletedObjective } from './storyEngine';
+import { selectNextCard, entryFailure } from './cardSelector';
+import {
+  ACT1_END,
+  ACT2_END,
+  MAIN_IDS,
+  nextStoryId,
+  chapterOf,
+  storyComplete,
+  authoredNextId,
+} from './storyFlow';
+import {
+  applyResourceDelta,
+  detectResourceCrisis,
+  RESOURCE_BOUNDS,
+  RESOURCE_ORDER,
+  RESOURCE_META,
+} from './resourceEngine';
+import { reconcileCompletedObjectives, evaluateCompletedObjectives, getNewlyCompletedObjective } from './storyEngine';
 
-export const CURRENT_SCHEMA_VERSION = 4;
+export const CURRENT_SCHEMA_VERSION = 5;
 
 export function normalizeStoryFlags(flags: StoryFlags): StoryFlags {
   const normalized = { ...flags };
@@ -72,6 +89,13 @@ export function createInitialGameState(): GameState {
   const completedObjs = evaluateCompletedObjectives(initialFlags, ['act1_01_inauguration']);
 
   return {
+    gameMode: 'story',
+    flowPhase: 'playing',
+    skippedStoryCardIds: [],
+    selectionDiagnostics: [],
+    resolvedCrisisInstances: [],
+    consecutiveSideEvents: 0,
+    lastCardDays: {},
     gameId: `game_${Date.now()}`,
     schemaVersion: CURRENT_SCHEMA_VERSION,
     currentDay: 1,
@@ -103,6 +127,13 @@ export function createInitialGameState(): GameState {
 }
 
 export function startAct2(state: GameState): GameState {
+  if (
+    state.currentAct !== 'ACT_I' ||
+    state.flowPhase !== 'act2Intro' ||
+    !state.storyFlags.act1_completed ||
+    !storyComplete(state, 'ACT_I')
+  )
+    return state;
   const normalizedFlags = normalizeStoryFlags({
     ...state.storyFlags,
     act1_completed: true,
@@ -120,10 +151,12 @@ export function startAct2(state: GameState): GameState {
 
   return {
     ...state,
+    gameMode: 'story',
+    flowPhase: 'playing',
+    isActCompleted: false,
     currentAct: 'ACT_II',
     currentChapter: 1,
-    currentCardId: 'act2_ch1_01_triage_alert',
-    isActCompleted: false,
+    currentCardId: state.crisisState?.crisisCardId || 'act2_ch1_01_triage_alert',
     storyFlags: normalizedFlags,
     activeNotification: notification,
     lastSavedAt: new Date().toISOString(),
@@ -133,27 +166,46 @@ export function startAct2(state: GameState): GameState {
 export function resolveCardDialogue(
   card: GameCard,
   flags: StoryFlags,
-  resources: Resources
+  resources: Resources,
+  context?: CardDialogueContext,
 ): string {
   if (typeof card.dialogue === 'function') {
-    return card.dialogue(flags, resources);
+    return card.dialogue(flags, resources, context);
   }
   return card.dialogue;
 }
 
 export function executeDecision(
   state: GameState,
-  direction: 'left' | 'right'
+  direction: 'left' | 'right',
 ): { nextState: GameState; replaced: boolean; dismissalReason?: string } {
   const currentCard = CARD_MAP.get(state.currentCardId);
-  if (!currentCard) {
+  if (state.flowPhase !== 'playing' || state.waitingUntilDay)
+    return { nextState: state, replaced: false };
+  if (!currentCard)
     return {
-      nextState: { ...state, currentCardId: 'act1_01_inauguration' },
+      nextState: {
+        ...state,
+        selectionDiagnostics: [...state.selectionDiagnostics, 'current:missing-card'],
+      },
       replaced: false,
     };
-  }
+  const systemCard = currentCard.id.startsWith('supervisor_replacement_');
+  const failure = systemCard ? null : entryFailure(currentCard.id, state);
+  if (failure)
+    return {
+      nextState: {
+        ...state,
+        selectionDiagnostics: [
+          ...state.selectionDiagnostics,
+          'current:' + currentCard.id + ':' + failure,
+        ],
+      },
+      replaced: false,
+    };
 
   const choice = direction === 'left' ? currentCard.leftChoice : currentCard.rightChoice;
+  const presentedChoice = choicePresentation(currentCard, direction, state.storyFlags);
 
   // 1. Calculate immediate resource change
   let updatedResources = applyResourceDelta(state.resources, choice.effects);
@@ -172,13 +224,15 @@ export function executeDecision(
   // 3. Update internal operationalCapacity
   const updatedOperationalCapacity = Math.max(
     0,
-    Math.min(100, (state.operationalCapacity ?? 50) + (choice.operationalDelta ?? 0))
+    Math.min(100, (state.operationalCapacity ?? 50) + (choice.operationalDelta ?? 0)),
   );
 
   // 4. Merge and normalize story flags
   let updatedFlags: StoryFlags = { ...state.storyFlags };
   if (choice.flags) {
-    Object.assign(updatedFlags, choice.flags);
+    const flags = { ...choice.flags };
+    if (currentCard.id === ACT2_END) delete flags.act3_preview_unlocked;
+    Object.assign(updatedFlags, flags);
   }
   updatedFlags.current_supervisor_number = state.supervisorNumber;
   updatedFlags = normalizeStoryFlags(updatedFlags);
@@ -191,7 +245,7 @@ export function executeDecision(
       if (updatedRelationships[charId] !== undefined) {
         updatedRelationships[charId] = Math.max(
           0,
-          Math.min(100, updatedRelationships[charId] + (delta || 0))
+          Math.min(100, updatedRelationships[charId] + (delta || 0)),
         );
       }
     }
@@ -218,245 +272,231 @@ export function executeDecision(
     updatedSecrets.push('MISSING_HEALTHCARE_DATA');
   }
 
-  // 7. Build decision record (omitting zero-delta resources)
-  const nonZeroDelta: ResourceDelta = {};
-  (['citizenTrust', 'fairness', 'personalFreedom', 'publicSafety'] as const).forEach((key) => {
-    if (choice.effects[key] !== undefined && choice.effects[key] !== 0) {
-      nonZeroDelta[key] = choice.effects[key];
+  const completedCardIds = [...new Set([...state.completedCardIds, currentCard.id])];
+  // A verdict records the decision; completion means the full authored story including epilogue was read.
+  if (
+    currentCard.id === 'act2_ch3_07_final_civitas_verdict' &&
+    !completedCardIds.includes(ACT2_END)
+  ) {
+    updatedFlags.act2_verdict_reached = true;
+    updatedFlags.act2_completed = false;
+  }
+  let next: GameState = {
+    ...state,
+    currentDay: state.currentDay + 1,
+    supervisorTenure: state.supervisorTenure + 1,
+    resources: updatedResources,
+    operationalCapacity: updatedOperationalCapacity,
+    pendingDelayedEffects: updatedPendingDelayed,
+    appliedDelayedEffectIds: [...appliedDelayedIds],
+    storyFlags: updatedFlags,
+    relationshipValues: updatedRelationships,
+    discoveredSecrets: updatedSecrets,
+    completedCardIds,
+    recentCardIds: [currentCard.id, ...state.recentCardIds].slice(0, 100),
+    lastCardDays: { ...state.lastCardDays, [currentCard.id]: state.currentDay },
+    scheduledCardQueue: [...state.scheduledCardQueue],
+    consecutiveSideEvents: MAIN_IDS.has(currentCard.id) ? 0 : state.consecutiveSideEvents + 1,
+    lastSavedAt: new Date().toISOString(),
+  };
+  if (choice.scheduleCardId && !next.scheduledCardQueue.includes(choice.scheduleCardId))
+    next.scheduledCardQueue.push(choice.scheduleCardId);
+  // Only authored chapter boundaries advance chapters; an incidental card can never change the ACT.
+  if (state.currentAct === 'ACT_II' && state.gameMode === 'story') {
+    const remaining = nextStoryId(next);
+    if (remaining)
+      next.currentChapter = Math.max(state.currentChapter, chapterOf(remaining)) as 1 | 2 | 3;
+    next.storyFlags.current_chapter = next.currentChapter;
+  }
+  if (
+    state.gameMode === 'story' &&
+    storyComplete(next, state.currentAct === 'ACT_I' ? 'ACT_I' : 'ACT_II')
+  ) {
+    if (state.currentAct === 'ACT_I' && updatedFlags.act1_viewed_epilogue) {
+      next.flowPhase = 'act1Complete';
+      next.isActCompleted = true;
+    } else if (
+      state.currentAct === 'ACT_II' &&
+      updatedFlags.act2_viewed_epilogue &&
+      updatedFlags.final_act2_verdict
+    ) {
+      next.storyFlags.act2_completed = true;
+      next.flowPhase = 'act2Complete';
+      next.isActCompleted = true;
     }
+  }
+  const plannedLink = MAIN_IDS.has(currentCard.id)
+    ? authoredNextId(next, currentCard)
+    : choice.nextCardId;
+  if (choice.nextCardId) {
+    const failure = entryFailure(choice.nextCardId, next);
+    if (failure)
+      next.selectionDiagnostics = [
+        ...next.selectionDiagnostics,
+        `source-next:${currentCard.id}:${choice.nextCardId}:${failure}`,
+      ].slice(-50);
+  }
+  let planned =
+    next.flowPhase === 'playing'
+      ? selectNextCard({ ...next, crisisState: null }, plannedLink)
+      : null;
+  if (choice.nextCardId && choice.nextCardId !== plannedLink) {
+    next.selectionDiagnostics = [
+      ...next.selectionDiagnostics,
+      `editorial-link:${currentCard.id}:${choice.nextCardId}->${plannedLink ?? 'end'}`,
+    ].slice(-50);
+  }
+  // Effects are settled once for the incoming event, before evaluating its emergency interruption.
+  const appliedNow: DelayedEffect[] = [];
+  next.pendingDelayedEffects = updatedPendingDelayed.filter((effect) => {
+    if (effect.triggerCardId !== planned?.card?.id || appliedDelayedIds.has(effect.id)) return true;
+    updatedResources = applyResourceDelta(updatedResources, effect.effects);
+    appliedDelayedIds.add(effect.id);
+    appliedNow.push(effect);
+    return false;
   });
-
-  const character = CHARACTERS[currentCard.characterId];
+  next.resources = updatedResources;
+  next.appliedDelayedEffectIds = [...appliedDelayedIds];
+  const crisis = detectResourceCrisis(updatedResources, state.crisisState, state.currentDay);
+  if (
+    crisis &&
+    state.crisisState?.instanceId === crisis.instanceId &&
+    currentCard.type === 'crisis'
+  )
+    crisis.strikeCount++;
+  const previousResolved = state.crisisState && crisis?.crisisCardId !== state.crisisState.crisisCardId;
+  if (state.crisisState && previousResolved) {
+    next.crisisResolvedIds = [
+      ...new Set([...state.crisisResolvedIds, state.crisisState.crisisCardId]),
+    ];
+    next.resolvedCrisisInstances = [
+      ...state.resolvedCrisisInstances,
+      state.crisisState.instanceId ||
+        `${state.crisisState.crisisCardId}:${state.crisisState.triggeredDay}`,
+    ];
+  }
+  next.crisisState = crisis;
+  const zeroKey = RESOURCE_ORDER.find((key) => updatedResources[key] <= 0);
+  const exhaustedResponses = Boolean(crisis && currentCard.type === 'crisis' && crisis.strikeCount >= 2);
+  // A crisis response that reaches zero still gets its second response. A policy
+  // decision reaching zero outside emergency response retains the existing dismissal rule.
+  const shouldReplace = Boolean((zeroKey && currentCard.type !== 'crisis') || exhaustedResponses);
+  let dismissalReason: string | undefined;
+  let recoveryDelta: ResourceDelta | undefined;
+  if (shouldReplace) {
+    const names = {
+      citizenTrust: 'trust',
+      fairness: 'fairness',
+      personalFreedom: 'freedom',
+      publicSafety: 'safety',
+    };
+    dismissalReason = exhaustedResponses
+      ? '두 차례 위기 대응 후에도 지속된 위기에 따른 불신임'
+      : `${RESOURCE_META[zeroKey!].label} 상실에 따른 평의회 불신임`;
+    const record: SupervisorRecord = {
+      supervisorNumber: state.supervisorNumber,
+      tenureDays: state.supervisorTenure,
+      dismissalReason,
+      endDay: state.currentDay,
+      keyVerdict: presentedChoice.text,
+    };
+    const recovered = { ...updatedResources };
+    recoveryDelta = {};
+    for (const key of RESOURCE_ORDER) {
+      recovered[key] = Math.max(35, Math.min(65, updatedResources[key] + 25));
+      recoveryDelta[key] = recovered[key] - updatedResources[key];
+    }
+    next.resources = recovered;
+    next.operationalCapacity = 50;
+    next.supervisorNumber++;
+    next.supervisorTenure = 1;
+    next.storyFlags.current_supervisor_number = next.supervisorNumber;
+    next.supervisorHistory = [record, ...state.supervisorHistory];
+    next.crisisState = null;
+    next.currentCardId = `supervisor_replacement_${exhaustedResponses ? 'crisis' : names[zeroKey!]}`;
+  } else if (next.flowPhase === 'playing') {
+    // Explicit system path: the cause-of-dismissal report is followed by the new supervisor's oath.
+    if (
+      currentCard.id.startsWith('supervisor_replacement_') &&
+      currentCard.id !== 'supervisor_replacement_orientation' &&
+      !crisis
+    ) {
+      next.currentCardId = 'supervisor_replacement_orientation';
+    } else if (crisis) {
+      next.currentCardId = crisis.crisisCardId;
+      // Keep an interrupted non-story occurrence queued; do not lose it to the emergency.
+      if (
+        planned?.card &&
+        !MAIN_IDS.has(planned.card.id) &&
+        !next.scheduledCardQueue.includes(planned.card.id)
+      )
+        next.scheduledCardQueue.unshift(planned.card.id);
+    } else if (planned?.card) {
+      next.currentCardId = planned.card.id;
+      next.rngSeed = planned.nextSeed;
+      next.scheduledCardQueue = planned.remainingScheduledQueue;
+    } else {
+      next.waitingUntilDay = planned?.waitUntilDay;
+    }
+  }
+  if (planned)
+    next.selectionDiagnostics = [...next.selectionDiagnostics, ...planned.diagnostics].slice(-50);
+  const delta: ResourceDelta = {};
+  for (const key of RESOURCE_ORDER) {
+    if (next.resources[key] !== state.resources[key])
+      delta[key] = next.resources[key] - state.resources[key];
+  }
   const decisionRecord: DecisionRecord = {
     id: `decision_${state.currentDay}_${Date.now()}`,
     day: state.currentDay,
     cardId: currentCard.id,
     cardTitle: currentCard.title,
     characterId: currentCard.characterId,
-    characterName: character?.name || '시스템',
+    characterName: CHARACTERS[currentCard.characterId]?.name || '시스템',
     topic: currentCard.topicBadge,
     direction,
-    choiceText: choice.text,
-    resourceDelta: nonZeroDelta,
-    resourcesAfter: updatedResources,
-    consequenceSummary: choice.consequence,
+    choiceText: presentedChoice.text,
+    resourceDelta: delta,
+    resourcesAfter: { ...next.resources },
+    consequenceSummary: presentedChoice.consequence,
     timestamp: Date.now(),
-    linkedFollowUpCardId: choice.nextCardId,
+    linkedFollowUpCardId: choice.scheduleCardId || plannedLink,
+    gameMode: state.gameMode,
+    act: state.currentAct,
+    supervisorRecoveryDelta: recoveryDelta,
+    delayedEffectApplied: appliedNow.length
+      ? {
+          id: appliedNow.at(-1)!.id,
+          description: appliedNow.at(-1)!.description,
+          delta: appliedNow.at(-1)!.effects,
+        }
+      : undefined,
+    delayedEffectsApplied: appliedNow,
   };
-
-  const updatedHistory = [decisionRecord, ...state.decisionHistory];
-  const updatedCompletedIds = state.completedCardIds.includes(currentCard.id)
-    ? state.completedCardIds
-    : [...state.completedCardIds, currentCard.id];
-
-  // 8. Objectives evaluation & Notifications
-  const nextCompletedObjectives = evaluateCompletedObjectives(updatedFlags, updatedCompletedIds);
-  const newlyCompleted = getNewlyCompletedObjective(
-    state.completedObjectiveIds || [],
-    nextCompletedObjectives
+  next.decisionHistory = [decisionRecord, ...state.decisionHistory];
+  next.completedObjectiveIds = reconcileCompletedObjectives(
+    state.completedObjectiveIds, next.storyFlags, completedCardIds,
   );
-
-  let activeNotification: GameNotification | null = null;
-  if (newlyCompleted) {
-    activeNotification = {
-      id: `notif_obj_${Date.now()}`,
-      type: 'objective',
-      title: `목표 달성: ${newlyCompleted.title}`,
-      subtitle: newlyCompleted.description,
-      timestamp: Date.now(),
-    };
-  }
-
-  // 9. Check Supervisor Replacement conditions (Resource <= 0 or crisis persists)
-  let shouldReplaceSupervisor = false;
-  let dismissalReason = '';
-  let replacementCardId = 'supervisor_replacement_orientation';
-
-  const isZero =
-    updatedResources.citizenTrust <= 0 ||
-    updatedResources.fairness <= 0 ||
-    updatedResources.personalFreedom <= 0 ||
-    updatedResources.publicSafety <= 0;
-
-  if (isZero) {
-    shouldReplaceSupervisor = true;
-    if (updatedResources.citizenTrust <= 0) {
-      dismissalReason = '시민 신뢰의 완전한 상실 및 대규모 시민 총파업 발발';
-      replacementCardId = 'supervisor_replacement_trust';
-    } else if (updatedResources.fairness <= 0) {
-      dismissalReason = '알고리즘 차별 및 집단 위헌 소송으로 인한 사법 체계 마비';
-      replacementCardId = 'supervisor_replacement_fairness';
-    } else if (updatedResources.personalFreedom <= 0) {
-      dismissalReason = '극단적 디지털 감시사회와 시민·인재 계층의 전면 탈출';
-      replacementCardId = 'supervisor_replacement_freedom';
-    } else {
-      dismissalReason = '도심 치안 시스템의 전면적 와해 및 무법 상태 도달';
-      replacementCardId = 'supervisor_replacement_safety';
-    }
-  } else if (state.crisisState && state.crisisState.strikeCount >= 2) {
-    shouldReplaceSupervisor = true;
-    dismissalReason = `위기 관리 미흡 (${currentCard.topicBadge} 지속 방치에 따른 평의회 불신임)`;
-    replacementCardId = 'supervisor_replacement_crisis';
-  }
-
-  // 10. Handle Supervisor Replacement if triggered
-  if (shouldReplaceSupervisor) {
-    const supervisorRecord: SupervisorRecord = {
-      supervisorNumber: state.supervisorNumber,
-      tenureDays: state.supervisorTenure,
-      dismissalReason,
-      endDay: state.currentDay,
-      keyVerdict: decisionRecord.choiceText,
-    };
-
-    const newSupervisorNumber = state.supervisorNumber + 1;
-    updatedFlags.current_supervisor_number = newSupervisorNumber;
-
-    // Partial recovery of resources towards balanced baseline
-    const recoveredResources: Resources = {
-      citizenTrust: Math.max(35, Math.min(65, updatedResources.citizenTrust + 25)),
-      fairness: Math.max(35, Math.min(65, updatedResources.fairness + 25)),
-      personalFreedom: Math.max(35, Math.min(65, updatedResources.personalFreedom + 25)),
-      publicSafety: Math.max(35, Math.min(65, updatedResources.publicSafety + 25)),
-    };
-
-    const updatedRecent = [currentCard.id, ...(state.recentCardIds || [])].slice(0, 30);
-
-    const nextState: GameState = {
-      ...state,
-      currentDay: state.currentDay + 1,
-      supervisorNumber: newSupervisorNumber,
-      supervisorTenure: 1,
-      currentCardId: replacementCardId,
-      resources: recoveredResources,
-      operationalCapacity: 50,
-      pendingDelayedEffects: updatedPendingDelayed,
-      appliedDelayedEffectIds: Array.from(appliedDelayedIds),
-      completedObjectiveIds: nextCompletedObjectives,
-      recentCardIds: updatedRecent,
-      scheduledCardQueue: choice.nextCardId
-        ? [choice.nextCardId, ...(state.scheduledCardQueue || [])]
-        : state.scheduledCardQueue || [],
-      crisisResolvedIds: state.crisisResolvedIds || [],
-      storyFlags: updatedFlags,
-      relationshipValues: updatedRelationships,
-      discoveredSecrets: updatedSecrets,
-      decisionHistory: updatedHistory,
-      completedCardIds: updatedCompletedIds,
-      crisisState: null,
-      supervisorHistory: [supervisorRecord, ...state.supervisorHistory],
-      activeNotification: {
-        id: `notif_replace_${Date.now()}`,
+  const objective = getNewlyCompletedObjective(
+    state.completedObjectiveIds,
+    next.completedObjectiveIds,
+  );
+  next.activeNotification = shouldReplace
+    ? {
+        id: `replace_${next.currentDay}`,
         type: 'warning',
-        title: `제${newSupervisorNumber}대 AI 감독관 취임`,
-        subtitle: '전임자의 파면으로 인해 새로운 감독관이 직무를 승계했습니다.',
+        title: `제${next.supervisorNumber}대 AI 감독관 취임`,
+        subtitle: dismissalReason,
         timestamp: Date.now(),
-      },
-      lastSavedAt: new Date().toISOString(),
-    };
-
-    return { nextState, replaced: true, dismissalReason };
-  }
-
-  // 11. Normal Crisis Evaluation
-  const newCrisis = detectResourceCrisis(updatedResources, state.crisisState, state.currentDay);
-
-  // Final verdict flags precede the epilogue; completion requires reading it.
-  const isActComplete = Boolean(
-    state.currentAct === 'ACT_II'
-      ? updatedFlags.act2_viewed_epilogue
-      : updatedFlags.act1_viewed_epilogue
-  );
-
-  // Chapter tracking
-  let updatedChapter = state.currentChapter || 1;
-  if (updatedFlags.current_chapter) {
-    updatedChapter = Number(updatedFlags.current_chapter) as 1 | 2 | 3;
-  }
-
-  // Determine current Act
-  let updatedAct = state.currentAct;
-  if (currentCard.act === 'ACT_II' || updatedFlags.act2_started) {
-    updatedAct = 'ACT_II';
-  }
-
-  const updatedRecent = [currentCard.id, ...(state.recentCardIds || [])].slice(0, 30);
-  const updatedCrisisResolvedIds = [...(state.crisisResolvedIds || [])];
-  if (state.crisisState && newCrisis === null) {
-    if (!updatedCrisisResolvedIds.includes(state.crisisState.crisisCardId)) {
-      updatedCrisisResolvedIds.push(state.crisisState.crisisCardId);
-    }
-  }
-
-  // 12. Select Next Card
-  const tempState: GameState = {
-    ...state,
-    currentAct: updatedAct,
-    currentChapter: updatedChapter,
-    currentDay: state.currentDay + 1,
-    supervisorTenure: state.supervisorTenure + 1,
-    resources: updatedResources,
-    operationalCapacity: updatedOperationalCapacity,
-    pendingDelayedEffects: updatedPendingDelayed,
-    appliedDelayedEffectIds: Array.from(appliedDelayedIds),
-    completedObjectiveIds: nextCompletedObjectives,
-    recentCardIds: updatedRecent,
-    scheduledCardQueue: state.scheduledCardQueue || [],
-    crisisResolvedIds: updatedCrisisResolvedIds,
-    storyFlags: updatedFlags,
-    relationshipValues: updatedRelationships,
-    discoveredSecrets: updatedSecrets,
-    decisionHistory: updatedHistory,
-    completedCardIds: updatedCompletedIds,
-    crisisState: newCrisis,
-    isActCompleted: isActComplete,
-    activeNotification,
-  };
-
-  const { card: nextCard, nextSeed, remainingScheduledQueue } = selectNextCard(tempState, choice.nextCardId);
-
-  // Synchronize act & chapter with incoming nextCard
-  if (nextCard.act === 'ACT_II') {
-    updatedAct = 'ACT_II';
-    if (nextCard.id.startsWith('act2_ch1')) updatedChapter = 1;
-    else if (nextCard.id.startsWith('act2_ch2')) updatedChapter = 2;
-    else if (nextCard.id.startsWith('act2_ch3')) updatedChapter = 3;
-  }
-
-  // 13. Trigger any pending Delayed Effects attached to the incoming nextCard
-  let triggeredDelayedEffect: DelayedEffect | null = null;
-  const remainingPending: DelayedEffect[] = [];
-
-  for (const delayed of updatedPendingDelayed) {
-    if (delayed.triggerCardId === nextCard.id && !appliedDelayedIds.has(delayed.id)) {
-      triggeredDelayedEffect = delayed;
-      appliedDelayedIds.add(delayed.id);
-      updatedResources = applyResourceDelta(updatedResources, delayed.effects);
-    } else {
-      remainingPending.push(delayed);
-    }
-  }
-
-  if (triggeredDelayedEffect) {
-    decisionRecord.delayedEffectApplied = {
-      id: triggeredDelayedEffect.id,
-      description: triggeredDelayedEffect.description,
-      delta: triggeredDelayedEffect.effects,
-    };
-  }
-
-  const finalNextState: GameState = {
-    ...tempState,
-    currentAct: updatedAct,
-    currentChapter: updatedChapter,
-    currentCardId: nextCard.id,
-    resources: updatedResources,
-    scheduledCardQueue: remainingScheduledQueue || tempState.scheduledCardQueue,
-    pendingDelayedEffects: remainingPending,
-    appliedDelayedEffectIds: Array.from(appliedDelayedIds),
-    rngSeed: nextSeed,
-    lastSavedAt: new Date().toISOString(),
-  };
-
-  return { nextState: finalNextState, replaced: false };
+      }
+    : objective
+      ? {
+          id: `objective_${next.currentDay}`,
+          type: 'objective',
+          title: objective.title,
+          subtitle: objective.description,
+          timestamp: Date.now(),
+        }
+      : null;
+  return { nextState: next, replaced: shouldReplace, dismissalReason };
 }

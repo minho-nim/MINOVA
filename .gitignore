@@ -6,3 +6,12 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Local snapshots of user-supplied artwork and its previous mappings
+/backups/
+
+# Local art drafts, source snapshots, prompts and visual QA output.
+# The approved runtime sheets and manifest live under public/assets/.
+/art/
+/docs/simulations/diagnostic.json
+/docs/simulations/local-*.json

@@ -1,60 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { X, ArrowUpRight } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { X } from 'lucide-react';
 import { DecisionFeedbackData } from '../utils/decisionFeedback';
 import { RESOURCE_META, RESOURCE_ORDER } from '../engine/resourceEngine';
 
 interface Props {
   feedback: DecisionFeedbackData;
   onDismiss: (id: string) => void;
-  onOpenHistory: () => void;
 }
 
-export function DecisionFeedback({ feedback, onDismiss, onOpenHistory }: Props) {
-  const [hovered, setHovered] = useState(false);
+export function DecisionFeedback({ feedback, onDismiss }: Props) {
   const [focused, setFocused] = useState(false);
   useEffect(() => {
-    if (hovered || focused) return;
-    const timer = setTimeout(() => onDismiss(feedback.id), 7000);
+    if (focused) return;
+    const timer = setTimeout(() => onDismiss(feedback.id), 3200);
     return () => clearTimeout(timer);
-  }, [feedback.id, onDismiss, hovered, focused]);
-
-  const changed = RESOURCE_ORDER.filter(key => feedback.delta[key] !== undefined);
-  return (
-    <section
-      className="decision-feedback"
-      aria-label="방금 내린 결정의 결과"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setFocused(true)}
-      onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}
-    >
-      <div className="decision-feedback-heading">
-        <span>결정 결과</span>
-        <button type="button" aria-label="결정 결과 닫기" onClick={() => onDismiss(feedback.id)}>
-          <X size={16} strokeWidth={1.5} />
-        </button>
-      </div>
+  }, [feedback.id, onDismiss, focused]);
+  // Render outside the game shell: never consumes layout space or resizes dialogue.
+  return createPortal(
+    <aside className="decision-result-toast" aria-label="선택 결과">
       <div role="status" aria-live="polite" aria-atomic="true">
-        <p className="decision-feedback-title">{feedback.title}</p>
-        <p className="decision-feedback-summary">{feedback.summary}</p>
-        {changed.length ? (
-          <ul className="decision-feedback-deltas" aria-label="실제 도시 지표 변화">
-            {changed.map(key => {
-              const value = feedback.delta[key]!;
-              return <li key={key}>
-                <span>{RESOURCE_META[key].label}</span>
-                <strong className={value > 0 ? 'delta-increase' : 'delta-decrease'}>
-                  {value > 0 ? '+' : '−'}{Math.abs(value)}
-                </strong>
-              </li>;
-            })}
-          </ul>
-        ) : <p className="decision-feedback-note">도시 지표 변화 없음</p>}
-        {feedback.adjustment && <p className="decision-feedback-note">{feedback.adjustment}</p>}
+        <span className="decision-result-label">선택 결과</span>
+        <p className="decision-result-summary">{feedback.summary}</p>
+        <ul className="decision-result-deltas" aria-label="실제 지표 변화">
+          {RESOURCE_ORDER.filter(key => feedback.delta[key] !== undefined).map(key => {
+            const change = feedback.delta[key]!;
+            return <li key={key}>{RESOURCE_META[key].label} <strong className={change > 0 ? 'is-positive' : 'is-negative'}>{change > 0 ? '+' : '−'}{Math.abs(change)}</strong></li>;
+          })}
+        </ul>
+        {feedback.adjustment && <span className="decision-result-adjustment">{feedback.adjustment}</span>}
       </div>
-      <button type="button" className="decision-feedback-history" onClick={onOpenHistory}>
-        판단 기록부에서 다시 보기 <ArrowUpRight size={16} strokeWidth={1.5} />
+      <button type="button" aria-label="선택 결과 닫기" onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} onClick={() => onDismiss(feedback.id)}>
+        <X size={16} />
       </button>
-    </section>
+    </aside>, document.body,
   );
 }

@@ -4,19 +4,27 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { GameCard as GameCardType, StoryFlags, Resources } from '../types/game';
+import { CardDialogueContext, GameCard as GameCardType, StoryFlags, Resources } from '../types/game';
+import { choicePresentation, choiceActionLabel } from '../data/cardPresentation';
 import { CHARACTERS } from '../data/characters';
 import { CharacterPortrait } from './CharacterPortrait';
+import { DISPLAY_ROLES } from '../data/characterArt';
+import { getCardSpeaker } from '../data/cardSpeakers';
+import { readableDialogue } from '../data/readableDialogue';
 import { resolveCardDialogue } from '../engine/gameEngine';
-import { Check, X, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
+import { CardGlossary } from './CardGlossary';
+import { dialogueParagraphs } from '../data/ethicsGlossary';
 
 interface GameCardProps {
   card: GameCardType;
   storyFlags: StoryFlags;
   resources: Resources;
+  dialogueContext?: CardDialogueContext;
   onDecision: (direction: 'left' | 'right') => void;
   onHoverDirectionChange: (direction: 'left' | 'right' | null) => void;
   isProcessing: boolean;
+  previewDirection?: 'left' | 'right' | null;
 }
 
 const SWIPE_THRESHOLD = 75;
@@ -25,23 +33,26 @@ export const GameCard: React.FC<GameCardProps> = ({
   card,
   storyFlags,
   resources,
+  dialogueContext,
   onDecision,
   onHoverDirectionChange,
   isProcessing,
+  previewDirection,
 }) => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null);
-  const startPosRef = useRef({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
+  const gesture = useRef<{ id: number; x: number; y: number; horizontal: boolean } | null>(null);
+  const dialogueRef = useRef<HTMLDivElement>(null);
 
   const character = CHARACTERS[card.characterId];
-  const dialogueText = resolveCardDialogue(card, storyFlags, resources);
+  const speaker = getCardSpeaker(card);
+  const dialogueText = readableDialogue(card.id, resolveCardDialogue(card, storyFlags, resources, dialogueContext));
+  useEffect(()=>{if(dialogueRef.current)dialogueRef.current.scrollTop=0;},[card.id,dialogueText]);
 
-  // Compute swipe progress (-1 to 1)
-  const swipeProgress = Math.max(-1, Math.min(1, dragOffset.x / SWIPE_THRESHOLD));
-  const isLeftActive = dragOffset.x < -16;
-  const isRightActive = dragOffset.x > 16;
+  useEffect(() => {
+    if (!isProcessing) setExitDirection(null);
+  }, [isProcessing]);
 
   // Sync preview with parent resource bar
   useEffect(() => {
@@ -60,21 +71,20 @@ export const GameCard: React.FC<GameCardProps> = ({
       if (isProcessing || exitDirection) return;
       setExitDirection(direction);
       onHoverDirectionChange(null);
-      setTimeout(() => {
-        onDecision(direction);
-        setExitDirection(null);
-        setDragOffset({ x: 0, y: 0 });
-      }, 220);
+      setDragOffset({ x: 0, y: 0 });
+      onDecision(direction);
     },
-    [isProcessing, exitDirection, onDecision, onHoverDirectionChange]
+    [isProcessing, exitDirection, onDecision, onHoverDirectionChange],
   );
 
   // Keyboard navigation (ArrowLeft / ArrowRight)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if(e.repeat)return;
       if (
         document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA'
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.closest('[data-reading-area]')
       ) {
         return;
       }
@@ -91,204 +101,112 @@ export const GameCard: React.FC<GameCardProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [triggerDecision]);
 
-  // Mouse drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (isProcessing || exitDirection) return;
-    setIsDragging(true);
-    startPosRef.current = { x: e.clientX, y: e.clientY };
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isProcessing || exitDirection || !event.isPrimary || event.button !== 0) return;
+    if ((event.target as Element).closest('button, a, summary, input, textarea, select')) return;
+    gesture.current = { id: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
+    // Keep tracking even when the card moves away from the pointer.
+    event.currentTarget.setPointerCapture(event.pointerId);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || isProcessing || exitDirection) return;
-    const dx = e.clientX - startPosRef.current.x;
-    const dy = (e.clientY - startPosRef.current.y) * 0.25;
-    setDragOffset({ x: dx, y: dy });
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging || isProcessing || exitDirection) return;
-    setIsDragging(false);
-    if (dragOffset.x <= -SWIPE_THRESHOLD) {
-      triggerDecision('left');
-    } else if (dragOffset.x >= SWIPE_THRESHOLD) {
-      triggerDecision('right');
-    } else {
-      setDragOffset({ x: 0, y: 0 });
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = gesture.current;
+    if (!start || start.id !== event.pointerId || isProcessing || exitDirection) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (!start.horizontal) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 10) return;
+      if (Math.abs(dy) >= Math.abs(dx)) {
+        gesture.current = null;
+        return;
+      }
+      start.horizontal = true;
+      setIsDragging(true);
     }
+    setDragOffset({ x: dx, y: dy * 0.25 });
   };
 
-  // Touch handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (isProcessing || exitDirection || e.touches.length === 0) return;
-    setIsDragging(true);
-    const touch = e.touches[0];
-    startPosRef.current = { x: touch.clientX, y: touch.clientY };
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || isProcessing || exitDirection || e.touches.length === 0) return;
-    const touch = e.touches[0];
-    const dx = touch.clientX - startPosRef.current.x;
-    const dy = (touch.clientY - startPosRef.current.y) * 0.25;
-    setDragOffset({ x: dx, y: dy });
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging || isProcessing || exitDirection) return;
+  const endPointerGesture = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = gesture.current;
+    if (!start || start.id !== event.pointerId) return;
+    gesture.current = null;
     setIsDragging(false);
-    if (dragOffset.x <= -SWIPE_THRESHOLD) {
-      triggerDecision('left');
-    } else if (dragOffset.x >= SWIPE_THRESHOLD) {
-      triggerDecision('right');
-    } else {
-      setDragOffset({ x: 0, y: 0 });
-    }
+    setDragOffset({ x: 0, y: 0 });
+    if (event.type !== 'pointerup' || !start.horizontal) return;
+    const dx = event.clientX - start.x;
+    if (Math.abs(dx) >= SWIPE_THRESHOLD) triggerDecision(dx < 0 ? 'left' : 'right');
   };
 
   // Compute card transform
-  const rotationDeg = exitDirection === 'left' ? -18 : exitDirection === 'right' ? 18 : (dragOffset.x / 14);
-  const translateX = exitDirection === 'left' ? -420 : exitDirection === 'right' ? 420 : dragOffset.x;
+  const rotationDeg =
+    exitDirection === 'left' ? -18 : exitDirection === 'right' ? 18 : dragOffset.x / 14;
+  const translateX =
+    exitDirection === 'left' ? -420 : exitDirection === 'right' ? 420 : dragOffset.x;
   const translateY = exitDirection ? -30 : dragOffset.y;
 
   const transformStyle = `translate3d(${translateX}px, ${translateY}px, 0px) rotate(${rotationDeg}deg)`;
-  const transitionStyle = isDragging ? 'none' : 'transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease-out';
+  const transitionStyle = isDragging
+    ? 'none'
+    : 'transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease-out';
 
   // Active choice being previewed
-  const activeChoice =
-    dragOffset.x < -16
-      ? card.leftChoice
-      : dragOffset.x > 16
-      ? card.rightChoice
-      : null;
+  const activeDirection = dragOffset.x < -16 ? 'left' : dragOffset.x > 16 ? 'right' : previewDirection;
+  const activeChoice = activeDirection==='left'?card.leftChoice:activeDirection==='right'?card.rightChoice:null;
 
-  const qualitativeImpacts = activeChoice
-    ? (['citizenTrust', 'fairness', 'personalFreedom', 'publicSafety'] as const)
-        .filter((key) => activeChoice.effects[key] !== undefined && activeChoice.effects[key] !== 0)
-        .map((key) => {
-          const delta = activeChoice.effects[key] || 0;
-          return {
-            key,
-            label:
-              key === 'citizenTrust'
-                ? '신뢰'
-                : key === 'fairness'
-                ? '공정'
-                : key === 'personalFreedom'
-                ? '자유'
-                : '안전',
-            direction: delta > 0 ? 'up' : 'down',
-          };
-        })
-    : [];
-
-  const leftActionLabel = card.leftChoice.actionLabel || (card.leftChoice.text.length > 8 ? '거부 · 대안' : card.leftChoice.text);
-  const rightActionLabel = card.rightChoice.actionLabel || (card.rightChoice.text.length > 8 ? '승인 · 실행' : card.rightChoice.text);
+  const leftActionLabel=choiceActionLabel(card,'left',storyFlags);
+  const rightActionLabel=choiceActionLabel(card,'right',storyFlags);
 
   return (
-    <div className="relative w-full max-w-[440px] sm:max-w-[460px] mx-auto flex flex-col items-center">
-      {/* Dynamic Choice Preview Banner */}
-      <div className="h-8 mb-1 flex items-center justify-center text-center px-2 w-full">
-        {activeChoice ? (
-          <div className="flex items-center gap-2 animate-in fade-in zoom-in-95">
-            <span
-              className={`text-xs font-medium px-2.5 py-0.5 rounded-full border shadow-sm ${
-                dragOffset.x < 0
-                  ? 'text-rose-200 bg-rose-950/90 border-rose-500/60'
-                  : 'text-cyan-200 bg-cyan-950/90 border-cyan-500/60'
-              }`}
-            >
-              {dragOffset.x < 0 ? `◀ ${leftActionLabel}` : `${rightActionLabel} ▶`}
-            </span>
-
-            {qualitativeImpacts.length > 0 && (
-              <div className="flex items-center gap-1.5 text-[10px] font-mono">
-                {qualitativeImpacts.map((imp) => (
-                  <span
-                    key={imp.key}
-                    className={
-                      imp.direction === 'up'
-                        ? 'text-emerald-400 font-medium'
-                        : 'text-rose-400 font-medium'
-                    }
-                  >
-                    {imp.label} {imp.direction === 'up' ? '▲' : '▼'}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        ) : (
-          <span className="text-[11px] font-mono text-slate-500 select-none">
-            카드를 좌우로 밀거나 아래 버튼을 누르세요
-          </span>
-        )}
-      </div>
+    <div className="verdict-stage relative w-full max-w-[440px] sm:max-w-[460px] mx-auto flex flex-col items-center">
+      {activeChoice&&<aside className={`choice-preview ${activeDirection==='left'?'is-left':'is-right'}`} role="status" aria-label="스와이프 선택 미리보기">
+        <strong>{activeDirection==='left'?`← ${leftActionLabel}`:`${rightActionLabel} →`}</strong>
+        <p>{choicePresentation(card,activeDirection!,storyFlags).text}</p>
+        <small>{!isDragging?'선택지 미리보기 · 아래 버튼으로 선택':Math.abs(dragOffset.x)>=SWIPE_THRESHOLD?'손을 놓으면 선택합니다 · 돌아오면 취소':'계속 밀면 선택합니다 · 돌아오면 취소'}</small>
+      </aside>}
 
       {/* Main Interactive Card Stack */}
-      <div className="relative w-full">
+      <div className="verdict-stack relative w-full">
         {/* Deep Ghost Card Layer */}
         <div className="absolute inset-0 bg-[#0A0E17] rounded-2xl border border-slate-800/50 transform scale-[0.94] translate-y-2 pointer-events-none opacity-50 shadow-sm" />
 
         {/* Top Interactive Card */}
         <div
-          ref={cardRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endPointerGesture}
+          onPointerCancel={endPointerGesture}
+          onLostPointerCapture={endPointerGesture}
           style={{
             transform: transformStyle,
             transition: transitionStyle,
             opacity: exitDirection ? 0 : 1,
-            touchAction: 'none',
+            touchAction: 'pan-y',
           }}
-          className={`verdict-card relative w-full bg-[#111827] rounded-2xl border border-slate-700/80 shadow-none p-4 sm:p-5 flex flex-col justify-between cursor-grab active:cursor-grabbing select-none overflow-hidden min-h-[360px] sm:min-h-[380px] ${
+          className={`verdict-card relative w-full bg-[#111827] rounded-2xl border border-slate-700/80 shadow-[0_16px_40px_rgba(0,0,0,0.7)] p-4 sm:p-5 flex flex-col justify-between cursor-grab active:cursor-grabbing select-none overflow-hidden min-h-[360px] sm:min-h-[380px] ${
             card.type === 'crisis' ? 'ring-2 ring-rose-500/90' : ''
           }`}
         >
-          {/* Swipe Left Direction Stamp */}
-          <div
-            className="absolute top-4 left-4 z-20 pointer-events-none transition-opacity duration-150"
-            style={{ opacity: isLeftActive ? Math.min(1, Math.abs(swipeProgress) * 1.6) : 0 }}
-          >
-            <div className="border-2 border-rose-500 text-rose-300 rounded-lg px-3 py-1 font-medium text-xs tracking-normal  transform -rotate-12 bg-rose-950/95 shadow-none flex items-center gap-1.5 backdrop-blur-xs">
-              <X size={16} strokeWidth={1.5} className="stroke-[3]" />
-              <span>{leftActionLabel}</span>
-            </div>
-          </div>
-
-          {/* Swipe Right Direction Stamp */}
-          <div
-            className="absolute top-4 right-4 z-20 pointer-events-none transition-opacity duration-150"
-            style={{ opacity: isRightActive ? Math.min(1, Math.abs(swipeProgress) * 1.6) : 0 }}
-          >
-            <div className="border-2 border-cyan-400 text-cyan-200 rounded-lg px-3 py-1 font-medium text-xs tracking-normal  transform rotate-12 bg-cyan-950/95 shadow-none flex items-center gap-1.5 backdrop-blur-xs">
-              <Check size={16} strokeWidth={1.5} className="stroke-[3]" />
-              <span>{rightActionLabel}</span>
-            </div>
-          </div>
-
           {/* Card Header: Topic Badge & Incident Title */}
-          <div className="w-full flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
-            <span className="text-cyan-400 font-semibold  tracking-normal">
+          <div className="verdict-topic w-full flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
+            <span className="text-cyan-400 font-semibold uppercase tracking-wider">
               {card.topicBadge}
             </span>
             <span className="text-slate-400">
               {card.type === 'crisis'
                 ? '긴급 위기'
                 : card.type === 'story'
-                ? '핵심 의제'
-                : card.type === 'transition'
-                ? '체제 전환'
-                : '일상 정책'}
+                  ? '핵심 의제'
+                  : card.type === 'transition'
+                    ? '체제 전환'
+                    : '일상 정책'}
             </span>
           </div>
 
           {/* Character Info & Stylized Sci-Fi Portrait Area */}
-          <div className="verdict-character flex items-center gap-3.5 my-3 py-1" style={{ '--character-color': character.themeColor } as React.CSSProperties}>
+          <div
+            className="verdict-character flex items-center gap-3.5 my-3 py-1"
+            style={{ '--character-color': character.themeColor } as React.CSSProperties}
+          >
             {/* Portrait with specific character styling and reactive emotion */}
             <div className="relative shrink-0">
               <CharacterPortrait
@@ -296,10 +214,12 @@ export const GameCard: React.FC<GameCardProps> = ({
                 emotion={card.emotion || 'neutral'}
                 oracleState={card.oracleState || 'normal'}
                 size={96}
+                frame="dialogue"
+                speakerPortrait={speaker?.portrait}
               />
               {card.type === 'crisis' && (
-                <div className="absolute -top-1 -right-1 bg-rose-600 text-white rounded-full p-1 shadow-none">
-                  <ShieldAlert size={16} strokeWidth={1.5} />
+                <div className="absolute -top-1 -right-1 bg-rose-600 text-white rounded-full p-1 shadow-md">
+                  <ShieldAlert size={12} />
                 </div>
               )}
             </div>
@@ -307,27 +227,29 @@ export const GameCard: React.FC<GameCardProps> = ({
             {/* Character Name, Role & Case Headline */}
             <div className="flex-1 min-w-0 pr-1">
               <div className="flex items-center gap-1.5">
-                <h3 className="text-base sm:text-lg font-medium text-slate-100 tracking-normal leading-snug truncate">
-                  {character?.name || '시스템'}
+                <h3 className="font-bold text-slate-100 tracking-tight leading-snug">
+                  {speaker?.name ?? character?.name ?? '시스템'}
                 </h3>
               </div>
-              <p className="text-[11px] text-slate-400 leading-tight mt-0.5 font-medium truncate">
-                {character?.role}
+              <p className="verdict-role mt-1 font-medium">
+                {speaker?.role ?? DISPLAY_ROLES[card.characterId] ?? character?.role}
               </p>
-              <h4 className="text-xs font-semibold text-slate-300 tracking-normal mt-2 line-clamp-1 border-l-2 border-cyan-500 pl-2">
-                {card.title}
-              </h4>
             </div>
           </div>
 
+          <section className="verdict-reading" data-reading-area role="region" aria-label="사건 설명과 대화" tabIndex={0}>
+          <h4 className="verdict-headline font-semibold text-slate-200 tracking-tight mb-2 border-l-2 border-cyan-500 pl-2">
+            {card.title}
+          </h4>
+
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
-          <div className="flex-1 flex flex-col justify-center py-1">
-            <p className="story-dialogue text-[15px] sm:text-[16px] text-[#F1F5F9] leading-[1.62] font-normal break-keep select-text">
-              "{dialogueText}"
-            </p>
+          <div ref={dialogueRef} className="verdict-copy py-1" tabIndex={0} aria-label="대사 전체 · 위아래 스크롤" aria-live="polite" aria-atomic="true">
+            {dialogueParagraphs(dialogueText).map((paragraph,index)=><p key={index} className="verdict-dialogue text-[#F1F5F9] font-normal">{paragraph}</p>)}
+            <CardGlossary text={[dialogueText,card.title,choicePresentation(card,'left',storyFlags).text,choicePresentation(card,'right',storyFlags).text].join(' ')} />
           </div>
+          </section>
 
-
+          {/* Card Bottom Meta Footer */}
         </div>
       </div>
     </div>

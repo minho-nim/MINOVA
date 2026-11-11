@@ -1,3 +1,5 @@
+> 이 디자인 적용은 사용자 요청으로 철회했습니다. 현재 기준은 [v0.3 복구 기록](recovery-20261111.md)입니다. 이 문서를 근거로 복구된 화면을 다시 변경하지 마세요.
+
 # MINOVA 화면 정리
 
 [unslop](https://github.com/heydamir/unslop), Damir Sokolovsky (@heydamir), CC BY 4.0 지침을 적용했습니다.

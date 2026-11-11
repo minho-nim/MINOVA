@@ -1,134 +1,218 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import { createInitialGameState, CURRENT_SCHEMA_VERSION } from '../engine/gameEngine';
+import {
+  createInitialGameState,
+  CURRENT_SCHEMA_VERSION,
+  normalizeStoryFlags,
+} from '../engine/gameEngine';
+import { selectNextCard, entryFailure } from '../engine/cardSelector';
 import { CARD_MAP } from '../data/cards';
-import { GameState, Resources } from '../types/game';
+import {
+  ACT1_END,
+  ACT1_ORDER,
+  ACT2_END,
+  ACT2_ORDER,
+  chapterOf,
+  MAIN_IDS,
+  nextStoryId,
+} from '../engine/storyFlow';
+import { reconcileCompletedObjectives } from '../engine/storyEngine';
+import { GameState } from '../types/game';
+import { clampResource, detectResourceCrisis } from '../engine/resourceEngine';
 
-const SAVE_KEY = 'crossroads_ai_verdict_save_v1';
-
+export const SAVE_KEY = 'crossroads_ai_verdict_save_v1';
 export interface SaveResult {
   success: boolean;
   state?: GameState;
   error?: string;
+  backupKey?: string;
 }
-
+const array = (v: unknown): any[] => (Array.isArray(v) ? v : []);
+export function migrateGameState(parsed: any): GameState {
+  if (
+    !parsed ||
+    typeof parsed !== 'object' ||
+    Array.isArray(parsed) ||
+    !parsed.resources ||
+    !parsed.currentCardId
+  )
+    throw new Error('CORRUPTED_SAVE_DATA');
+  if (parsed.schemaVersion > CURRENT_SCHEMA_VERSION) throw new Error('NEWER_SAVE_VERSION');
+  const fresh = createInitialGameState();
+  const legacy = (parsed.schemaVersion || 1) < CURRENT_SCHEMA_VERSION;
+  const state: GameState = { ...fresh, ...parsed };
+  for (const key of [
+    'completedCardIds',
+    'decisionHistory',
+    'supervisorHistory',
+    'discoveredSecrets',
+    'recentCardIds',
+    'scheduledCardQueue',
+    'crisisResolvedIds',
+    'pendingDelayedEffects',
+    'appliedDelayedEffectIds',
+    'completedObjectiveIds',
+    'skippedStoryCardIds',
+    'selectionDiagnostics',
+    'resolvedCrisisInstances',
+  ] as const)
+    (state as any)[key] = [...array(parsed[key])];
+  state.completedCardIds = [
+    ...new Set([
+      ...state.completedCardIds,
+      ...state.decisionHistory.map((h) => h.cardId).filter((id) => CARD_MAP.has(id)),
+    ]),
+  ];
+  state.storyFlags = normalizeStoryFlags({ ...parsed.storyFlags });
+  state.relationshipValues = { ...fresh.relationshipValues, ...parsed.relationshipValues };
+  state.resources = { ...fresh.resources };
+  for (const key of Object.keys(state.resources) as (keyof GameState['resources'])[]) {
+    const value =
+      parsed.resources[key] ??
+      (key === 'personalFreedom' ? parsed.resources.personalLiberty : undefined);
+    state.resources[key] = Number.isFinite(value) ? clampResource(value) : 50;
+  }
+  state.gameMode = parsed.gameMode === 'freePlay' ? 'freePlay' : 'story';
+  state.currentAct =
+    parsed.currentAct === 'ACT_II' || parsed.currentAct === 'ACT_III_PREVIEW' ? 'ACT_II' : 'ACT_I';
+  state.currentChapter = Math.min(3, Math.max(1, Number(parsed.currentChapter) || 1)) as 1 | 2 | 3;
+  state.lastCardDays = { ...parsed.lastCardDays };
+  // History restores cooldown even if old recent queues were truncated; older history remains unchanged.
+  for (const record of [...state.decisionHistory].reverse())
+    if (record.cardId && Number.isFinite(record.day))
+      state.lastCardDays[record.cardId] = Math.max(
+        state.lastCardDays[record.cardId] ?? -1,
+        record.day,
+      );
+  state.consecutiveSideEvents = Number.isFinite(parsed.consecutiveSideEvents)
+    ? parsed.consecutiveSideEvents
+    : 0;
+  if (state.crisisState)
+    state.crisisState = {
+      ...state.crisisState,
+      instanceId:
+        state.crisisState.instanceId ||
+        `${state.crisisState.crisisCardId}:${state.crisisState.triggeredDay}`,
+    };
+  if (legacy) {
+    state.selectionDiagnostics.push(`migration:v${parsed.schemaVersion || 1}->v5`);
+    if (state.currentAct === 'ACT_II') {
+      state.storyFlags.act2_started = true;
+      if (ACT2_ORDER.includes(state.currentCardId))
+        state.currentChapter = Math.max(state.currentChapter, chapterOf(state.currentCardId)) as
+          | 1
+          | 2
+          | 3;
+      // Never replay a passed chapter or manufacture a decision. Missing old content is explicitly marked skipped.
+      state.skippedStoryCardIds = [
+        ...new Set([
+          ...state.skippedStoryCardIds,
+          ...ACT2_ORDER.filter(
+            (id) => chapterOf(id) < state.currentChapter && !state.completedCardIds.includes(id),
+          ),
+        ]),
+      ];
+    }
+    const act2Done =
+      state.currentAct === 'ACT_II' &&
+      (state.storyFlags.act2_viewed_epilogue ||
+        state.completedCardIds.includes(ACT2_END) ||
+        (state.storyFlags.act2_completed && state.currentCardId !== ACT2_END));
+    const act1Done =
+      state.currentAct === 'ACT_I' &&
+      (state.completedCardIds.includes(ACT1_END) ||
+        state.storyFlags.act1_viewed_epilogue ||
+        (state.storyFlags.act1_completed && state.currentCardId !== ACT1_END));
+    state.flowPhase = act2Done ? 'act2Complete' : act1Done ? 'act1Complete' : 'playing';
+    if (act2Done) {
+      state.storyFlags.act2_completed = true;
+      state.skippedStoryCardIds = [
+        ...new Set([
+          ...state.skippedStoryCardIds,
+          ...ACT2_ORDER.filter((id) => !state.completedCardIds.includes(id)),
+        ]),
+      ];
+    }
+    if (act1Done)
+      state.skippedStoryCardIds = [
+        ...new Set([
+          ...state.skippedStoryCardIds,
+          ...ACT1_ORDER.filter((id) => !state.completedCardIds.includes(id)),
+        ]),
+      ];
+    if (!act2Done && state.currentAct === 'ACT_II') state.storyFlags.act2_completed = false;
+  }
+  if (!['playing', 'act1Complete', 'act2Intro', 'act2Complete'].includes(state.flowPhase))
+    state.flowPhase = 'playing';
+  if (state.gameMode === 'freePlay' && !state.storyFlags.act2_completed) state.gameMode = 'story';
+  if (state.gameMode === 'freePlay') state.flowPhase = 'playing';
+  // v5 saves may contain the former "high number alone" emergency. Re-evaluate it
+  // without inventing a decision, erasing history, or demoting the current ACT.
+  if (state.crisisState?.crisisType === 'high')
+    state.crisisState = detectResourceCrisis(state.resources,state.crisisState,state.currentDay);
+  if (state.flowPhase === 'playing' && !state.waitingUntilDay) {
+    const card = CARD_MAP.get(state.currentCardId);
+    const failure = card?.id.startsWith('supervisor_replacement_')
+      ? null
+      : entryFailure(state.currentCardId, state);
+    if (failure) {
+      state.selectionDiagnostics.push('resume:' + state.currentCardId + ':' + failure);
+      if (
+        card?.type === 'conditional' &&
+        !state.completedCardIds.includes(card.id) &&
+        !state.scheduledCardQueue.includes(card.id)
+      )
+        state.scheduledCardQueue.push(card.id);
+      const selection = selectNextCard(state);
+      if (selection.card) state.currentCardId = selection.card.id;
+      else state.waitingUntilDay = selection.waitUntilDay;
+      state.rngSeed = selection.nextSeed;
+      state.scheduledCardQueue = selection.remainingScheduledQueue;
+    }
+  }
+  state.isActCompleted = state.flowPhase !== 'playing' || Boolean(state.storyFlags.act2_completed);
+  state.completedObjectiveIds = reconcileCompletedObjectives(
+    state.completedObjectiveIds, state.storyFlags, state.completedCardIds,
+  );
+  state.schemaVersion = CURRENT_SCHEMA_VERSION;
+  return state;
+}
 export function saveGameState(state: GameState): boolean {
   try {
-    const serialized = JSON.stringify({
-      ...state,
-      lastSavedAt: new Date().toISOString(),
-    });
-    localStorage.setItem(SAVE_KEY, serialized);
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify({ ...state, lastSavedAt: new Date().toISOString() }),
+    );
     return true;
-  } catch (err) {
-    console.error('Failed to save game state to LocalStorage:', err);
+  } catch {
     return false;
   }
 }
-
 export function loadGameState(): SaveResult {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) {
-      return { success: false, error: 'NO_SAVE_FOUND' };
+    if (!raw) return { success: false, error: 'NO_SAVE_FOUND' };
+    const parsed = JSON.parse(raw);
+    const state = migrateGameState(parsed);
+    let backupKey: string | undefined;
+    if ((parsed.schemaVersion || 1) < CURRENT_SCHEMA_VERSION) {
+      backupKey = `${SAVE_KEY}_backup_v${parsed.schemaVersion || 1}_${Date.now()}`;
+      // Abort migration if backing up fails. Never overwrite the only copy.
+      localStorage.setItem(backupKey, raw);
+      if (!saveGameState(state))
+        return { success: false, error: 'MIGRATION_SAVE_FAILED', backupKey };
     }
-
-    const parsed = JSON.parse(raw) as any;
-
-    if (!parsed || typeof parsed !== 'object') {
-      return { success: false, error: 'INVALID_SAVE_FORMAT' };
-    }
-
-    if (!parsed.resources || !CARD_MAP.has(parsed.currentCardId) ||
-        parsed.schemaVersion > CURRENT_SCHEMA_VERSION) {
-      return { success: false, error: 'CORRUPTED_SAVE_DATA' };
-    }
-
-    // Migration from older schema to CURRENT_SCHEMA_VERSION (4):
-    if (parsed.schemaVersion < CURRENT_SCHEMA_VERSION || !parsed.schemaVersion) {
-      console.warn(
-        `Migrating save from schema v${parsed.schemaVersion || 1} to v${CURRENT_SCHEMA_VERSION}...`
-      );
-
-      const oldRes = parsed.resources || {};
-      const newResources: Resources = {
-        citizenTrust: typeof oldRes.citizenTrust === 'number' ? oldRes.citizenTrust : 50,
-        fairness: typeof oldRes.fairness === 'number' ? oldRes.fairness : 50,
-        personalFreedom:
-          typeof oldRes.personalFreedom === 'number'
-            ? oldRes.personalFreedom
-            : typeof oldRes.personalLiberty === 'number'
-            ? oldRes.personalLiberty
-            : 50,
-        publicSafety: typeof oldRes.publicSafety === 'number' ? oldRes.publicSafety : 50,
-      };
-
-      parsed.resources = newResources;
-      parsed.operationalCapacity =
-        typeof parsed.operationalCapacity === 'number' ? parsed.operationalCapacity : 50;
-      parsed.pendingDelayedEffects = Array.isArray(parsed.pendingDelayedEffects)
-        ? parsed.pendingDelayedEffects
-        : [];
-      parsed.appliedDelayedEffectIds = Array.isArray(parsed.appliedDelayedEffectIds)
-        ? parsed.appliedDelayedEffectIds
-        : [];
-      parsed.completedObjectiveIds = Array.isArray(parsed.completedObjectiveIds)
-        ? parsed.completedObjectiveIds
-        : [];
-      parsed.currentAct = parsed.currentAct || 'ACT_I';
-      parsed.currentChapter = typeof parsed.currentChapter === 'number' ? parsed.currentChapter : 1;
-
-      parsed.recentCardIds = Array.isArray(parsed.recentCardIds) ? parsed.recentCardIds : [];
-      parsed.scheduledCardQueue = Array.isArray(parsed.scheduledCardQueue) ? parsed.scheduledCardQueue : [];
-      parsed.crisisResolvedIds = Array.isArray(parsed.crisisResolvedIds) ? parsed.crisisResolvedIds : [];
-
-      parsed.schemaVersion = CURRENT_SCHEMA_VERSION;
-
-    }
-
-    // Always ensure safe array fallbacks
-    parsed.recentCardIds = Array.isArray(parsed.recentCardIds) ? parsed.recentCardIds : [];
-    parsed.scheduledCardQueue = Array.isArray(parsed.scheduledCardQueue) ? parsed.scheduledCardQueue : [];
-    parsed.crisisResolvedIds = Array.isArray(parsed.crisisResolvedIds) ? parsed.crisisResolvedIds : [];
-
-    if (!parsed.resources || !parsed.currentCardId) {
-      return { success: false, error: 'CORRUPTED_SAVE_DATA' };
-    }
-
-    const initial = createInitialGameState();
-    for (const key of Object.keys(initial.resources) as (keyof Resources)[]) {
-      if (!Number.isFinite(parsed.resources[key]) || parsed.resources[key] < 0 || parsed.resources[key] > 100) {
-        return { success: false, error: 'CORRUPTED_SAVE_DATA' };
-      }
-    }
-    // Older saves can lack collections required by the UI and decision engine.
-    for (const key of ['decisionHistory', 'completedCardIds', 'discoveredSecrets',
-      'supervisorHistory', 'pendingDelayedEffects', 'appliedDelayedEffectIds', 'completedObjectiveIds'] as const) {
-      if (!Array.isArray(parsed[key])) parsed[key] = [];
-    }
-    parsed.relationshipValues = { ...initial.relationshipValues, ...parsed.relationshipValues };
-    parsed.storyFlags = { ...initial.storyFlags, ...parsed.storyFlags };
-    const state = { ...initial, ...parsed } as GameState;
-    state.isActCompleted = Boolean(state.currentAct === 'ACT_II'
-      ? state.storyFlags.act2_viewed_epilogue : state.storyFlags.act1_viewed_epilogue);
-    return { success: true, state };
-  } catch (err) {
-    console.error('Error loading game state:', err);
-    return { success: false, error: 'CORRUPTED_SAVE_DATA' };
+    return { success: true, state, backupKey };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'CORRUPTED_SAVE_DATA',
+    };
   }
 }
-
 export function clearGameState(): void {
   try {
     localStorage.removeItem(SAVE_KEY);
-  } catch (err) {
-    console.error('Failed to clear LocalStorage save:', err);
-  }
+  } catch {}
 }
-
 export function hasExistingSave(): boolean {
   try {
     return Boolean(localStorage.getItem(SAVE_KEY));
