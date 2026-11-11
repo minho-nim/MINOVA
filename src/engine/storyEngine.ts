@@ -198,8 +198,8 @@ export function checkObjectiveCompleted(
     case 'act1_obj_charter':
       return Boolean(
         flags.act1_completed ||
-          completedCardIds.includes('act1_19_final_verdict') ||
-          completedCardIds.includes('act1_20_act1_epilogue')
+          completedCardIds.includes('act1_24_final_verdict') ||
+          completedCardIds.includes('act1_25_act1_epilogue')
       );
 
     // ACT II CH 1

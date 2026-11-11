@@ -47,7 +47,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <ShieldCheck size={18} className="text-slate-300" />
-            <h2 className="text-base font-bold text-slate-100">시정 통제 및 시스템 설정</h2>
+            <h2 className="text-base font-bold text-slate-100">설정</h2>
           </div>
           <button
             type="button"
@@ -63,9 +63,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Audio Effects Toggle */}
           <div className="flex items-center justify-between p-3.5 bg-[#121824] rounded-xl border border-slate-800">
             <div>
-              <h3 className="text-xs font-bold text-slate-200">합성 오디오 효과음</h3>
+              <h3 className="text-xs font-bold text-slate-200">효과음</h3>
               <p className="text-[11px] text-slate-400">
-                Web Audio API 기반 카드 스와이프 및 클릭 효과음
+                카드를 넘기거나 선택할 때 소리를 냅니다.
               </p>
             </div>
             <button
@@ -85,9 +85,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="p-3.5 bg-[#121824] rounded-xl border border-slate-800">
             <div className="flex items-center justify-between mb-2">
               <div>
-                <h3 className="text-xs font-bold text-slate-200">스토리 무결성 검증 엔진</h3>
+                <h3 className="text-xs font-bold text-slate-200">게임 데이터 점검</h3>
                 <p className="text-[11px] text-slate-400">
-                  모든 카드 ID, 캐릭터 참조, 분기 링크 및 도달성을 검사합니다.
+                  누락된 인물이나 연결되지 않은 카드가 있는지 확인합니다.
                 </p>
               </div>
               <button
@@ -104,7 +104,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <div className="flex items-center gap-1.5 font-bold mb-2">
                   {validationReport.valid ? (
                     <span className="text-emerald-400 flex items-center gap-1">
-                      <CheckCircle2 size={14} /> 검증 통과 (무결성 100%)
+                      <CheckCircle2 size={14} /> 연결 오류 없음
                     </span>
                   ) : (
                     <span className="text-rose-400 flex items-center gap-1">
@@ -137,10 +137,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="p-3.5 bg-[#121824] rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1.5">
             <div className="flex items-center gap-1.5 font-bold text-slate-100">
               <Info size={14} className="text-indigo-400" />
-              <span>MINOVA — v0.1 MVP</span>
+              <span>MINOVA · 0.1</span>
             </div>
             <p className="text-[11px] leading-relaxed text-slate-400">
-              2079년 미래 도시 NOVA CITY의 인공지능 거버넌스 윤리 결정 게임. 외부 원격 통신이나 API 없이 브라우저 로컬 저장소(LocalStorage)와 상태 전이 머신으로 100% 로컬 구동됩니다.
+              진행 상황은 이 브라우저에 자동 저장됩니다. 브라우저 데이터를 지우거나 다른 기기를 사용하면 이전 기록을 이어갈 수 없습니다.
             </p>
           </div>
 

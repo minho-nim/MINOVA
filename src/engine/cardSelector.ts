@@ -72,6 +72,7 @@ export function selectNextCard(
   // 4. Check for Eligible Conditional Cards (High priority reactive events from past choices)
   const eligibleConditionals = CONDITIONAL_CARDS.filter(
     (c) =>
+      c.act === state.currentAct &&
       !completedIds.includes(c.id) &&
       checkCardCondition(c, state.storyFlags, state.currentDay, completedIds)
   );
@@ -88,7 +89,7 @@ export function selectNextCard(
   }
 
   // 5. Main Story Progression based on active Act
-  const activeMainPool = state.currentAct === 'ACT_II' ? ACT2_CARDS : ACT1_CARDS;
+  const activeMainPool = state.isActCompleted ? [] : state.currentAct === 'ACT_II' ? ACT2_CARDS : ACT1_CARDS;
   const remainingMainCards = activeMainPool.filter(
     (c) =>
       !completedIds.includes(c.id) &&
@@ -163,13 +164,13 @@ export function selectNextCard(
 
   // 8. Card Pool Exhaustion Protocol
   // If all main story and conditionals are exhausted, check for Act Epilogue/Climax:
-  if (state.currentAct === 'ACT_I' && !completedIds.includes('act1_20_act1_epilogue')) {
-    const epilogue = CARD_MAP.get('act1_20_act1_epilogue');
+  if (state.currentAct === 'ACT_I' && !completedIds.includes('act1_25_act1_epilogue')) {
+    const epilogue = CARD_MAP.get('act1_25_act1_epilogue');
     if (epilogue) return { card: epilogue, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
   }
 
-  if (state.currentAct === 'ACT_II' && !completedIds.includes('act2_ch3_10_act2_climax')) {
-    const climax = CARD_MAP.get('act2_ch3_10_act2_climax');
+  if (state.currentAct === 'ACT_II' && !completedIds.includes('act2_ch3_08_act2_epilogue')) {
+    const climax = CARD_MAP.get('act2_ch3_08_act2_epilogue');
     if (climax) return { card: climax, nextSeed: seed, remainingScheduledQueue: scheduledQueue };
   }
 

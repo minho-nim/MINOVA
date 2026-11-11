@@ -322,7 +322,7 @@ export const GameCard: React.FC<GameCardProps> = ({
 
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
           <div className="flex-1 flex flex-col justify-center py-1">
-            <p className="text-[15px] sm:text-[16px] text-[#F1F5F9] leading-[1.62] font-normal break-keep select-text">
+            <p className="story-dialogue text-[15px] sm:text-[16px] text-[#F1F5F9] leading-[1.62] font-normal break-keep select-text">
               "{dialogueText}"
             </p>
           </div>

@@ -52,6 +52,11 @@ export default function App() {
 
   // Handle starting a new game
   const handleStartNewGame = () => {
+    setIsActCompleteModalOpen(false);
+    setIsTransitionModalOpen(false);
+    setIsReplacementModalOpen(false);
+    setIsHistoryOpen(false);
+    setIsSettingsOpen(false);
     clearGameState();
     const freshState = createInitialGameState();
     setGameState(freshState);
@@ -63,6 +68,9 @@ export default function App() {
   const handleResumeGame = () => {
     if (gameState) {
       setInTitleScreen(false);
+      setIsActCompleteModalOpen(Boolean(gameState.currentAct === 'ACT_II'
+        ? gameState.storyFlags.act2_viewed_epilogue
+        : gameState.storyFlags.act1_viewed_epilogue));
     } else {
       handleStartNewGame();
     }
@@ -114,11 +122,10 @@ export default function App() {
         playCrisisAlarm(soundEnabled);
       }
 
-      // Check if Act I was completed
+      // Reaching either epilogue opens its report, even after a final verdict.
       if (
-        (nextState.isActCompleted || nextState.storyFlags.act1_completed) &&
-        !gameState.storyFlags.act1_completed &&
-        currentCard?.id === 'act1_20_act1_epilogue'
+        (!gameState.storyFlags.act1_viewed_epilogue && nextState.storyFlags.act1_viewed_epilogue) ||
+        (!gameState.storyFlags.act2_viewed_epilogue && nextState.storyFlags.act2_viewed_epilogue)
       ) {
         setIsActCompleteModalOpen(true);
       }
@@ -209,14 +216,14 @@ export default function App() {
     <div className="game-shell min-h-screen text-slate-100 font-sans antialiased selection:bg-cyan-900 selection:text-white relative">
       <aside className="game-sidebar">
         <a className="wordmark" href="#" onClick={(event) => { event.preventDefault(); setInTitleScreen(true); }}>MINOVA</a>
-        <p className="eyebrow">NOVA CITY / HUMAN OVERSIGHT</p>
-        <h1>당신의 판단이<br />도시의 내일이 됩니다.</h1>
-        <p className="sidebar-copy">하나의 도시, 서로 다른 진실.<br />사람들의 목소리를 듣고 선택하세요.</p>
+        <p className="eyebrow">노바시 · 감독관실</p>
+        <h1>오늘의 안건</h1>
+        <p className="sidebar-copy">제안을 읽고 결정을 내려주세요.<br />이전 선택은 판단 기록부에 남습니다.</p>
         <div className="sidebar-roster">{MAIN_CAST.map(id => <div key={id} className={`roster-person ${currentCard.characterId === id ? 'is-speaking' : ''}`} style={{ '--character-color': CHARACTERS[id].themeColor } as React.CSSProperties}><CharacterPortrait characterId={id} size={46} /><div><strong>{CHARACTERS[id].name}</strong><span>{CHARACTERS[id].role}</span></div>{currentCard.characterId === id && <i className="live-dot" />}</div>)}</div>
         <button className="return-title" onClick={() => setInTitleScreen(true)}>← 도시와 인물 소개</button>
       </aside>
       {/* Centered Mobile/PC container with max-w 480-500px matching Reigns viewport */}
-      <div className="game-console w-full max-w-[480px] sm:max-w-[500px] min-h-screen bg-[#0B0F19] flex flex-col justify-between shadow-[0_0_60px_rgba(0,0,0,0.8)] sm:border-x border-slate-800/80 relative overflow-hidden">
+      <div className="game-console w-full max-w-[560px] min-h-screen bg-[#0B0F19] flex flex-col justify-between shadow-[0_0_60px_rgba(0,0,0,0.8)] sm:border-x border-slate-800/80 relative overflow-hidden">
         {/* Floating Objective / System Notification Toast */}
         <NotificationToast
           notification={gameState.activeNotification}
@@ -238,7 +245,7 @@ export default function App() {
         />
 
         {/* 3. Main Center Area: Swipeable Card */}
-        <main className="flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
+        <main className="story-stage flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
           <GameCard
             key={currentCard.id}
             card={currentCard}
@@ -293,7 +300,7 @@ export default function App() {
         state={gameState}
         onOpenHistory={handleOpenHistory}
         onRestart={handleStartNewGame}
-        onStartAct2={handleInitiateAct2}
+        onStartAct2={gameState.currentAct === 'ACT_I' ? handleInitiateAct2 : undefined}
       />
 
       {/* ACT II Cinematic Transition Modal */}

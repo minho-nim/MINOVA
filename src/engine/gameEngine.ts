@@ -123,6 +123,7 @@ export function startAct2(state: GameState): GameState {
     currentAct: 'ACT_II',
     currentChapter: 1,
     currentCardId: 'act2_ch1_01_triage_alert',
+    isActCompleted: false,
     storyFlags: normalizedFlags,
     activeNotification: notification,
     lastSavedAt: new Date().toISOString(),
@@ -333,7 +334,9 @@ export function executeDecision(
       appliedDelayedEffectIds: Array.from(appliedDelayedIds),
       completedObjectiveIds: nextCompletedObjectives,
       recentCardIds: updatedRecent,
-      scheduledCardQueue: state.scheduledCardQueue || [],
+      scheduledCardQueue: choice.nextCardId
+        ? [choice.nextCardId, ...(state.scheduledCardQueue || [])]
+        : state.scheduledCardQueue || [],
       crisisResolvedIds: state.crisisResolvedIds || [],
       storyFlags: updatedFlags,
       relationshipValues: updatedRelationships,
@@ -358,11 +361,11 @@ export function executeDecision(
   // 11. Normal Crisis Evaluation
   const newCrisis = detectResourceCrisis(updatedResources, state.crisisState, state.currentDay);
 
-  // Check if Act I is completed
+  // Final verdict flags precede the epilogue; completion requires reading it.
   const isActComplete = Boolean(
-    updatedFlags.act1_completed ||
-      currentCard.id === 'act1_20_act1_epilogue' ||
-      updatedFlags.act1_viewed_epilogue
+    state.currentAct === 'ACT_II'
+      ? updatedFlags.act2_viewed_epilogue
+      : updatedFlags.act1_viewed_epilogue
   );
 
   // Chapter tracking

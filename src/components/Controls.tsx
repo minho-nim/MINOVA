@@ -28,9 +28,9 @@ export const Controls: React.FC<ControlsProps> = ({
   const rightAction = card.rightChoice.actionLabel || '승인 · 실행';
 
   return (
-    <div className="w-full max-w-[480px] sm:max-w-[500px] mx-auto px-3 py-2 flex flex-col gap-2 shrink-0">
+    <div className="decision-controls w-full max-w-[480px] sm:max-w-[500px] mx-auto px-3 py-2 flex flex-col gap-2 shrink-0">
       {/* Primary Decision Action Buttons */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="decision-grid grid grid-cols-2 gap-2">
         {/* Left Choice Button */}
         <button
           type="button"
@@ -38,7 +38,7 @@ export const Controls: React.FC<ControlsProps> = ({
           onClick={() => onDecision('left')}
           onMouseEnter={() => onHoverDirectionChange('left')}
           onMouseLeave={() => onHoverDirectionChange(null)}
-          className="group relative flex flex-col items-start justify-between p-3 rounded-xl border border-rose-900/60 bg-[#140F18] hover:bg-[#1E1322] hover:border-rose-600/80 text-slate-100 transition-all active:scale-[0.98] disabled:opacity-50 text-left cursor-pointer shadow-md min-h-[76px]"
+          className="decision-button decision-left group relative flex flex-col items-start justify-between p-3 rounded-xl border border-rose-900/60 bg-[#140F18] hover:bg-[#1E1322] hover:border-rose-600/80 text-slate-100 transition-all active:scale-[0.98] disabled:opacity-50 text-left cursor-pointer shadow-md min-h-[76px]"
         >
           {/* Header Action Name with directional cue */}
           <div className="flex items-center justify-between w-full mb-1">
@@ -52,7 +52,7 @@ export const Controls: React.FC<ControlsProps> = ({
           </div>
 
           {/* Secondary Full Choice Explanation */}
-          <span className="text-[12px] sm:text-[13px] font-normal text-slate-200 leading-[1.4] break-keep">
+          <span className="decision-copy text-[12px] sm:text-[13px] font-normal text-slate-200 leading-[1.4] break-keep">
             {card.leftChoice.text}
           </span>
         </button>
@@ -64,7 +64,7 @@ export const Controls: React.FC<ControlsProps> = ({
           onClick={() => onDecision('right')}
           onMouseEnter={() => onHoverDirectionChange('right')}
           onMouseLeave={() => onHoverDirectionChange(null)}
-          className="group relative flex flex-col items-end justify-between p-3 rounded-xl border border-cyan-900/60 bg-[#0C1622] hover:bg-[#132235] hover:border-cyan-600/80 text-slate-100 transition-all active:scale-[0.98] disabled:opacity-50 text-right cursor-pointer shadow-md min-h-[76px]"
+          className="decision-button decision-right group relative flex flex-col items-end justify-between p-3 rounded-xl border border-cyan-900/60 bg-[#0C1622] hover:bg-[#132235] hover:border-cyan-600/80 text-slate-100 transition-all active:scale-[0.98] disabled:opacity-50 text-right cursor-pointer shadow-md min-h-[76px]"
         >
           {/* Header Action Name with directional cue */}
           <div className="flex items-center justify-between w-full mb-1 flex-row-reverse">
@@ -78,14 +78,14 @@ export const Controls: React.FC<ControlsProps> = ({
           </div>
 
           {/* Secondary Full Choice Explanation */}
-          <span className="text-[12px] sm:text-[13px] font-normal text-slate-200 leading-[1.4] break-keep">
+          <span className="decision-copy text-[12px] sm:text-[13px] font-normal text-slate-200 leading-[1.4] break-keep">
             {card.rightChoice.text}
           </span>
         </button>
       </div>
 
       {/* Auxiliary Utilities Footer Bar */}
-      <div className="flex items-center justify-between px-1 text-xs text-slate-400">
+      <div className="decision-tools flex items-center justify-between px-1 text-xs text-slate-400">
         <button
           type="button"
           onClick={onOpenHistory}

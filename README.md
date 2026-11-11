@@ -16,6 +16,7 @@ npm run dev
 개발 서버: http://localhost:3000
 
 ```sh
+npm test       # 카드 연결·막 전환·엔딩·저장 복구 회귀 검사
 npm run lint   # TypeScript 검사
 npm run build  # dist/에 정적 사이트 생성
 npm run preview

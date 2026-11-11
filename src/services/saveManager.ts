@@ -4,6 +4,7 @@
  */
 
 import { createInitialGameState, CURRENT_SCHEMA_VERSION } from '../engine/gameEngine';
+import { CARD_MAP } from '../data/cards';
 import { GameState, Resources } from '../types/game';
 
 const SAVE_KEY = 'crossroads_ai_verdict_save_v1';
@@ -39,6 +40,11 @@ export function loadGameState(): SaveResult {
 
     if (!parsed || typeof parsed !== 'object') {
       return { success: false, error: 'INVALID_SAVE_FORMAT' };
+    }
+
+    if (!parsed.resources || !CARD_MAP.has(parsed.currentCardId) ||
+        parsed.schemaVersion > CURRENT_SCHEMA_VERSION) {
+      return { success: false, error: 'CORRUPTED_SAVE_DATA' };
     }
 
     // Migration from older schema to CURRENT_SCHEMA_VERSION (4):
@@ -80,7 +86,7 @@ export function loadGameState(): SaveResult {
       parsed.crisisResolvedIds = Array.isArray(parsed.crisisResolvedIds) ? parsed.crisisResolvedIds : [];
 
       parsed.schemaVersion = CURRENT_SCHEMA_VERSION;
-      saveGameState(parsed);
+
     }
 
     // Always ensure safe array fallbacks
@@ -92,7 +98,23 @@ export function loadGameState(): SaveResult {
       return { success: false, error: 'CORRUPTED_SAVE_DATA' };
     }
 
-    return { success: true, state: parsed as GameState };
+    const initial = createInitialGameState();
+    for (const key of Object.keys(initial.resources) as (keyof Resources)[]) {
+      if (!Number.isFinite(parsed.resources[key]) || parsed.resources[key] < 0 || parsed.resources[key] > 100) {
+        return { success: false, error: 'CORRUPTED_SAVE_DATA' };
+      }
+    }
+    // Older saves can lack collections required by the UI and decision engine.
+    for (const key of ['decisionHistory', 'completedCardIds', 'discoveredSecrets',
+      'supervisorHistory', 'pendingDelayedEffects', 'appliedDelayedEffectIds', 'completedObjectiveIds'] as const) {
+      if (!Array.isArray(parsed[key])) parsed[key] = [];
+    }
+    parsed.relationshipValues = { ...initial.relationshipValues, ...parsed.relationshipValues };
+    parsed.storyFlags = { ...initial.storyFlags, ...parsed.storyFlags };
+    const state = { ...initial, ...parsed } as GameState;
+    state.isActCompleted = Boolean(state.currentAct === 'ACT_II'
+      ? state.storyFlags.act2_viewed_epilogue : state.storyFlags.act1_viewed_epilogue);
+    return { success: true, state };
   } catch (err) {
     console.error('Error loading game state:', err);
     return { success: false, error: 'CORRUPTED_SAVE_DATA' };

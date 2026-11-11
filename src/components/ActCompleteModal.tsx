@@ -22,15 +22,24 @@ export const ActCompleteModal: React.FC<ActCompleteModalProps> = ({
   state,
   onOpenHistory,
   onStartAct2,
+  onRestart,
 }) => {
   if (!isOpen) return null;
+
+  const isAct2 = state.currentAct === 'ACT_II';
 
   // Determine Ethical Profile
   let archetypeTitle = '원칙주의적 인권 수호자';
   let archetypeDesc =
     '기계의 효율보다 인간의 기본권과 투명성을 우선하며, 알고리즘 독주에 맞서 윤리적 가드레일을 세웠습니다.';
 
-  if (state.storyFlags.final_act1_verdict === 'ai_autonomous') {
+  if (isAct2) {
+    const dignity = state.storyFlags.final_act2_verdict === 'human_dignity';
+    archetypeTitle = dignity ? '보편 존엄의 수호자' : '완전 최적화의 설계자';
+    archetypeDesc = dignity
+      ? 'CIVITAS 점수를 폐기하고 데이터에 기록되지 않은 시민에게도 동등한 권리를 보장했습니다.'
+      : 'CIVITAS 점수를 존속시키고 ORACLE의 자율 집행을 통해 도시의 안정과 효율을 선택했습니다.';
+  } else if (state.storyFlags.final_act1_verdict === 'ai_autonomous') {
     archetypeTitle = '실용주의적 테크노크라트';
     archetypeDesc =
       '도시의 생존과 초효율 시스템 안정을 위해 과감하게 AI에게 자율권을 위임하며 번영의 길을 택했습니다.';
@@ -50,7 +59,7 @@ export const ActCompleteModal: React.FC<ActCompleteModalProps> = ({
 
         {/* Title */}
         <span className="text-[11px] font-bold tracking-widest uppercase text-indigo-400">
-          ACT I : 완벽한 조언자 · 피날레
+          {isAct2 ? 'ACT II : 통계에 없는 사람들 · 피날레' : 'ACT I : 완벽한 조언자 · 피날레'}
         </span>
         <h2 className="text-xl sm:text-2xl font-black text-slate-100 tracking-tight mt-1 text-center">
           거버넌스 청문회 최종 판결 완결
@@ -95,7 +104,7 @@ export const ActCompleteModal: React.FC<ActCompleteModalProps> = ({
         </div>
 
         {/* ACT II Ready Box */}
-        <div className="w-full p-4 bg-gradient-to-r from-cyan-950/70 to-indigo-950/70 border border-cyan-800/80 rounded-xl text-left text-xs mb-5 space-y-1.5 shadow-md">
+        {!isAct2 && <div className="w-full p-4 bg-gradient-to-r from-cyan-950/70 to-indigo-950/70 border border-cyan-800/80 rounded-xl text-left text-xs mb-5 space-y-1.5 shadow-md">
           <div className="flex items-center gap-1.5 font-bold text-cyan-300">
             <Sparkles size={14} className="text-cyan-400" />
             <span>ACT II 정식 개막 : 통계에 없는 사람들 (The Uncounted)</span>
@@ -103,10 +112,12 @@ export const ActCompleteModal: React.FC<ActCompleteModalProps> = ({
           <p className="text-[11px] text-cyan-100/90 leading-relaxed">
             의료 AI의 트리아지와 채용 알고리즘의 보이지 않는 장벽을 둘러싼 제2막이 준비되었습니다. 귀하의 ACT I 결정이 그대로 후속 사건으로 이어집니다.
           </p>
-        </div>
+        </div>}
+        {isAct2 && <p className="text-xs text-slate-300 mb-5">현재 공개된 이야기를 모두 마쳤습니다. ACT III는 예고 단계입니다.</p>}
 
         {/* Buttons */}
         <div className="w-full space-y-2">
+          {isAct2 && <button type="button" onClick={onRestart} className="w-full py-3 rounded-xl bg-cyan-300 text-slate-900 font-bold cursor-pointer">새 게임 시작</button>}
           {onStartAct2 && (
             <button
               type="button"

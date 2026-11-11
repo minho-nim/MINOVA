@@ -19,27 +19,27 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStartNewGame, onResu
     <div className="title-screen">
       <header className="city-masthead">
         <a className="wordmark" href="#" aria-label="MINOVA 홈">MINOVA</a>
-        <div className="masthead-caption">NOVA CITY / 2079<span>PEOPLE. DATA. CHOICES. CONSEQUENCES.</span></div>
-        <div className="system-live"><Radio size={12} /> ORACLE ONLINE</div>
+        <div className="masthead-caption">2079년 · 노바시</div>
+        <div className="system-live"><Radio size={12} /> ORACLE 연결됨</div>
       </header>
       <main>
         <section className="title-intro">
           <div>
-            <p className="eyebrow">INTERACTIVE ETHICAL DILEMMA</p>
-            <h1>하나의 도시,<br /><em>서로 다른 진실.</em></h1>
-            <p className="intro-copy">완벽한 답을 제안하는 AI. 그 답을 살아가는 사람들.<br />도시의 다음 선택은 당신에게 달려 있습니다.</p>
+            <p className="eyebrow">도시 운영국 · 감독관 임명</p>
+            <h1>이 도시의 결정에는<br /><em>당신의 서명이 필요합니다.</em></h1>
+            <p className="intro-copy">출근길 신호부터 병원 침대까지, ORACLE은 매일 정책을 제안합니다.<br />누구를 기다리게 할지, 누구를 먼저 살릴지 결정하세요.</p>
           </div>
           <div className="start-terminal">
-            <div className="terminal-label"><span className="live-dot" /> HUMAN OVERSIGHT REQUIRED <span>01 / 06</span></div>
-            <h2>당신은 인간 AI 감독관입니다.</h2>
-            <p>ORACLE의 정책을 승인하거나 거부하세요.<br />모든 판단은 도시의 균형과 사람들의 삶을 바꿉니다.</p>
-            <button className="start-button" onClick={savedState && onResumeGame ? onResumeGame : onStartNewGame}><Play size={16} fill="currentColor" />{savedState ? `감독관 업무 이어하기 · DAY ${savedState.currentDay}` : '감독관으로 취임하기'}<ArrowRight size={18} /></button>
+            <div className="terminal-label"><span className="live-dot" /> 감독관 승인 대기</div>
+            <h2>{savedState ? '검토 중인 안건이 있습니다.' : '첫 안건이 도착했습니다.'}</h2>
+            <p>카드 한 장에 안건 하나.<br />제안을 읽고 시행할지, 돌려보낼지 결정하세요.</p>
+            <button className="start-button" onClick={savedState && onResumeGame ? onResumeGame : onStartNewGame}><Play size={16} fill="currentColor" />{savedState ? `감독관 업무 이어하기 · ${savedState.currentDay}일째` : '감독관으로 취임하기'}<ArrowRight size={18} /></button>
             {savedState && <button className="restart-button" onClick={onStartNewGame}><RotateCcw size={12} /> 새 게임 시작</button>}
-            <div className="terminal-help">좌우 스와이프 · 방향키 · 선택 버튼 <span>로컬 자동 저장</span></div>
+            <div className="terminal-help">좌우 스와이프 · 방향키 · 선택 버튼 <span>자동 저장</span></div>
           </div>
         </section>
         <section className="cast-section" aria-labelledby="cast-heading">
-          <div className="section-caption"><h2 id="cast-heading">도시를 움직이는 여섯 개의 시선</h2><span>PERSONNEL FILES / 001—006</span></div>
+          <div className="section-caption"><h2 id="cast-heading">당신에게 안건을 가져올 사람들</h2><span>인물을 선택해 소개 보기</span></div>
           <div className="cast-grid">
             {MAIN_CAST.map((id, index) => {
               const person = CHARACTERS[id];
@@ -51,13 +51,13 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStartNewGame, onResu
             })}
           </div>
           <div className="character-dossier" style={{ '--character-color': character.themeColor } as React.CSSProperties} aria-live="polite">
-            <div className="dossier-heading"><span className="eyebrow">CHARACTER DOSSIER</span><h3>{character.name}</h3><p>{character.organization}</p><div className="trait-list">{details.traits.map(trait => <span key={trait}>{trait}</span>)}</div></div>
+            <div className="dossier-heading"><span className="eyebrow">인물 기록</span><h3>{character.name}</h3><p>{character.organization}</p><div className="trait-list">{details.traits.map(trait => <span key={trait}>{trait}</span>)}</div></div>
             <blockquote>“{details.quote}”<p>{character.description}</p></blockquote>
             <div className="expression-list">{(['neutral', 'worried', 'angry'] as const).map((emotion, i) => <div key={emotion}><CharacterPortrait characterId={selected} emotion={emotion} variant="expression" size={64} /><span>{['기본', '고민', '단호'][i]}</span></div>)}</div>
           </div>
         </section>
       </main>
-      <footer className="city-footer"><span>FOUR VALUES. NO PERFECT BALANCE.</span><div><span><Users size={13} />시민 신뢰</span><span><Scale size={13} />공정성</span><span><Fingerprint size={13} />개인 자유</span><span><Shield size={13} />사회 안전</span></div><span>NOVA CITY GOVERNANCE SYSTEM</span></footer>
+      <footer className="city-footer"><div><span><Users size={13} />시민 신뢰</span><span><Scale size={13} />공정성</span><span><Fingerprint size={13} />개인 자유</span><span><Shield size={13} />사회 안전</span></div></footer>
     </div>
   );
 };
