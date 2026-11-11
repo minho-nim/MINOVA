@@ -38,12 +38,12 @@ export const Controls: React.FC<ControlsProps> = ({
           onClick={() => onDecision('left')}
           onMouseEnter={() => onHoverDirectionChange('left')}
           onMouseLeave={() => onHoverDirectionChange(null)}
-          className="decision-button decision-left group relative flex flex-col items-start justify-between p-3 rounded-xl border border-rose-900/60 bg-[#140F18] hover:bg-[#1E1322] hover:border-rose-600/80 text-slate-100 transition-all active:scale-[0.98] disabled:opacity-50 text-left cursor-pointer shadow-md min-h-[76px]"
+          className="decision-button decision-left group relative flex flex-col items-start justify-between p-3 rounded-xl border border-rose-900/60 bg-[#140F18] hover:bg-[#1E1322] hover:border-rose-600/80 text-slate-100 transition-colors active:scale-[0.98] disabled:opacity-50 text-left cursor-pointer shadow-none min-h-[76px]"
         >
           {/* Header Action Name with directional cue */}
           <div className="flex items-center justify-between w-full mb-1">
-            <span className="text-xs font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
-              <ArrowLeft size={13} className="transition-transform group-hover:-translate-x-0.5 text-rose-400" />
+            <span className="text-xs font-medium text-rose-300  tracking-normal flex items-center gap-1.5">
+              <ArrowLeft size={16} strokeWidth={1.5} className="transition-transform group-hover:-translate-x-0.5 text-rose-400" />
               <span>{leftAction}</span>
             </span>
             <kbd className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.2 bg-rose-950/80 rounded border border-rose-800/60 text-rose-300">
@@ -64,13 +64,13 @@ export const Controls: React.FC<ControlsProps> = ({
           onClick={() => onDecision('right')}
           onMouseEnter={() => onHoverDirectionChange('right')}
           onMouseLeave={() => onHoverDirectionChange(null)}
-          className="decision-button decision-right group relative flex flex-col items-end justify-between p-3 rounded-xl border border-cyan-900/60 bg-[#0C1622] hover:bg-[#132235] hover:border-cyan-600/80 text-slate-100 transition-all active:scale-[0.98] disabled:opacity-50 text-right cursor-pointer shadow-md min-h-[76px]"
+          className="decision-button decision-right group relative flex flex-col items-end justify-between p-3 rounded-xl border border-cyan-900/60 bg-[#0C1622] hover:bg-[#132235] hover:border-cyan-600/80 text-slate-100 transition-colors active:scale-[0.98] disabled:opacity-50 text-right cursor-pointer shadow-none min-h-[76px]"
         >
           {/* Header Action Name with directional cue */}
           <div className="flex items-center justify-between w-full mb-1 flex-row-reverse">
-            <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-medium text-cyan-300  tracking-normal flex items-center gap-1.5">
               <span>{rightAction}</span>
-              <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5 text-cyan-400" />
+              <ArrowRight size={16} strokeWidth={1.5} className="transition-transform group-hover:translate-x-0.5 text-cyan-400" />
             </span>
             <kbd className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.2 bg-cyan-950/80 rounded border border-cyan-800/60 text-cyan-300">
               →
@@ -91,7 +91,7 @@ export const Controls: React.FC<ControlsProps> = ({
           onClick={onOpenHistory}
           className="flex items-center gap-1.5 font-medium hover:text-slate-200 py-1 px-2 rounded-lg hover:bg-slate-800/60 transition-colors cursor-pointer"
         >
-          <History size={13} />
+          <History size={16} strokeWidth={1.5} />
           <span>판단 기록부 & 목표</span>
         </button>
 
@@ -100,7 +100,7 @@ export const Controls: React.FC<ControlsProps> = ({
           onClick={onOpenSettings}
           className="flex items-center gap-1.5 font-medium hover:text-slate-200 py-1 px-2 rounded-lg hover:bg-slate-800/60 transition-colors cursor-pointer"
         >
-          <Settings size={13} />
+          <Settings size={16} strokeWidth={1.5} />
           <span>환경 설정</span>
         </button>
       </div>

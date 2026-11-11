@@ -42,10 +42,10 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center justify-between">
         {/* Brand & Wordmark */}
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-slate-800 border border-slate-700 text-slate-100 flex items-center justify-center font-black text-[10px] tracking-wider shadow-inner">
+          <div className="w-5 h-5 rounded bg-slate-800 border border-slate-700 text-slate-100 flex items-center justify-center font-semibold text-[10px] tracking-normal shadow-inner">
             M
           </div>
-          <span className="text-xs font-bold tracking-tight text-slate-200">
+          <span className="text-xs font-medium tracking-normal text-slate-200">
             MINOVA
           </span>
         </div>
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="p-1 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors cursor-pointer"
             title="설정 및 시스템 검증"
           >
-            <Settings size={14} />
+            <Settings size={16} strokeWidth={1.5} />
           </button>
         </div>
       </div>
@@ -82,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Story Progression Bar: Current ACT & Chapter Name */}
       <div className="flex items-center justify-between pt-1 border-t border-slate-800/60 text-[11px]">
         <div className="flex items-center gap-2 min-w-0 pr-2">
-          <span className="font-bold text-indigo-400 shrink-0">
+          <span className="font-medium text-indigo-400 shrink-0">
             {actLabel.split('·')[0].trim()}
           </span>
           <span className="text-slate-600">|</span>
@@ -95,10 +95,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenObjectives}
-            className="flex items-center gap-1 text-[10px] font-mono font-bold text-amber-300 hover:text-amber-200 bg-amber-950/60 hover:bg-amber-950 px-2 py-0.5 rounded border border-amber-800/80 transition-colors shrink-0 cursor-pointer"
+            className="flex items-center gap-1 text-[10px] font-mono font-medium text-amber-300 hover:text-amber-200 bg-amber-950/60 hover:bg-amber-950 px-2 py-0.5 rounded border border-amber-800/80 transition-colors shrink-0 cursor-pointer"
             title="현재 챕터 목표 확인"
           >
-            <Target size={11} className="text-amber-400" />
+            <Target size={16} strokeWidth={1.5} className="text-amber-400" />
             <span>목표 ({state.completedObjectiveIds?.length || 0})</span>
           </button>
         )}

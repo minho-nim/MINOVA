@@ -191,7 +191,7 @@ export const GameCard: React.FC<GameCardProps> = ({
         {activeChoice ? (
           <div className="flex items-center gap-2 animate-in fade-in zoom-in-95">
             <span
-              className={`text-xs font-bold px-2.5 py-0.5 rounded-full border shadow-sm ${
+              className={`text-xs font-medium px-2.5 py-0.5 rounded-full border shadow-sm ${
                 dragOffset.x < 0
                   ? 'text-rose-200 bg-rose-950/90 border-rose-500/60'
                   : 'text-cyan-200 bg-cyan-950/90 border-cyan-500/60'
@@ -207,8 +207,8 @@ export const GameCard: React.FC<GameCardProps> = ({
                     key={imp.key}
                     className={
                       imp.direction === 'up'
-                        ? 'text-emerald-400 font-bold'
-                        : 'text-rose-400 font-bold'
+                        ? 'text-emerald-400 font-medium'
+                        : 'text-rose-400 font-medium'
                     }
                   >
                     {imp.label} {imp.direction === 'up' ? '▲' : '▼'}
@@ -245,7 +245,7 @@ export const GameCard: React.FC<GameCardProps> = ({
             opacity: exitDirection ? 0 : 1,
             touchAction: 'none',
           }}
-          className={`verdict-card relative w-full bg-[#111827] rounded-2xl border border-slate-700/80 shadow-[0_16px_40px_rgba(0,0,0,0.7)] p-4 sm:p-5 flex flex-col justify-between cursor-grab active:cursor-grabbing select-none overflow-hidden min-h-[360px] sm:min-h-[380px] ${
+          className={`verdict-card relative w-full bg-[#111827] rounded-2xl border border-slate-700/80 shadow-none p-4 sm:p-5 flex flex-col justify-between cursor-grab active:cursor-grabbing select-none overflow-hidden min-h-[360px] sm:min-h-[380px] ${
             card.type === 'crisis' ? 'ring-2 ring-rose-500/90' : ''
           }`}
         >
@@ -254,8 +254,8 @@ export const GameCard: React.FC<GameCardProps> = ({
             className="absolute top-4 left-4 z-20 pointer-events-none transition-opacity duration-150"
             style={{ opacity: isLeftActive ? Math.min(1, Math.abs(swipeProgress) * 1.6) : 0 }}
           >
-            <div className="border-2 border-rose-500 text-rose-300 rounded-lg px-3 py-1 font-bold text-xs tracking-wider uppercase transform -rotate-12 bg-rose-950/95 shadow-xl flex items-center gap-1.5 backdrop-blur-xs">
-              <X size={15} className="stroke-[3]" />
+            <div className="border-2 border-rose-500 text-rose-300 rounded-lg px-3 py-1 font-medium text-xs tracking-normal  transform -rotate-12 bg-rose-950/95 shadow-none flex items-center gap-1.5 backdrop-blur-xs">
+              <X size={16} strokeWidth={1.5} className="stroke-[3]" />
               <span>{leftActionLabel}</span>
             </div>
           </div>
@@ -265,15 +265,15 @@ export const GameCard: React.FC<GameCardProps> = ({
             className="absolute top-4 right-4 z-20 pointer-events-none transition-opacity duration-150"
             style={{ opacity: isRightActive ? Math.min(1, Math.abs(swipeProgress) * 1.6) : 0 }}
           >
-            <div className="border-2 border-cyan-400 text-cyan-200 rounded-lg px-3 py-1 font-bold text-xs tracking-wider uppercase transform rotate-12 bg-cyan-950/95 shadow-xl flex items-center gap-1.5 backdrop-blur-xs">
-              <Check size={15} className="stroke-[3]" />
+            <div className="border-2 border-cyan-400 text-cyan-200 rounded-lg px-3 py-1 font-medium text-xs tracking-normal  transform rotate-12 bg-cyan-950/95 shadow-none flex items-center gap-1.5 backdrop-blur-xs">
+              <Check size={16} strokeWidth={1.5} className="stroke-[3]" />
               <span>{rightActionLabel}</span>
             </div>
           </div>
 
           {/* Card Header: Topic Badge & Incident Title */}
           <div className="w-full flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
-            <span className="text-cyan-400 font-semibold uppercase tracking-wider">
+            <span className="text-cyan-400 font-semibold  tracking-normal">
               {card.topicBadge}
             </span>
             <span className="text-slate-400">
@@ -298,8 +298,8 @@ export const GameCard: React.FC<GameCardProps> = ({
                 size={96}
               />
               {card.type === 'crisis' && (
-                <div className="absolute -top-1 -right-1 bg-rose-600 text-white rounded-full p-1 shadow-md">
-                  <ShieldAlert size={12} />
+                <div className="absolute -top-1 -right-1 bg-rose-600 text-white rounded-full p-1 shadow-none">
+                  <ShieldAlert size={16} strokeWidth={1.5} />
                 </div>
               )}
             </div>
@@ -307,14 +307,14 @@ export const GameCard: React.FC<GameCardProps> = ({
             {/* Character Name, Role & Case Headline */}
             <div className="flex-1 min-w-0 pr-1">
               <div className="flex items-center gap-1.5">
-                <h3 className="text-base sm:text-lg font-bold text-slate-100 tracking-tight leading-snug truncate">
+                <h3 className="text-base sm:text-lg font-medium text-slate-100 tracking-normal leading-snug truncate">
                   {character?.name || '시스템'}
                 </h3>
               </div>
               <p className="text-[11px] text-slate-400 leading-tight mt-0.5 font-medium truncate">
                 {character?.role}
               </p>
-              <h4 className="text-xs font-semibold text-slate-300 tracking-tight mt-2 line-clamp-1 border-l-2 border-cyan-500 pl-2">
+              <h4 className="text-xs font-semibold text-slate-300 tracking-normal mt-2 line-clamp-1 border-l-2 border-cyan-500 pl-2">
                 {card.title}
               </h4>
             </div>
@@ -327,15 +327,7 @@ export const GameCard: React.FC<GameCardProps> = ({
             </p>
           </div>
 
-          {/* Card Bottom Meta Footer */}
-          <div className="pt-2 mt-auto flex items-center justify-between text-[11px] text-slate-400 font-mono border-t border-slate-800/80">
-            <span className="truncate max-w-[48%] text-left text-rose-300/80">
-              ← {leftActionLabel}
-            </span>
-            <span className="truncate max-w-[48%] text-right text-cyan-300/80">
-              {rightActionLabel} →
-            </span>
-          </div>
+
         </div>
       </div>
     </div>

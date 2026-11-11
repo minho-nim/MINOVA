@@ -41,17 +41,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-[#0F1420] text-slate-100 rounded-2xl shadow-2xl border border-slate-800 flex flex-col max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80  animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md bg-[#0F1420] text-slate-100 rounded-2xl shadow-none border border-slate-800 flex flex-col max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <ShieldCheck size={18} className="text-slate-300" />
-            <h2 className="text-base font-bold text-slate-100">설정</h2>
+            <h2 className="text-base font-medium text-slate-100">설정</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
+            aria-label="설정 닫기"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X size={18} />
@@ -63,7 +64,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Audio Effects Toggle */}
           <div className="flex items-center justify-between p-3.5 bg-[#121824] rounded-xl border border-slate-800">
             <div>
-              <h3 className="text-xs font-bold text-slate-200">효과음</h3>
+              <h3 className="text-xs font-medium text-slate-200">효과음</h3>
               <p className="text-[11px] text-slate-400">
                 카드를 넘기거나 선택할 때 소리를 냅니다.
               </p>
@@ -71,7 +72,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <button
               type="button"
               onClick={onToggleSound}
-              className={`p-2 rounded-lg border transition-all cursor-pointer ${
+              className={`p-2 rounded-lg border transition-colors cursor-pointer ${
                 soundEnabled
                   ? 'bg-slate-200 text-slate-900 border-slate-200'
                   : 'bg-slate-800/60 text-slate-400 border-slate-700/60'
@@ -85,7 +86,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="p-3.5 bg-[#121824] rounded-xl border border-slate-800">
             <div className="flex items-center justify-between mb-2">
               <div>
-                <h3 className="text-xs font-bold text-slate-200">게임 데이터 점검</h3>
+                <h3 className="text-xs font-medium text-slate-200">게임 데이터 점검</h3>
                 <p className="text-[11px] text-slate-400">
                   누락된 인물이나 연결되지 않은 카드가 있는지 확인합니다.
                 </p>
@@ -101,14 +102,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
             {validationReport && (
               <div className="mt-3 p-3 bg-[#0B0E17] rounded-lg border border-slate-800 text-xs">
-                <div className="flex items-center gap-1.5 font-bold mb-2">
+                <div className="flex items-center gap-1.5 font-medium mb-2">
                   {validationReport.valid ? (
                     <span className="text-emerald-400 flex items-center gap-1">
-                      <CheckCircle2 size={14} /> 연결 오류 없음
+                      <CheckCircle2 size={16} strokeWidth={1.5} /> 연결 오류 없음
                     </span>
                   ) : (
                     <span className="text-rose-400 flex items-center gap-1">
-                      <AlertTriangle size={14} /> 오류 발견 ({validationReport.errors.length}건)
+                      <AlertTriangle size={16} strokeWidth={1.5} /> 오류 발견 ({validationReport.errors.length}건)
                     </span>
                   )}
                 </div>
@@ -135,8 +136,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Game Information & Architecture */}
           <div className="p-3.5 bg-[#121824] rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1.5">
-            <div className="flex items-center gap-1.5 font-bold text-slate-100">
-              <Info size={14} className="text-indigo-400" />
+            <div className="flex items-center gap-1.5 font-medium text-slate-100">
+              <Info size={16} strokeWidth={1.5} className="text-indigo-400" />
               <span>MINOVA · 0.1</span>
             </div>
             <p className="text-[11px] leading-relaxed text-slate-400">
@@ -155,7 +156,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   <button
                     type="button"
                     onClick={handleConfirmReset}
-                    className="px-3 py-1.5 text-xs font-bold text-white bg-rose-600 rounded-lg hover:bg-rose-700 transition-colors cursor-pointer"
+                    className="px-3 py-1.5 text-xs font-medium text-white bg-rose-600 rounded-lg hover:bg-rose-700 transition-colors cursor-pointer"
                   >
                     초기화 확인
                   </button>
@@ -174,7 +175,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 onClick={() => setShowConfirmReset(true)}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-semibold text-rose-400 bg-rose-950/40 hover:bg-rose-950/70 rounded-xl border border-rose-900/60 transition-colors cursor-pointer"
               >
-                <RotateCcw size={14} />
+                <RotateCcw size={16} strokeWidth={1.5} />
                 <span>게임 데이터 완전 초기화 (새 게임)</span>
               </button>
             )}

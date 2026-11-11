@@ -56,3 +56,9 @@ React · TypeScript · Vite · Tailwind CSS · Lucide
 저장소의 Settings → Pages → Build and deployment에서 Source를 **GitHub Actions**로 설정합니다.
 `main`에 푸시하면 GitHub Actions가 테스트·타입 검사·빌드를 수행한 뒤 `dist/`를 배포합니다.
 Pull request에서는 검사만 실행하며 사이트를 배포하지 않습니다.
+
+## 디자인 작업 지침
+
+프로젝트의 `.agents/skills/unslop/`에 [unslop](https://github.com/heydamir/unslop) 스킬을 설치했습니다.
+Damir Sokolovsky ([@heydamir](https://x.com/heydamir)) 제작, CC BY 4.0 라이선스입니다.
+MINOVA에는 기존 인물 원화와 청록 강조색을 유지하는 정리 작업에 적용했습니다.

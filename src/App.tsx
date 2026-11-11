@@ -24,6 +24,8 @@ import { NotificationToast } from './components/NotificationToast';
 import { CHARACTERS } from './data/characters';
 import { MAIN_CAST } from './data/characterArt';
 import { CharacterPortrait } from './components/CharacterPortrait';
+import { DecisionFeedback } from './components/DecisionFeedback';
+import { DecisionFeedbackData, getDecisionFeedback } from './utils/decisionFeedback';
 
 export default function App() {
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -31,6 +33,11 @@ export default function App() {
   const [previewDirection, setPreviewDirection] = useState<'left' | 'right' | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+
+  const [decisionFeedback, setDecisionFeedback] = useState<DecisionFeedbackData | null>(null);
+  const dismissDecisionFeedback = useCallback((id: string) => {
+    setDecisionFeedback(current => current?.id === id ? null : current);
+  }, []);
 
   // Modals & Panels
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
@@ -52,6 +59,7 @@ export default function App() {
 
   // Handle starting a new game
   const handleStartNewGame = () => {
+    setDecisionFeedback(null);
     setIsActCompleteModalOpen(false);
     setIsTransitionModalOpen(false);
     setIsReplacementModalOpen(false);
@@ -66,6 +74,7 @@ export default function App() {
 
   // Handle resuming existing game
   const handleResumeGame = () => {
+    setDecisionFeedback(null);
     if (gameState) {
       setInTitleScreen(false);
       setIsActCompleteModalOpen(Boolean(gameState.currentAct === 'ACT_II'
@@ -100,6 +109,9 @@ export default function App() {
       playDecisionChime(direction, soundEnabled);
 
       const { nextState, replaced, dismissalReason } = executeDecision(gameState, direction);
+
+      setDecisionFeedback(getDecisionFeedback(gameState, nextState));
+      setPreviewDirection(null);
 
       // Persist state
       setGameState(nextState);
@@ -164,6 +176,7 @@ export default function App() {
 
   const handleConfirmAct2Transition = () => {
     if (!gameState) return;
+    setDecisionFeedback(null);
     const act2State = startAct2(gameState);
     setGameState(act2State);
     saveGameState(act2State);
@@ -223,7 +236,7 @@ export default function App() {
         <button className="return-title" onClick={() => setInTitleScreen(true)}>← 도시와 인물 소개</button>
       </aside>
       {/* Centered Mobile/PC container with max-w 480-500px matching Reigns viewport */}
-      <div className="game-console w-full max-w-[560px] min-h-screen bg-[#0B0F19] flex flex-col justify-between shadow-[0_0_60px_rgba(0,0,0,0.8)] sm:border-x border-slate-800/80 relative overflow-hidden">
+      <div className="game-console w-full max-w-[560px] min-h-screen bg-[#0B0F19] flex flex-col justify-between shadow-none border-slate-800/80 relative overflow-hidden">
         {/* Floating Objective / System Notification Toast */}
         <NotificationToast
           notification={gameState.activeNotification}
@@ -244,8 +257,18 @@ export default function App() {
           activeCrisisResourceId={gameState.crisisState?.resourceId || null}
         />
 
+        {decisionFeedback && <DecisionFeedback
+          key={decisionFeedback.id}
+          feedback={decisionFeedback}
+          onDismiss={dismissDecisionFeedback}
+          onOpenHistory={() => {
+            setDecisionFeedback(null);
+            handleOpenHistory();
+          }}
+        />}
+
         {/* 3. Main Center Area: Swipeable Card */}
-        <main className="story-stage flex-1 flex flex-col items-center justify-center px-4 py-2 w-full my-auto">
+        <main className="story-stage flex-1 flex flex-col items-center justify-center px-4 py-2 w-full">
           <GameCard
             key={currentCard.id}
             card={currentCard}
