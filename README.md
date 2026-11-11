@@ -48,3 +48,11 @@ npm run preview
 React · TypeScript · Vite · Tailwind CSS · Lucide
 
 `dist/` 결과물을 정적 호스팅에 올릴 수 있습니다. 상대 경로를 사용하므로 하위 경로 배포도 지원합니다. GitHub Actions에서 타입 검사와 프로덕션 빌드를 수행합니다.
+
+## GitHub Pages 배포
+
+배포 주소: https://minho-nim.github.io/MINOVA/
+
+저장소의 Settings → Pages → Build and deployment에서 Source를 **GitHub Actions**로 설정합니다.
+`main`에 푸시하면 GitHub Actions가 테스트·타입 검사·빌드를 수행한 뒤 `dist/`를 배포합니다.
+Pull request에서는 검사만 실행하며 사이트를 배포하지 않습니다.
