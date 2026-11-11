@@ -208,7 +208,7 @@ export default function App() {
   return (
     <div className="game-shell min-h-screen text-slate-100 font-sans antialiased selection:bg-cyan-900 selection:text-white relative">
       <aside className="game-sidebar">
-        <a className="wordmark" href="#" onClick={(event) => { event.preventDefault(); setInTitleScreen(true); }}>CROSSROADS<span>AI VERDICT</span></a>
+        <a className="wordmark" href="#" onClick={(event) => { event.preventDefault(); setInTitleScreen(true); }}>MINOVA</a>
         <p className="eyebrow">NOVA CITY / HUMAN OVERSIGHT</p>
         <h1>당신의 판단이<br />도시의 내일이 됩니다.</h1>
         <p className="sidebar-copy">하나의 도시, 서로 다른 진실.<br />사람들의 목소리를 듣고 선택하세요.</p>

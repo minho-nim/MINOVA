@@ -137,7 +137,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="p-3.5 bg-[#121824] rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1.5">
             <div className="flex items-center gap-1.5 font-bold text-slate-100">
               <Info size={14} className="text-indigo-400" />
-              <span>Crossroads: AI Verdict — v0.1 MVP</span>
+              <span>MINOVA — v0.1 MVP</span>
             </div>
             <p className="text-[11px] leading-relaxed text-slate-400">
               2079년 미래 도시 NOVA CITY의 인공지능 거버넌스 윤리 결정 게임. 외부 원격 통신이나 API 없이 브라우저 로컬 저장소(LocalStorage)와 상태 전이 머신으로 100% 로컬 구동됩니다.

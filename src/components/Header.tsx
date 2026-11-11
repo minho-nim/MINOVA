@@ -43,10 +43,10 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Brand & Wordmark */}
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded bg-slate-800 border border-slate-700 text-slate-100 flex items-center justify-center font-black text-[10px] tracking-wider shadow-inner">
-            CR
+            M
           </div>
           <span className="text-xs font-bold tracking-tight text-slate-200">
-            CROSSROADS
+            MINOVA
           </span>
         </div>
 

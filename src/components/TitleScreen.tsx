@@ -18,7 +18,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStartNewGame, onResu
   return (
     <div className="title-screen">
       <header className="city-masthead">
-        <a className="wordmark" href="#" aria-label="Crossroads 홈">CROSSROADS<span>AI VERDICT</span></a>
+        <a className="wordmark" href="#" aria-label="MINOVA 홈">MINOVA</a>
         <div className="masthead-caption">NOVA CITY / 2079<span>PEOPLE. DATA. CHOICES. CONSEQUENCES.</span></div>
         <div className="system-live"><Radio size={12} /> ORACLE ONLINE</div>
       </header>
