@@ -4,6 +4,7 @@ description: "AI 티 나는 화면 고치기. 바이브코딩으로 만든 뻔�
 license: CC-BY-4.0
 metadata:
   minoffia-category: 화면·디자인
+  minoffia-default: "true"
   author: Damir Sokolovsky
   x: https://x.com/heydamir
   site: https://heydamir.design/unslop
