@@ -13,7 +13,7 @@ export function DecisionFeedback({ feedback, onDismiss }: Props) {
   const [focused, setFocused] = useState(false);
   useEffect(() => {
     if (focused) return;
-    const timer = setTimeout(() => onDismiss(feedback.id), 3200);
+    const timer = setTimeout(() => onDismiss(feedback.id), 1200);
     return () => clearTimeout(timer);
   }, [feedback.id, onDismiss, focused]);
   // Render outside the game shell: never consumes layout space or resizes dialogue.

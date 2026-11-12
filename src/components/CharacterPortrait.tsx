@@ -34,8 +34,13 @@ export const CharacterPortrait: React.FC<Props> = ({
   const useExpression = variant === 'expression' || expressionIndex !== undefined || index !== 0;
   const region = useExpression ? art.expressions[index] : art.portrait;
   const label = useExpression ? art.labels[index] : '기본';
-  const raster = speakerPortrait?.src ?? (useExpression ? art.rasterExpressions?.[index] : art.rasterPortrait);
-  const alt = speakerPortrait?.label ?? `${CHARACTERS[characterId].name} · ${label} 표정`;
+  // Small expression strips are too short for a square, high-DPI dialogue frame.
+  // Use the approved high-resolution portrait there; keep expression art in the gallery.
+  const sharpDialoguePortrait = frame === 'dialogue' && characterId !== 'oracle' && !speakerPortrait && variant !== 'expression' && expressionIndex === undefined;
+  const raster = speakerPortrait?.src ?? (sharpDialoguePortrait ? art.rasterPortrait : useExpression ? art.rasterExpressions?.[index] : art.rasterPortrait);
+  const alt = speakerPortrait?.label ?? (sharpDialoguePortrait
+    ? `${CHARACTERS[characterId].name} · 승인 초상 · ${art.labels[index]} 상태`
+    : `${CHARACTERS[characterId].name} · ${label} 표정`);
   return (
     <div className={`character-portrait ${frame === 'natural' ? 'natural-portrait' : frame === 'dialogue' ? 'dialogue-portrait' : ''} ${art.collective && !speakerPortrait ? 'collective-portrait' : ''} ${characterId === 'oracle' ? 'oracle-portrait' : ''} ${className}`} data-emotion={index === 2 ? 'alert' : index === 1 ? 'analyzing' : 'neutral'} style={{ width: size, height: frame === 'natural' ? 'auto' : size, '--character-color': CHARACTERS[characterId].themeColor } as React.CSSProperties}>
       {raster ? <img src={raster} alt={alt} width={speakerPortrait?.width} height={speakerPortrait?.height} draggable={false} /> : <svg viewBox={region.join(' ')} preserveAspectRatio="xMidYMid meet" role="img" aria-label={alt}>

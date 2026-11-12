@@ -107,3 +107,17 @@ test('ORACLE uses a complete ring state panel rather than the clipped narrow her
   assert.match(html,/natural-portrait/);
   assert.match(html,/height:auto/);
 });
+
+test('human dialogue faces use high-resolution approved portraits while the expression gallery keeps each expression',()=>{
+  for(const id of ['seoYoonha','hanJiwoo','kangDohyun','baekSion','ohHyejin'] as CharacterId[]) {
+    const art=CHARACTER_ART[id]!;
+    for(const emotion of ['neutral','worried','angry'] as const) {
+      const markup=renderToStaticMarkup(React.createElement(CharacterPortrait,{characterId:id,emotion,frame:'dialogue'}));
+      assert.ok(markup.includes(art.rasterPortrait!));
+    }
+    for(const i of [0,1,2] as const) {
+      const markup=renderToStaticMarkup(React.createElement(CharacterPortrait,{characterId:id,variant:'expression',expressionIndex:i}));
+      assert.ok(markup.includes(art.rasterExpressions![i]));
+    }
+  }
+});

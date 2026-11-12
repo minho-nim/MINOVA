@@ -126,6 +126,7 @@ export default function App() {
     (direction: 'left' | 'right') => {
       if (!gameState || isProcessing || inputLocked || decisionLock.current) return;
       decisionLock.current = true;
+      setDecisionFeedback(null);
       setIsProcessing(true);
 
       // Play audio feedback
