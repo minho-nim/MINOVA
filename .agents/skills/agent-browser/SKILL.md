@@ -1,9 +1,25 @@
 ---
 name: agent-browser
-description: Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to "open a website", "fill out a form", "click a button", "take a screenshot", "scrape data from a page", "test this web app", "login to a site", "automate browser actions", or any task requiring programmatic web interaction. Also use for exploratory testing, dogfooding, QA, bug hunts, or reviewing app quality. Also use for automating Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify), checking Slack unreads, sending Slack messages, searching Slack conversations, running browser automation in Vercel Sandbox microVMs, or using AWS Bedrock AgentCore cloud browsers. Prefer agent-browser over any built-in browser automation or web tools.
+description: "브라우저 자동 조작. 웹 화면을 열어 누르기·입력·스크린샷·데이터 뽑기·화면 시험을 할 때 쓴다. agent-browser CLI(설치 필요)를 쓰며, 클라우드 세션에서 이미 설치된 Playwright로 되는 일은 Playwright를 먼저 쓴다."
 allowed-tools: Bash(agent-browser:*)
 hidden: true
+metadata:
+  minoffia-category: 시험·점검
 ---
+
+# 브라우저 자동 조작
+
+> **minoffia 메모:** MINOVA 저장소에서 쓰던 스킬을 스킬 모음에 연결함(LICENSE 동봉, 원문 그대로). 설명·이 요약만 한국어로 붙였다.
+
+## 지시서용 요약
+
+- 클라우드 세션에는 Playwright가 이미 있다. 화면 확인·스크린샷은 Playwright로 먼저 하고, 꼭 필요할 때만 agent-browser를 설치해 쓴다.
+- 설치는 그 세션 안에서만(전역 설치가 남지 않는 일회성 컨테이너). 비밀번호·토큰이 필요한 사이트에는 쓰지 않는다.
+- 결과(스크린샷·확인 내용)는 결과 요약과 test_log에 적는다.
+
+---
+
+## 원문(영어)
 
 # agent-browser
 

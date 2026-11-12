@@ -1,11 +1,27 @@
 ---
 name: impeccable
-description: "Use to design, redesign, critique, audit, polish or animate a frontend: websites, landing pages, dashboards, app UI, components, native iOS/Android screens, or a design system (DESIGN.md)."
+description: "화면 디자인 다듬기. 웹·앱 화면, 랜딩, 대시보드, 컴포넌트를 디자인·재디자인·평가·다듬기·애니메이션할 때 쓴다. 흔한 AI 같은 디자인을 피하고 완성도 높은 화면을 만든다."
 version: 4.8.2
 user-invocable: true
 argument-hint: "[shape · audit|critique · animate|bolder|colorize|delight|layout|overdrive|quieter|typeset · adapt|clarify|distill · harden|onboard|optimize|polish · init|document|extract|live|generate] [target]"
 license: Apache 2.0
+metadata:
+  minoffia-category: 화면·디자인
 ---
+
+# 화면 디자인 다듬기
+
+> **minoffia 메모:** MINOVA 저장소에서 쓰던 스킬을 스킬 모음에 연결함(LICENSE 동봉, 원문 그대로). 설명·이 요약만 한국어로 붙였다.
+
+## 지시서용 요약
+
+- 프로젝트에 DESIGN.md(디자인 기준)가 있으면 그것을 먼저 따른다.
+- 감사(audit)·평가(critique)는 고치기 전에 문제 목록부터 낸다.
+- 바꾼 화면은 400px·1400px에서 확인한다. 자세한 방법은 reference/ 아래 해당 명령 문서를 연다.
+
+---
+
+## 원문(영어)
 
 This skill gives you the tools and permission to make design that earns the name out-of-distribution craft. Work as an award-winning design director would: production-grade code, a clear POV, a deep grasp of what the client and its users need, and exceptional craft.
 
