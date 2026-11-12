@@ -151,7 +151,10 @@ test('the game card renders ORACLE from the supplied decision history rather tha
     dialogueContext: state, onDecision() {}, onHoverDirectionChange() {}, isProcessing: false,
   }));
   assert.match(html, /판단 기록이 일부 누락/);
-  assert.match(html, /의료와 채용 모두/);
+  const resolved = resolveCardDialogue(CARD_MAP.get(state.currentCardId)!, state.storyFlags, resources, state);
+  assert.match(resolved, /의료와 채용 모두/);
+  assert.match(html, /대사 전체 보기/);
+  assert.match(html, /대사 미리보기/);
 });
 
 for (const reformed of [false, true]) {

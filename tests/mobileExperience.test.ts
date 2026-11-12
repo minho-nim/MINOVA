@@ -1,4 +1,5 @@
 import {dialogueParagraphs} from '../src/data/ethicsGlossary';
+import {compactDialogue} from '../src/data/compactDialogue';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -12,17 +13,18 @@ import {TitleScreen} from '../src/components/TitleScreen';
 import {Controls} from '../src/components/Controls';
 import type {StoryFlags} from '../src/types/game';
 const resources={citizenTrust:50,fairness:50,personalFreedom:50,publicSafety:50};
-test('all 159 dialogues render their full branching text in one scroll pane without pagination',()=>{
+test('all 159 branching dialogues offer bounded previews without a card scroll pane',()=>{
   const cases:StoryFlags[]=[{},{surveillance_level:'total'},{medical_bias_detected:true,hiring_bias_detected:true}];
   for(const card of ALL_CARDS)for(const flags of cases){
     const original=readableDialogue(card.id,resolveCardDialogue(card,flags,resources));
     const html=renderToStaticMarkup(React.createElement(GameCard,{card,storyFlags:flags,resources,onDecision(){},onHoverDirectionChange(){},isProcessing:false}));
-    for(const paragraph of dialogueParagraphs(original)){
-    const escaped=paragraph.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    const preview=compactDialogue(card.id,original);
+    const escaped=preview.text.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;');
     assert.ok(html.includes(escaped),card.id);
-    }
-    assert.match(html,/대사 전체 · 위아래 스크롤/,card.id);
-    assert.doesNotMatch(html,/dialogue-pager|대화 나누어 읽기|class="verdict-dialogue[^>]*hidden=/,card.id);
+    assert.ok(Array.from(preview.text).length<=120,card.id);
+    if(preview.excerpt) assert.match(html,/대사 미리보기/);
+    assert.match(html,/대사 전체 보기/,card.id);
+    assert.doesNotMatch(html,/대사 전체 · 위아래 스크롤/,card.id);
   }
 });
 test('both choice surfaces use one fallback label while authored legal and story actions stay intact',()=>{

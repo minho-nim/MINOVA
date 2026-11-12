@@ -97,3 +97,11 @@ npm run simulate -- 1000 local-results
 자세한 내용은 [복구 기록](docs/recovery-20261111.md)에 있습니다.
 현재 배포 주소는 https://minho-nim.github.io/MINOVA/ 입니다.
 `main`에 푸시하면 검사 후 GitHub Pages로 자동 배포합니다.
+
+## 디자인·브라우저 검증 도구
+
+사용자 지정 도구인 [agent-browser](https://github.com/vercel-labs/agent-browser),
+[UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill),
+[Impeccable](https://github.com/pbakaus/impeccable)의 스킬을 `.agents/skills/`에 설치했습니다.
+기존 캐릭터·게임 구조를 유지하는 범위에서 사용합니다. 설치·실행·검증 범위는
+[도구 기록](docs/design-tools.md)을 참고하세요.

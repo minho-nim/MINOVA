@@ -162,10 +162,6 @@ body.game-active { height:100dvh; overflow:hidden; }
 .choice-preview.is-left strong { color:#ffbccb; }
 .choice-preview p { margin:7px 0; font-size:15px; line-height:1.6; overflow-wrap:anywhere; }
 .choice-preview small { color:#b0c7d4; font-size:11px; }
-.card-glossary { border-top:1px solid #315261; margin-top:10px; padding-top:6px; font-size:13px; line-height:1.6; }
-.card-glossary details { margin:5px 0; }
-.card-glossary summary { cursor:pointer; color:#8aeeed; }
-.card-glossary p { margin:6px 0; color:#d5e5ef; }
 .game-main { position:relative; }
 .faction-section { margin-top:42px; }
 .intro-tabs { display:flex; gap:8px; margin:8px 0 24px; padding-bottom:12px; border-bottom:1px solid #204555; }
@@ -297,3 +293,33 @@ body.game-active { height:100dvh; overflow:hidden; }
 .decision-result-adjustment { display:block; margin-top:4px; font-size:10px; color:#9db8c7; }
 .decision-result-toast button { pointer-events:auto; position:absolute; top:0; right:0; width:44px; height:44px; border:0; border-radius:8px; background:transparent; color:#a7c2d1; display:flex; justify-content:center; align-items:center; }
 .decision-result-toast button:hover { color:#fff; }
+
+/* Main cards are concise; full, unedited dialogue remains in a separate reader. */
+.verdict-reading-compact { gap:8px; }
+.verdict-copy-compact { flex:0 1 auto; overflow:hidden; touch-action:pan-y; padding-right:0; }
+.verdict-copy-compact .verdict-dialogue { font-size:17px; line-height:1.7; margin:0; white-space:normal; }
+.dialogue-preview-label { display:block; font-size:11px; color:#8babbc; margin-bottom:4px; }
+.dialogue-extras { margin-top:auto; padding-top:8px; flex-shrink:0; }
+.dialogue-full-button { min-height:36px; padding:4px 0; border:0; background:none; color:#9fcbd7; font-size:12px; text-decoration:underline; text-underline-offset:4px; }
+.card-glossary { padding:4px 0 0; margin:0; border:0; }
+.glossary-hint { display:block; font-size:10px; line-height:1.5; color:#89aab9; }
+.glossary-terms { display:flex; flex-wrap:wrap; gap:4px 12px; }
+.glossary-hold { min-height:36px; padding:4px 0; background:transparent; border:0; color:#8aeeed; font-size:12px; line-height:1.5; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+.glossary-hold:active { color:#fff; }
+.glossary-tooltip { position:fixed; z-index:200; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(420px,calc(100vw - 32px)); padding:16px 20px; box-sizing:border-box; background:#0b202dfc; border:1px solid #528b98; border-radius:10px; box-shadow:0 8px 32px #0008; color:#e6f3f7; pointer-events:none; }
+.glossary-tooltip strong { display:block; font-size:15px; color:#9de9eb; }
+.glossary-tooltip p { font-size:14px; line-height:1.75; margin:8px 0; word-break:keep-all; overflow-wrap:anywhere; }
+.glossary-tooltip small { font-size:11px; color:#9ab5c5; }
+@media(max-height:700px) { .verdict-copy-compact .verdict-dialogue { font-size:15px; line-height:1.6; } .dialogue-extras { padding-top:4px; } .glossary-hint { display:none; } }
+
+/* Reigns-like permanent controls: only the action label; details on swipe/reader. */
+.compact-reading-mode .game-controls .choice-button { height:52px; justify-content:center; }
+.compact-reading-mode .choice-button > div { margin-bottom:0; }
+.compact-reading-mode .choice-text { display:none; }
+@media(max-height:700px) {
+  .dialogue-extras { display:flex; flex-wrap:wrap; align-items:center; gap:0 12px; }
+  .dialogue-extras .card-glossary { padding:0; }
+  .glossary-terms { gap:0 8px; }
+  .glossary-hold, .dialogue-full-button { min-height:30px; font-size:11px; }
+  .verdict-reading-compact .verdict-headline { -webkit-line-clamp:1; margin-bottom:4px; }
+}

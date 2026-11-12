@@ -20,8 +20,8 @@ test('stationary choice preview shows the full actual left or right policy befor
 });
 test('NLP and medical role explanations are optional, specific and do not appear for unrelated text',()=>{
   const html=renderToStaticMarkup(React.createElement(CardGlossary,{text:'NLP 언어 모델 · 공공의료 AI 운영 책임자'}));
-  assert.match(html,/<details>/);assert.match(html,/의도를 항상 정확히 아는 것은 아닙니다/);
-  assert.match(html,/공공의료 책임자와 같은 역할/);assert.equal(glossaryFor('시민들의 일상입니다.').length,0);
+  assert.doesNotMatch(html,/<details>/);assert.match(html,/NLP 언어 모델 뜻 보기/);
+  assert.match(html,/공공의료 AI 운영 책임자 뜻 보기/);assert.equal(glossaryFor('시민들의 일상입니다.').length,0);
 });
 test('compact paragraphs retain all original words, numbers and order',()=>{
   const text='첫 문단 12.5%입니다.\n\n다음 문단입니다.\n\n\n끝입니다.';

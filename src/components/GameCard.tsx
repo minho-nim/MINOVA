@@ -15,6 +15,8 @@ import { resolveCardDialogue } from '../engine/gameEngine';
 import { ShieldAlert } from 'lucide-react';
 import { CardGlossary } from './CardGlossary';
 import { dialogueParagraphs } from '../data/ethicsGlossary';
+import { compactDialogue } from '../data/compactDialogue';
+import { ReadingModal } from './ReadingModal';
 
 interface GameCardProps {
   card: GameCardType;
@@ -25,6 +27,7 @@ interface GameCardProps {
   onHoverDirectionChange: (direction: 'left' | 'right' | null) => void;
   isProcessing: boolean;
   previewDirection?: 'left' | 'right' | null;
+  onReadingOpenChange?: (open: boolean) => void;
 }
 
 const SWIPE_THRESHOLD = 75;
@@ -38,17 +41,20 @@ export const GameCard: React.FC<GameCardProps> = ({
   onHoverDirectionChange,
   isProcessing,
   previewDirection,
+  onReadingOpenChange,
 }) => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null);
   const gesture = useRef<{ id: number; x: number; y: number; horizontal: boolean } | null>(null);
-  const dialogueRef = useRef<HTMLDivElement>(null);
+  const [readingOpen, setReadingOpen] = useState(false);
+  const closeReading = useCallback(() => { setReadingOpen(false); onReadingOpenChange?.(false); }, [onReadingOpenChange]);
+  useEffect(() => () => onReadingOpenChange?.(false), [onReadingOpenChange]);
 
   const character = CHARACTERS[card.characterId];
   const speaker = getCardSpeaker(card);
   const dialogueText = readableDialogue(card.id, resolveCardDialogue(card, storyFlags, resources, dialogueContext));
-  useEffect(()=>{if(dialogueRef.current)dialogueRef.current.scrollTop=0;},[card.id,dialogueText]);
+  const compact = compactDialogue(card.id, dialogueText);
 
   useEffect(() => {
     if (!isProcessing) setExitDirection(null);
@@ -237,14 +243,18 @@ export const GameCard: React.FC<GameCardProps> = ({
             </div>
           </div>
 
-          <section className="verdict-reading" data-reading-area role="region" aria-label="사건 설명과 대화" tabIndex={0}>
+          <section className="verdict-reading verdict-reading-compact" data-reading-area role="region" aria-label="사건 설명과 대화" tabIndex={0}>
           <h4 className="verdict-headline font-semibold text-slate-200 tracking-tight mb-2 border-l-2 border-cyan-500 pl-2">
             {card.title}
           </h4>
 
           {/* Dialogue Text Body in Editorial Typography (15~16px, leading 1.6) */}
-          <div ref={dialogueRef} className="verdict-copy py-1" tabIndex={0} aria-label="대사 전체 · 위아래 스크롤" aria-live="polite" aria-atomic="true">
-            {dialogueParagraphs(dialogueText).map((paragraph,index)=><p key={index} className="verdict-dialogue text-[#F1F5F9] font-normal">{paragraph}</p>)}
+          <div className="verdict-copy verdict-copy-compact" aria-label="짧은 대사" aria-live="polite" aria-atomic="true">
+            {compact.excerpt && <span className="dialogue-preview-label">대사 미리보기</span>}
+            <p className="verdict-dialogue">{compact.text}</p>
+          </div>
+          <div className="dialogue-extras" data-reading-area>
+            <button type="button" className="dialogue-full-button" onClick={() => { setReadingOpen(true); onReadingOpenChange?.(true); }}>대사 전체 보기</button>
             <CardGlossary text={[dialogueText,card.title,choicePresentation(card,'left',storyFlags).text,choicePresentation(card,'right',storyFlags).text].join(' ')} />
           </div>
           </section>
@@ -252,6 +262,10 @@ export const GameCard: React.FC<GameCardProps> = ({
           {/* Card Bottom Meta Footer */}
         </div>
       </div>
+      {readingOpen && <ReadingModal title={card.title} onClose={closeReading}>
+        <div className="dialogue-original">{dialogueParagraphs(dialogueText).map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div>
+        <CardGlossary text={dialogueText} />
+      </ReadingModal>}
     </div>
   );
 };

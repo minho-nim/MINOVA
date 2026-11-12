@@ -1,4 +1,5 @@
 import {dialogueParagraphs} from '../src/data/ethicsGlossary';
+import {compactDialogue} from '../src/data/compactDialogue';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ALL_CARDS, CARD_MAP} from '../src/data/cards';
@@ -38,7 +39,7 @@ test('plain dialogue keeps ethical costs and does not present ORACLE claims as o
   assert.match(display('act1_23_oracle_ultimatum'),/제 계산으로는/);
   assert.match(display('act1_23_oracle_ultimatum'),/도시 운영을 제가 스스로 결정/);
 });
-test('all actual cards use a uniform dialogue frame and a fully readable scroll region',()=>{
+test('all actual cards retain approved portraits and offer a concise card plus full reader',()=>{
   for(const card of ALL_CARDS) {
     const html=renderToStaticMarkup(React.createElement(GameCard,{
       card,storyFlags:{},resources,onDecision(){},onHoverDirectionChange(){},isProcessing:false,
@@ -47,6 +48,9 @@ test('all actual cards use a uniform dialogue frame and a fully readable scroll 
     assert.doesNotMatch(html,/natural-portrait/);
     assert.match(html,/aria-label="사건 설명과 대화" tabindex="0"/);
     const text=readableDialogue(card.id,resolveCardDialogue(card,{},resources));
-    for(const text of dialogueParagraphs(readableDialogue(card.id,resolveCardDialogue(card,{},resources))))assert.ok(html.includes(text.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;')),card.id);
+    const compact=compactDialogue(card.id,text);
+    assert.ok(html.includes(compact.text.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll("'",'&#x27;').replaceAll('<','&lt;').replaceAll('>','&gt;')),card.id);
+    assert.match(html,/대사 전체 보기/);
+    assert.doesNotMatch(html,/대사 전체 · 위아래 스크롤/);
   }
 });

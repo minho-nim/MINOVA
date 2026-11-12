@@ -47,6 +47,7 @@ export default function App() {
   // Modals & Panels
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isChoiceDetailsOpen,setIsChoiceDetailsOpen]=useState(false);
+  const [isDialogueOpen, setIsDialogueOpen] = useState(false);
   useEffect(()=>{
     document.body.classList.toggle('game-active',!inTitleScreen);
     return()=>document.body.classList.remove('game-active');
@@ -61,7 +62,7 @@ export default function App() {
   const decisionTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(()=>()=>decisionTimers.current.forEach(clearTimeout),[]);
   const inputLocked =
-    isHistoryOpen || isSettingsOpen || isReplacementModalOpen || isChoiceDetailsOpen || gameState?.flowPhase !== 'playing';
+    isHistoryOpen || isSettingsOpen || isReplacementModalOpen || isChoiceDetailsOpen || isDialogueOpen || gameState?.flowPhase !== 'playing';
   const applySessionAction = (action: SessionAction) => {
     if (!gameState) return;
     const result = transitionSession(gameState, action);
@@ -81,6 +82,7 @@ export default function App() {
   // Handle starting a new game
   const handleStartNewGame = () => {
     setDecisionFeedback(null);
+    setIsDialogueOpen(false);
     decisionTimers.current.forEach(clearTimeout);
     decisionTimers.current=[];
     setIsProcessing(false);
@@ -233,7 +235,7 @@ export default function App() {
   }
 
   return (
-    <div className="game-shell min-h-screen text-slate-100 font-sans antialiased selection:bg-cyan-900 selection:text-white relative">
+    <div className="game-shell compact-reading-mode min-h-screen text-slate-100 font-sans antialiased selection:bg-cyan-900 selection:text-white relative">
       {decisionFeedback && <DecisionFeedback
         key={decisionFeedback.id}
         feedback={decisionFeedback}
@@ -321,6 +323,7 @@ export default function App() {
               storyFlags={gameState.storyFlags}
               resources={gameState.resources}
               dialogueContext={gameState}
+              onReadingOpenChange={setIsDialogueOpen}
               onDecision={handleDecision}
               onHoverDirectionChange={handleHoverDirectionChange}
               isProcessing={isProcessing || inputLocked}
