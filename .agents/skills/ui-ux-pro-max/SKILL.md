@@ -1,7 +1,23 @@
 ---
 name: ui-ux-pro-max
-description: "UI/UX design intelligence for web, mobile, and desktop. This skill should be used when designing, building, reviewing, or fixing interfaces, including pages, components, design systems, accessibility, interaction, responsive layout, typography, color, charts, and stack-specific UI implementation. Searchable local data: 80 searchable styles (51 active), 192 product palettes and reasoning profiles, 74 font pairings, 120 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks."
+description: "UI/UX 자료집. 화면을 설계·리뷰할 때 스타일·색 조합·글꼴 짝·UX 지침·차트 종류를 검색해 근거 있게 고른다(로컬 자료와 파이썬 검색 스크립트, 인터넷·AI 호출 없음)."
+metadata:
+  minoffia-category: 화면·디자인
 ---
+
+# UI/UX 자료집
+
+> **minoffia 메모:** MINOVA 저장소에서 쓰던 스킬을 스킬 모음에 연결함(LICENSE 동봉, 원문 그대로). 설명·이 요약만 한국어로 붙였다.
+
+## 지시서용 요약
+
+- 색·글꼴·스타일을 새로 정할 때만 검색한다(작은 수정에는 쓰지 않는다).
+- 프로젝트의 기존 디자인 기준이 있으면 그쪽이 먼저다. 여기서는 근거와 후보만 얻는다.
+- 검색은 scripts/search.py로 하고, 큰 CSV 파일을 통째로 읽지 않는다(토큰 아끼기).
+
+---
+
+## 원문(영어)
 
 # UI/UX Pro Max - Design Intelligence
 

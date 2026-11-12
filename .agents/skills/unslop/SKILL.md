@@ -1,12 +1,27 @@
 ---
 name: unslop
-description: Turns vibecoded, AI-looking UI into a designed interface with its own character. Finds a direction from the product itself, then fixes spacing, color, icons, copy, type, layout, details, visuals and motion in that order, and can generate a real hero visual with an image tool when one is available. Use when the user asks to unslop, polish, clean up or redesign a screen so it stops looking AI-generated, or when a UI shows the usual tells like purple gradients, glows, gradient text, emoji labels, "New ✨" badges, glossy blobs, uppercase tracked labels, pulsing elements or uneven spacing. Works on React, Tailwind, HTML and CSS, for dashboards, apps and landing pages.
+description: "AI 티 나는 화면 고치기. 바이브코딩으로 만든 뻔한 화면을 제품만의 개성 있는 디자인으로 바꾼다. 간격 → 색 → 아이콘 → 문구 → 글꼴 → 레이아웃 → 세부 → 그림 → 움직임 순서로 고친다."
 license: CC-BY-4.0
 metadata:
+  minoffia-category: 화면·디자인
   author: Damir Sokolovsky
   x: https://x.com/heydamir
   site: https://heydamir.design/unslop
 ---
+
+# AI 티 나는 화면 고치기
+
+> **minoffia 메모:** MINOVA 저장소에서 쓰던 스킬을 스킬 모음에 연결함(LICENSE 동봉, 원문 그대로). 설명·이 요약만 한국어로 붙였다.
+
+## 지시서용 요약
+
+- 제품이 하는 일에서 방향을 먼저 정하고, 그 방향으로만 고친다.
+- 한 번에 다 바꾸지 말고 순서대로 한 단계씩 고치고 확인한다.
+- 원작자 표시(CC BY 4.0, Damir Sokolovsky)를 지운다면 안 된다.
+
+---
+
+## 원문(영어)
 
 # Unslop
 
