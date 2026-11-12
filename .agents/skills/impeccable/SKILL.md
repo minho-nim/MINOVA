@@ -7,6 +7,7 @@ argument-hint: "[shape · audit|critique · animate|bolder|colorize|delight|layo
 license: Apache 2.0
 metadata:
   minoffia-category: 화면·디자인
+  minoffia-default: "true"
 ---
 
 # 화면 디자인 다듬기

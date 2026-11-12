@@ -5,6 +5,7 @@ allowed-tools: Bash(agent-browser:*)
 hidden: true
 metadata:
   minoffia-category: 시험·점검
+  minoffia-default: "true"
 ---
 
 # 브라우저 자동 조작

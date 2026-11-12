@@ -3,6 +3,7 @@ name: ui-ux-pro-max
 description: "UI/UX 자료집. 화면을 설계·리뷰할 때 스타일·색 조합·글꼴 짝·UX 지침·차트 종류를 검색해 근거 있게 고른다(로컬 자료와 파이썬 검색 스크립트, 인터넷·AI 호출 없음)."
 metadata:
   minoffia-category: 화면·디자인
+  minoffia-default: "true"
 ---
 
 # UI/UX 자료집
